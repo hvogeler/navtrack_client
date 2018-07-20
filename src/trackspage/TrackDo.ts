@@ -1,8 +1,13 @@
-class TrackDo {
+import {TrackTypeDo} from "./TrackTypeDo";
+
+export class TrackDo {
     public id: number;
-    public name: string;
+    public trackname: string;
+    public description: string;
     public country: string;
     public region: string;
+    public ownerid: string;
     public created: string;
-    public length: number = -1;
+    public gpx: string;
+    public tracktypes: TrackTypeDo[] = [];
 }

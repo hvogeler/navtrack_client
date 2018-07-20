@@ -19,11 +19,11 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                     <tbody>
                     <tr>
                         <th scope="row" className="text-right">Trackname</th>
-                        <td className="text-left">{this.props.trackData.name}</td>
+                        <td className="text-left">{this.props.trackData.trackname}</td>
                     </tr>
                     <tr>
-                        <th scope="row" className="text-right">Length</th>
-                        <td className="text-left">{this.props.trackData.length}</td>
+                        <th scope="row" className="text-right">Description</th>
+                        <td className="text-left">{this.props.trackData.description}</td>
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Country</th>
@@ -32,6 +32,14 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                     <tr>
                         <th scope="row" className="text-right">Region</th>
                         <td className="text-left">{this.props.trackData.region}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" className="text-right">Owner</th>
+                        <td className="text-left">{this.props.trackData.ownerid}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" className="text-right">Types</th>
+                        <td className="text-left">{this.props.trackData.tracktypes.map((it) => it.tracktypename).join(", ")}</td>
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Touched</th>

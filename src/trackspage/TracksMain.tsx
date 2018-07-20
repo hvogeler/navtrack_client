@@ -1,11 +1,13 @@
 import * as React from 'react';
 
-import {observable} from "mobx";
+import {action, observable} from "mobx";
 import {observer} from "mobx-react";
+import {fetchJson} from "../backend/Backend";
 import teaserimg from '../images/IMG_0107.jpg'
 import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
 import {TrackDetailController} from "./TrackDetailController";
+import {TrackDo} from "./TrackDo";
 import {TrackList} from "./TrackList";
 
 @observer
@@ -14,36 +16,48 @@ export class TracksMain extends React.Component {
     @observable
     public currentTrackListId: number = 1;
 
-    @observable
-    private trackListData: TrackDo[] = [
-        {
-            country: "Germany",
-            created: "2018-03-14 09:24:00",
-            id: 1,
-            length: 7.91,
-            name: "Bayenthal_Jogging",
-            region: "Cologne"
-        },
-        {
-            country: "Switzerland",
-            created: "2018-03-14 09:24:00",
-            id: 2,
-            length: 5.62,
-            name: "Furggulti",
-            region: "Wallis"
-        }];
+
+    @observable private trackListData: TrackDo[] = [];
+
+    public componentWillMount() {
+        this.refreshTrackListData()
+    }
+
+    public componentDidMount() {
+        this.refreshTrackListData()
+    }
 
     public render() {
-        return (
-            <div>
-                <Teaser image={teaserimg}/>
-                <PageTitle title={"Tracks"}/>
-                <TrackList currentTrackListId={this.currentTrackListId}
-                           setCurrentTrackListId={(id: number) => this.currentTrackListId = id}
-                           trackList={this.trackListData}/>
-                <TrackDetailController trackData={this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]}/>
-            </div>
-        );
+        if (this.trackListData.length <= 0) {
+            return (
+                <div>
+                    <Teaser image={teaserimg}/>
+                    <PageTitle title={"Tracks"}/>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div>
+                    <Teaser image={teaserimg}/>
+                    <PageTitle title={"Tracks"}/>
+                    <TrackList currentTrackListId={this.currentTrackListId}
+                               setCurrentTrackListId={(id: number) => this.currentTrackListId = id}
+                               trackList={this.trackListData}/>
+                    <TrackDetailController
+                        trackData={this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]}/>
+                </div>
+            );
+        }
+    }
+
+    @action
+    private refreshTrackListData() {
+        fetchJson("/api/tracks")
+            .then((tracks) => {
+                this.trackListData = tracks
+            })
+
     }
 
     private findIndexForTrackListid(id: number): number {

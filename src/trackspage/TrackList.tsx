@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {TrackDo} from "./TrackDo";
 
 
 interface ITrackListProps {
@@ -33,7 +34,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             onClick={() => this.onClick(it.id)}
                             onMouseEnter={() => this.onMouseEnter(it.id)}>
                             <th scope="row">{it.id}</th>
-                            <td>{it.name}</td>
+                            <td>{it.trackname}</td>
                             <td>{it.country}</td>
                             <td>{it.region}</td>
                             <td>{it.created}</td>

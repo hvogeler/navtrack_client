@@ -1,6 +1,7 @@
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import {TrackDetail} from "./TrackDetail";
+import {TrackDo} from "./TrackDo";
 import {TrackMap} from "./TrackMap";
 
 export interface ITrackDetailProps {
