@@ -1,3 +1,13 @@
 .container-fluid {
     padding: 0px;
 }
+
+#viewMap {
+    height: 540px;
+}
+
+#TrackList th, #TrackList td {
+    padding: 0.3rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
