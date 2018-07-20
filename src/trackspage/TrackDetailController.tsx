@@ -3,7 +3,14 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import {TrackDetail} from "./TrackDetail";
 import {TrackMap} from "./TrackMap";
 
-export class TrackDetailController extends React.Component {
+export interface ITrackDetailProps {
+    trackData: TrackDo;
+}
+
+export class TrackDetailController extends React.Component<ITrackDetailProps, any> {
+    constructor(props: ITrackDetailProps) {
+        super(props)
+    }
 
     public render() {
         return (
@@ -13,7 +20,7 @@ export class TrackDetailController extends React.Component {
                         <TrackMap/>
                     </div>
                     <div className="col-4">
-                        <TrackDetail/>
+                        <TrackDetail trackData={this.props.trackData}/>
                     </div>
                 </div>
             </div>

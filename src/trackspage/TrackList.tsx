@@ -1,29 +1,16 @@
 import * as React from 'react';
 
-interface ITrackData {
-    id: number;
-    name: string;
-    country: string;
-    region: string;
-    created: string;
+
+interface ITrackListProps {
+    trackList: TrackDo[];
+    currentTrackListId: number;
+    setCurrentTrackListId: (id: number) => void;
 }
 
-export class TrackList extends React.Component {
-    private trackListData: ITrackData[] = [
-        {
-            country: "Germany",
-            created: "2018-03-14 09:24:00",
-            id: 1,
-            name: "Bayenthal_Jogging",
-            region: "Cologne"
-        },
-        {
-            country: "Switzerland",
-            created: "2018-03-14 09:24:00",
-            id: 2,
-            name: "Furggulti",
-            region: "Wallis"
-        }];
+export class TrackList extends React.Component<ITrackListProps, any> {
+    constructor(props: ITrackListProps) {
+        super(props)
+    }
 
     public render() {
         return (
@@ -39,8 +26,11 @@ export class TrackList extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.trackListData.map(it =>
-                        <tr key="{it.id}" id="{it.id}" onClick={() => this.onClick(it.id)}
+                    {this.props.trackList.map(it =>
+                        <tr key={it.id}
+                            id="{it.id}"
+                            className={this.props.currentTrackListId === it.id ? "bg-info text-white" : "bg-white text-dark"}
+                            onClick={() => this.onClick(it.id)}
                             onMouseEnter={() => this.onMouseEnter(it.id)}>
                             <th scope="row">{it.id}</th>
                             <td>{it.name}</td>
@@ -57,6 +47,7 @@ export class TrackList extends React.Component {
 
     private onClick(trackid: number) {
         console.log(`Row ${trackid} clicked`)
+        this.props.setCurrentTrackListId(trackid)
     };
 
     private onMouseEnter(trackid: number) {
