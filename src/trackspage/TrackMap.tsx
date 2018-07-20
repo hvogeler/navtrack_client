@@ -1,9 +1,13 @@
 import * as React from 'react';
 import {Map} from "react-leaflet";
 import {TileLayer} from "react-leaflet";
+import {ITrackDetailProps} from "./TrackDetailController";
 
 
-export class TrackMap extends React.Component {
+export class TrackMap extends React.Component<ITrackDetailProps, any> {
+    constructor(props: ITrackDetailProps) {
+        super(props)
+    }
 
     public render() {
         return (

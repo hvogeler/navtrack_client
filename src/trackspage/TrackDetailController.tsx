@@ -18,7 +18,7 @@ export class TrackDetailController extends React.Component<ITrackDetailProps, an
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-8">
-                        <TrackMap/>
+                        <TrackMap trackData={this.props.trackData}/>
                     </div>
                     <div className="col-4">
                         <TrackDetail trackData={this.props.trackData}/>
