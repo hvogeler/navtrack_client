@@ -74,6 +74,8 @@ export class TracksMain extends React.Component {
 
     private setCurrentTrack(id: number) {
         this.currentTrackListId = id
+        const xxx = (new DOMParser()).parseFromString(this.trackListData[this.findIndexForTrackListid(id)].gpx, 'text/xml');
+        console.log(xxx)
     }
 }
 
