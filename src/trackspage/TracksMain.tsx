@@ -19,6 +19,11 @@ export class TracksMain extends React.Component {
 
     @observable private trackListData: TrackDo[] = [];
 
+    constructor(props: any) {
+        super(props);
+        this.setCurrentTrack = this.setCurrentTrack.bind(this)
+    }
+
     public componentWillMount() {
         this.refreshTrackListData()
     }
@@ -42,7 +47,7 @@ export class TracksMain extends React.Component {
                     <Teaser image={teaserimg}/>
                     <PageTitle title={"Tracks"}/>
                     <TrackList currentTrackListId={this.currentTrackListId}
-                               setCurrentTrackListId={(id: number) => this.currentTrackListId = id}
+                               setCurrentTrackListId={this.setCurrentTrack}
                                trackList={this.trackListData}/>
                     <TrackDetailController
                         trackData={this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]}/>
@@ -65,6 +70,10 @@ export class TracksMain extends React.Component {
             value.id === id
         );
         return idx >= 0 ? idx : 0
+    }
+
+    private setCurrentTrack(id: number) {
+        this.currentTrackListId = id
     }
 }
 
