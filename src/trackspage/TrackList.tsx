@@ -1,3 +1,4 @@
+import {action} from "mobx";
 import * as React from 'react';
 import {TrackDo} from "./TrackDo";
 
@@ -46,6 +47,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
         );
     }
 
+    @action
     private onClick(trackid: number) {
         console.log(`Row ${trackid} clicked`)
         this.props.setCurrentTrackListId(trackid)
