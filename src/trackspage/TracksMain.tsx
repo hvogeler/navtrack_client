@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {action, observable} from "mobx";
+import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {fetchJson} from "../backend/Backend";
 import teaserimg from '../images/IMG_0107.jpg'
@@ -22,22 +22,6 @@ export class TracksMain extends React.Component {
             elements.push(nodeList.item(i))
         }
         return elements
-    }
-
-    private static trackPtsFromGpx(track: TrackDo): TrackPtDo[] {
-        if (track === undefined) {
-            return []
-        }
-        const xxx = (new DOMParser()).parseFromString(track.gpx, 'text/xml');
-        const elements = TracksMain.nodeListtoArray(xxx.querySelectorAll("trkpt"));
-        return elements.map((element) => {
-            return {
-                ele: 0,
-                lat: +(element.getAttribute("lat") || 0),
-                lng: +(element.getAttribute("lon") || 0),
-            }
-        })
-
     }
 
     @observable
@@ -68,7 +52,7 @@ export class TracksMain extends React.Component {
             )
         }
         else {
-            const trackPts = TracksMain.trackPtsFromGpx(this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]);
+            const trackPts = this.trackPtsFromGpx;
             return (
                 <div>
                     <Teaser image={teaserimg}/>
@@ -77,7 +61,7 @@ export class TracksMain extends React.Component {
                                setCurrentTrackListId={this.setCurrentTrack}
                                trackList={this.trackListData}/>
                     <TrackDetailController
-                        trackData={this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]}
+                        trackData={this.currentTrack}
                         trackPts={trackPts}
                     />
                 </div>
@@ -90,6 +74,7 @@ export class TracksMain extends React.Component {
         fetchJson("/api/tracks")
             .then((tracks) => {
                 this.trackListData = tracks
+                this.currentTrackListId = tracks[0].id
             })
 
     }
@@ -105,6 +90,29 @@ export class TracksMain extends React.Component {
     private setCurrentTrack(id: number) {
         this.currentTrackListId = id
     }
+
+    @computed
+    private get currentTrack(): TrackDo {
+        return this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]
+    }
+
+    @computed
+    private get trackPtsFromGpx(): TrackPtDo[] {
+        if (this.currentTrack === undefined) {
+            return []
+        }
+        const doc = (new DOMParser()).parseFromString(this.currentTrack.gpx, 'text/xml');
+        const elements = TracksMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
+        return elements.map((element) => {
+            return {
+                ele: 0,
+                lat: +(element.getAttribute("lat") || 0),
+                lng: +(element.getAttribute("lon") || 0),
+            }
+        })
+
+    }
+
 
 }
 
