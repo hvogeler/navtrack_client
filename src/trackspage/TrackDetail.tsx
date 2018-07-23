@@ -51,7 +51,7 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Touched</th>
-                        <td className="text-left">{(new Date(this.props.trackData.created)).toLocaleString()}</td>
+                        <td className="text-left">{this.props.trackData.created}</td>
                     </tr>
                     </tbody>
                 </table>

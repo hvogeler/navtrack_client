@@ -21,7 +21,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                     <thead className="thead-light">
                     <tr>
                         <th scope="col">TrackId</th>
-                        <th scope="col">Name</th>
+                        <th scope="col" className="text-left">Name</th>
                         <th scope="col">Country</th>
                         <th scope="col">Region</th>
                         <th scope="col">Created</th>
@@ -35,10 +35,10 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             onClick={() => this.onClick(it.id)}
                             onMouseEnter={() => this.onMouseEnter(it.id)}>
                             <th scope="row">{it.id}</th>
-                            <td>{it.trackname}</td>
+                            <td className="text-left">{it.trackname}</td>
                             <td>{it.country}</td>
                             <td>{it.region}</td>
-                            <td>{(new Date(it.created)).toLocaleString()}</td>
+                            <td>{it.created}</td>
                         </tr>
                     )}
                     </tbody>
