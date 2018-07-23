@@ -3,7 +3,6 @@ import {LayerGroup, Map, Rectangle} from "react-leaflet";
 import {TileLayer} from "react-leaflet";
 import {Polyline} from "react-leaflet";
 import {ITrackDetailProps} from "./TrackDetailController";
-import {TrackPtDo} from "./TrackPtDo";
 
 // const tileserverOSMStandard = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const tileserverThunderforestLandscape = "http://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
@@ -17,7 +16,12 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
     }
 
     public render() {
-        const trackPts = this.trackPtsFromGpx(this.props.trackData.gpx);
+//        const trackPts = this.trackPtsFromGpx(this.props.trackData.gpx)
+        const trackPts = this.props.trackPts;
+        if (trackPts.length <= 0) {
+            return ""
+        }
+
         const lastTrackPt = trackPts[trackPts.length - 1];
         return (
             <div className="border border-light rounded">
@@ -52,28 +56,28 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
             </div>
         );
     }
-
-    private trackPtsFromGpx(gpx: string): TrackPtDo[] {
-        const xxx = (new DOMParser()).parseFromString(this.props.trackData.gpx, 'text/xml');
-        const elements = this.nodeListtoArray(xxx.querySelectorAll("trkpt"));
-        return elements.map((element) => {
-            return {
-                ele: 0,
-                lat: +(element.getAttribute("lat") || 0),
-                lng: +(element.getAttribute("lon") || 0),
-            }
-        })
-
-    }
-
-    private nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
-        const elements: Element[] = [];
-        let i: number;
-        for (i = 0; i < nodeList.length; i++) {
-            console.log(`${i}. (${nodeList.item(i).getAttribute("lat")}, ${nodeList.item(i).getAttribute("lon")}`)
-            elements.push(nodeList.item(i))
-        }
-        return elements
-    }
+    //
+    // private trackPtsFromGpx(gpx: string): TrackPtDo[] {
+    //     const xxx = (new DOMParser()).parseFromString(this.props.trackData.gpx, 'text/xml');
+    //     const elements = this.nodeListtoArray(xxx.querySelectorAll("trkpt"));
+    //     return elements.map((element) => {
+    //         return {
+    //             ele: 0,
+    //             lat: +(element.getAttribute("lat") || 0),
+    //             lng: +(element.getAttribute("lon") || 0),
+    //         }
+    //     })
+    //
+    // }
+    //
+    // private nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
+    //     const elements: Element[] = [];
+    //     let i: number;
+    //     for (i = 0; i < nodeList.length; i++) {
+    //         console.log(`${i}. (${nodeList.item(i).getAttribute("lat")}, ${nodeList.item(i).getAttribute("lon")}`)
+    //         elements.push(nodeList.item(i))
+    //     }
+    //     return elements
+    // }
 }
 

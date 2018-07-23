@@ -38,7 +38,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             <td>{it.trackname}</td>
                             <td>{it.country}</td>
                             <td>{it.region}</td>
-                            <td>{it.created}</td>
+                            <td>{(new Date(it.created)).toLocaleString()}</td>
                         </tr>
                     )}
                     </tbody>
@@ -49,7 +49,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
 
     @action
     private onClick(trackid: number) {
-        console.log(`Row ${trackid} clicked`)
+        console.log(`Row ${trackid} clicked`);
         this.props.setCurrentTrackListId(trackid)
     };
 

@@ -8,7 +8,7 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
 
     public render() {
         return (
-            <div className="border border-light rounded bg-info text-white">
+            <div id="detailList" className="border border-light rounded bg-info text-white">
                 <table className="table table">
                     <thead className="thead-light">
                     <tr>
@@ -43,7 +43,7 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Touched</th>
-                        <td className="text-left">{this.props.trackData.created}</td>
+                        <td className="text-left">{(new Date(this.props.trackData.created)).toLocaleString()}</td>
                     </tr>
                     </tbody>
                 </table>

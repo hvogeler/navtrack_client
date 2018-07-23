@@ -11,3 +11,10 @@
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
+
+
+#detailList th, #detailList td {
+    padding: 0.1rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
