@@ -119,14 +119,15 @@ export class TracksMain extends React.Component {
     @computed
     private get additionalTrackInfo(): AdditionalTrackInfo {
         return {
-            length: this.calcTrackLength(this.trackPtsFromGpx),
+            length: this.trackLengthInKm,
             trackPtCnt: this.trackPtsFromGpx.length
         }
     }
 
-    private calcTrackLength(trackPts: TrackPtDo[]): number {
+    @computed
+    private get trackLengthInKm(): number {
         let akku = 0;
-        trackPts.forEach(
+        this.trackPtsFromGpx.forEach(
             (trackPt, idx, v) => {
                 if (idx === 0) { return; }
                 const latlng1 = new LatLng(v[idx].lat, v[idx].lng);
