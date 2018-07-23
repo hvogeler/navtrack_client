@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import {LatLng} from "leaflet";
 import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {fetchJson} from "../backend/Backend";
@@ -118,9 +119,23 @@ export class TracksMain extends React.Component {
     @computed
     private get additionalTrackInfo(): AdditionalTrackInfo {
         return {
-            length: 42.1,
+            length: this.calcTrackLength(this.trackPtsFromGpx),
             trackPtCnt: this.trackPtsFromGpx.length
         }
+    }
+
+    private calcTrackLength(trackPts: TrackPtDo[]): number {
+        let akku = 0;
+        trackPts.forEach(
+            (trackPt, idx, v) => {
+                if (idx === 0) { return; }
+                const latlng1 = new LatLng(v[idx].lat, v[idx].lng);
+                const latlng2 = new LatLng(v[idx-1].lat, v[idx-1].lng);
+                akku += latlng1.distanceTo(latlng2)
+            }
+        );
+
+        return akku / 1000;
     }
 
 }
