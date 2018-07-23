@@ -38,6 +38,14 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                         <td className="text-left">{this.props.trackData.ownerid}</td>
                     </tr>
                     <tr>
+                        <th scope="row" className="text-right">Length(Km)</th>
+                        <td className="text-left">{this.props.additionalTrackInfo.length}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" className="text-right"># TrackPoints</th>
+                        <td className="text-left">{this.props.additionalTrackInfo.trackPtCnt}</td>
+                    </tr>
+                    <tr>
                         <th scope="row" className="text-right">Types</th>
                         <td className="text-left">{this.props.trackData.tracktypes.map((it) => it.tracktypename).join(", ")}</td>
                     </tr>

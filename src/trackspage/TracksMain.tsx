@@ -6,6 +6,7 @@ import {fetchJson} from "../backend/Backend";
 import teaserimg from '../images/IMG_0107.jpg'
 import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
+import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackDetailController} from "./TrackDetailController";
 import {TrackDo} from "./TrackDo";
 import {TrackList} from "./TrackList";
@@ -63,6 +64,7 @@ export class TracksMain extends React.Component {
                     <TrackDetailController
                         trackData={this.currentTrack}
                         trackPts={trackPts}
+                        additionalTrackInfo={this.additionalTrackInfo}
                     />
                 </div>
             );
@@ -113,6 +115,13 @@ export class TracksMain extends React.Component {
 
     }
 
+    @computed
+    private get additionalTrackInfo(): AdditionalTrackInfo {
+        return {
+            length: 42.1,
+            trackPtCnt: this.trackPtsFromGpx.length
+        }
+    }
 
 }
 
