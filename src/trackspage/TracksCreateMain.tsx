@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {LatLng} from "leaflet";
-import {action, computed, observable} from "mobx";
+import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import teaserimg from '../images/IMG_0107.jpg'
 import {PageTitle} from "../PageTitle";
@@ -24,14 +24,26 @@ export class TracksCreateMain extends React.Component {
         return elements
     }
 
-    @observable
-    public currentTrackListId: number = 1;
+    private static emptyTrack(): TrackDo {
+        return {
+            country: "",
+            created: "",
+            description: "",
+            gpx: "",
+            id: 0,
+            ownerid: "",
+            region: "",
+            trackname: "",
+            tracktypes: []
+        }
+    }
 
-    @observable private trackListData: TrackDo[] = [];
+    @observable private newTrack: TrackDo;
 
     constructor(props: any) {
         super(props);
-        this.setCurrentTrack = this.setCurrentTrack.bind(this);
+        this.newTrack = TracksCreateMain.emptyTrack();
+        this.changeTrack = this.changeTrack.bind(this);
     }
 
     public render() {
@@ -40,37 +52,24 @@ export class TracksCreateMain extends React.Component {
                 <Teaser image={teaserimg}/>
                 <PageTitle title={"New Track"}/>
                 <TrackCreateController
-                    trackData={this.currentTrack}
+                    trackData={this.newTrack}
                     trackPts={[]}
                     additionalTrackInfo={this.additionalTrackInfo}
+                    changeTrack={this.changeTrack}
                 />
             </div>
         );
     }
 
-    private findIndexForTrackListid(id: number): number {
-        const idx = this.trackListData.findIndex((value, index) =>
-            value.id === id
-        );
-        return idx >= 0 ? idx : 0
+    private changeTrack(track: TrackDo) {
+        this.newTrack = track;
     }
 
-    @action
-    private setCurrentTrack(id: number) {
-        this.currentTrackListId = id
-    }
-
-    @computed
-    private get currentTrack(): TrackDo {
-        return this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]
-    }
-
-    @computed
     private get trackPtsFromGpx(): TrackPtDo[] {
-        if (this.currentTrack === undefined) {
+        if (this.newTrack === undefined) {
             return []
         }
-        const doc = (new DOMParser()).parseFromString(this.currentTrack.gpx, 'text/xml');
+        const doc = (new DOMParser()).parseFromString(this.newTrack.gpx, 'text/xml');
         const elements = TracksCreateMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
         return elements.map((element) => {
             return {
