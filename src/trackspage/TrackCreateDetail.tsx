@@ -1,3 +1,4 @@
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import * as React from 'react';
 import {ITrackCreateProps} from "./TrackCreateController";
 
@@ -61,5 +62,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
 
     private onSubmitHandler(event: React.FormEvent) {
         console.log(`Submitted ${event.currentTarget.id}`);
+        const provider = new OpenStreetMapProvider();
+        provider.search({query: "Köln Alteburger Str 212, Germany"}).then(value => console.log(value))
     }
 }
