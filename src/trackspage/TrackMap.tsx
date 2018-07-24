@@ -4,10 +4,8 @@ import {TileLayer} from "react-leaflet";
 import {Polyline} from "react-leaflet";
 import {ITrackDetailProps} from "./TrackDetailController";
 
-// const tileserverOSMStandard = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-const tileserverThunderforestLandscape = "http://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
-// const tileserverThunderforestOutdoors = "http://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
 const markerRectSize = 0.0001
+const TILESERVER = process.env.REACT_APP_TILESERVER;
 
 export class TrackMap extends React.Component<ITrackDetailProps, any> {
 
@@ -28,7 +26,7 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
                 <Map id="viewMap" center={[trackPts[0].lat, trackPts[0].lng]} zoom={14}>
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                        url={tileserverThunderforestLandscape}
+                        url={TILESERVER === undefined ? "" : TILESERVER}
                     />
                     <LayerGroup>
                         <Polyline positions={
@@ -56,28 +54,6 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
             </div>
         );
     }
-    //
-    // private trackPtsFromGpx(gpx: string): TrackPtDo[] {
-    //     const xxx = (new DOMParser()).parseFromString(this.props.trackData.gpx, 'text/xml');
-    //     const elements = this.nodeListtoArray(xxx.querySelectorAll("trkpt"));
-    //     return elements.map((element) => {
-    //         return {
-    //             ele: 0,
-    //             lat: +(element.getAttribute("lat") || 0),
-    //             lng: +(element.getAttribute("lon") || 0),
-    //         }
-    //     })
-    //
-    // }
-    //
-    // private nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
-    //     const elements: Element[] = [];
-    //     let i: number;
-    //     for (i = 0; i < nodeList.length; i++) {
-    //         console.log(`${i}. (${nodeList.item(i).getAttribute("lat")}, ${nodeList.item(i).getAttribute("lon")}`)
-    //         elements.push(nodeList.item(i))
-    //     }
-    //     return elements
-    // }
+
 }
 

@@ -12,11 +12,8 @@ export class PageTitle extends React.Component<IPageTitleProps, any> {
     public render() {
         return (
             <div className="container-fluid row p-3" style={{verticalAlign : "middle"}}>
-                <div className="col-6 text-right">
+                <div className="col-12 text-center">
                     <span className="text-secondary display-4">{this.props.title}</span>
-                </div>
-                <div className="col-1">
-                    <button type="button" className="btn btn-light">Create</button>
                 </div>
                 < hr/>
             </div>

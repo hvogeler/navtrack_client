@@ -19,3 +19,12 @@
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
+
+#detailForm {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}

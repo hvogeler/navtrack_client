@@ -6,6 +6,7 @@ import {DocsMain} from "./docspage/DocsMain";
 import {IntroMain} from "./intro/IntroMain";
 import {MainMenu} from "./MainMenu";
 import './styles/mainstyles.css'
+import {TracksCreateMain} from "./trackspage/TracksCreateMain";
 import {TracksMain} from "./trackspage/TracksMain"
 
 export class App extends React.Component {
@@ -17,6 +18,7 @@ export class App extends React.Component {
               <Switch>
                   <Route exact={true} path="/" component={TracksMain}/>
                   <Route exact={true} path="/tracks" component={TracksMain}/>
+                  <Route exact={true} path="/create" component={TracksCreateMain}/>
                   <Route exact={true} path="/docs" component={DocsMain}/>
                   <Route exact={true} path="/intro" component={IntroMain}/>
               </Switch>
