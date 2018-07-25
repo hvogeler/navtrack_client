@@ -1,3 +1,4 @@
+
 declare module 'leaflet-geosearch' {
 
     interface IGeoSearchResult
@@ -15,4 +16,15 @@ declare module 'leaflet-geosearch' {
     class OpenStreetMapProvider {
         public search(query: {query: string}): Promise<IGeoSearchResult[]>
     }
+
+    class GoogleProvider {
+        constructor(params: {
+            params: {
+                key: string;
+            }
+        })
+        public search(query: {query: string}): Promise<IGeoSearchResult[]>
+    }
+
+
 }
