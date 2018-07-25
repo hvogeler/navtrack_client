@@ -1,7 +1,18 @@
 declare module 'leaflet-geosearch' {
-    import {LatLng} from "leaflet";
+
+    interface IGeoSearchResult
+    {
+        x: number;                      // lon,
+        y: number;                      // lat,
+        label: string;                  // formatted address
+        bounds: [
+            [number, number],             // s, w - lat, lon
+            [number, number]             // n, e - lat, lon
+            ];
+        raw: any;                        // raw provider result
+    }
 
     class OpenStreetMapProvider {
-        public search(query: {query: string}): Promise<LatLng>
+        public search(query: {query: string}): Promise<IGeoSearchResult[]>
     }
 }

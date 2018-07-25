@@ -1,3 +1,4 @@
+import {LatLng} from "leaflet";
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import * as React from 'react';
 import {ITrackCreateProps} from "./TrackCreateController";
@@ -50,8 +51,6 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     }
 
     private onChangeHandler(event: React.FormEvent<HTMLInputElement>) {
-        console.log(`Keydown ${event.currentTarget.id}`);
-        console.log(event.currentTarget.value);
         this.props.changeTrack(
             {
                 ...this.props.trackData,
@@ -61,8 +60,14 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     }
 
     private onSubmitHandler(event: React.FormEvent) {
-        console.log(`Submitted ${event.currentTarget.id}`);
+        console.log(`Geosearch for  ${this.props.trackData.region}`);
         const provider = new OpenStreetMapProvider();
-        provider.search({query: "Köln Alteburger Str 212, Germany"}).then(value => console.log(value))
+        provider.search({query: this.props.trackData.region}).then((value) => {
+            if (value.length <= 0) { return };
+            console.log(value[0]);
+            const topHitLocation = value[0];
+            this.props.setMapCenter(new LatLng(topHitLocation.y, topHitLocation.x))
+        })
+            .catch( (msg) => console.log(`Error on geosearch: ${msg}`))
     }
 }

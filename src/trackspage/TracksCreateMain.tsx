@@ -39,11 +39,13 @@ export class TracksCreateMain extends React.Component {
     }
 
     @observable private newTrack: TrackDo;
+    @observable private mapCenter: LatLng = new LatLng(50.0, 6.98, 49);
 
     constructor(props: any) {
         super(props);
         this.newTrack = TracksCreateMain.emptyTrack();
         this.changeTrack = this.changeTrack.bind(this);
+        this.setMapCenter = this.setMapCenter.bind(this);
     }
 
     public render() {
@@ -56,6 +58,8 @@ export class TracksCreateMain extends React.Component {
                     trackPts={[]}
                     additionalTrackInfo={this.additionalTrackInfo}
                     changeTrack={this.changeTrack}
+                    mapCenter={this.mapCenter}
+                    setMapCenter={this.setMapCenter}
                 />
             </div>
         );
@@ -63,6 +67,10 @@ export class TracksCreateMain extends React.Component {
 
     private changeTrack(track: TrackDo) {
         this.newTrack = track;
+    }
+
+    private setMapCenter(mapCenter: LatLng) {
+        this.mapCenter = mapCenter;
     }
 
     private get trackPtsFromGpx(): TrackPtDo[] {

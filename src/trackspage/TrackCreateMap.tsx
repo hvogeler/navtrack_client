@@ -1,5 +1,6 @@
+import {LatLng} from "leaflet";
 import * as React from 'react';
-import {Map, TileLayer} from "react-leaflet";
+import {CircleMarker, Map, TileLayer} from "react-leaflet";
 
 // const tileserverOSMStandard = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 // const tileserverThunderforestLandscape = "http://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
@@ -7,9 +8,14 @@ import {Map, TileLayer} from "react-leaflet";
 
 const TILESERVER = process.env.REACT_APP_TILESERVER;
 
-export class TrackCreateMap extends React.Component<any, any> {
+interface ITrackCreateMap {
+    mapCenter: LatLng;
+    zoom: number;
+}
 
-    constructor(props: any) {
+export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
+
+    constructor(props: ITrackCreateMap) {
         super(props);
     }
 
@@ -17,11 +23,12 @@ export class TrackCreateMap extends React.Component<any, any> {
 
         return (
             <div className="border border-light rounded">
-                <Map id="viewMap" center={[50.01, 6.98]} zoom={13}>
+                <Map id="viewMap" center={this.props.mapCenter} zoom={this.props.zoom}>
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                         url={TILESERVER === undefined ? "" : TILESERVER}
                     />
+                    <CircleMarker center={[this.props.mapCenter.lat, this.props.mapCenter.lng]} color="yellow" radius={12}/>
                  </Map>
             </div>
         );

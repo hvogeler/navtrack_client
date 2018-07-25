@@ -1,3 +1,5 @@
+import {LatLng} from "leaflet";
+import {observer} from "mobx-react";
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
@@ -11,8 +13,11 @@ export interface ITrackCreateProps {
     trackPts: TrackPtDo[];
     additionalTrackInfo: AdditionalTrackInfo;
     changeTrack: (track: TrackDo) => void;
+    mapCenter: LatLng;
+    setMapCenter: (mapCenter: LatLng) => void;
 }
 
+@observer
 export class TrackCreateController extends React.Component<ITrackCreateProps, any> {
     constructor(props: ITrackCreateProps) {
         super(props)
@@ -25,10 +30,13 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                     <TrackCreateDetail trackData={this.props.trackData}
                     trackPts={this.props.trackPts}
                     additionalTrackInfo={this.props.additionalTrackInfo}
-                    changeTrack={this.props.changeTrack}/>
+                    changeTrack={this.props.changeTrack}
+                    mapCenter={this.props.mapCenter}
+                    setMapCenter={this.props.setMapCenter}
+                    />
                 </div>
                 <div>
-                    <TrackCreateMap/>
+                    <TrackCreateMap mapCenter={this.props.mapCenter} zoom={13}/>
                 </div>
             </div>
         )
