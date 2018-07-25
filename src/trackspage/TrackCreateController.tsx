@@ -1,4 +1,3 @@
-import {LatLng} from "leaflet";
 import {observer} from "mobx-react";
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
@@ -7,14 +6,15 @@ import {TrackCreateDetail} from "./TrackCreateDetail";
 import {TrackCreateMap} from "./TrackCreateMap";
 import {TrackDo} from "./TrackDo";
 import {TrackPtDo} from "./TrackPtDo";
+import {IMapCenter} from "./TracksCreateMain";
 
 export interface ITrackCreateProps {
     trackData: TrackDo;
     trackPts: TrackPtDo[];
     additionalTrackInfo: AdditionalTrackInfo;
     changeTrack: (track: TrackDo) => void;
-    mapCenter: LatLng;
-    setMapCenter: (mapCenter: LatLng) => void;
+    mapCenter: IMapCenter;
+    setMapCenter: (mapCenter: IMapCenter) => void;
 }
 
 @observer

@@ -11,6 +11,11 @@ import {TrackCreateController} from "./TrackCreateController";
 import {TrackDo} from "./TrackDo";
 import {TrackPtDo} from "./TrackPtDo";
 
+export interface IMapCenter {
+    location: LatLng;
+    label: string;
+}
+
 @observer
 export class TracksCreateMain extends React.Component {
 
@@ -39,7 +44,11 @@ export class TracksCreateMain extends React.Component {
     }
 
     @observable private newTrack: TrackDo;
-    @observable private mapCenter: LatLng = new LatLng(50.0, 6.98, 49);
+    @observable private mapCenter: IMapCenter = {
+        label: "Eifel, Germany",
+        location: new LatLng(50.0, 6.98, 49),
+    };
+
 
     constructor(props: any) {
         super(props);
@@ -69,7 +78,7 @@ export class TracksCreateMain extends React.Component {
         this.newTrack = track;
     }
 
-    private setMapCenter(mapCenter: LatLng) {
+    private setMapCenter(mapCenter: IMapCenter) {
         this.mapCenter = mapCenter;
     }
 

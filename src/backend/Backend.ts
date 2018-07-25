@@ -20,8 +20,9 @@ export function fetchJson(path: string) {
 
     return fetch(url, {
         "headers" : headers,
-        "method" : "GET"
-    })
+        "method" : "GET",
+        "mode" : "cors"
+    }, )
         .then(response => response.json())
         .catch(ex => {
             console.error('parsing failed', ex);
@@ -37,7 +38,8 @@ export function sendJson(method: string, path: string, payload: TrackDo | null) 
             'Authorization': 'Basic YWRtaW46YWRtaW4=',
             'Content-Type': 'application/json'
         },
-        'method': method
+        'method': method,
+        "mode" : "cors"
     })
         .then(response => response.json())
         .catch(ex => {

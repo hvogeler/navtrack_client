@@ -66,7 +66,10 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             if (value.length <= 0) { return };
             console.log(value[0]);
             const topHitLocation = value[0];
-            this.props.setMapCenter(new LatLng(topHitLocation.y, topHitLocation.x))
+            this.props.setMapCenter( {
+                label: topHitLocation.label,
+                location: new LatLng(topHitLocation.y, topHitLocation.x),
+            })
         })
             .catch( (msg) => console.log(`Error on geosearch: ${msg}`))
     }
