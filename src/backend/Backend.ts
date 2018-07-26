@@ -7,22 +7,22 @@ import {TrackDo} from "../trackspage/TrackDo";
 // const BACKEND_URL = 'http://localhost:8080';
 const BACKEND_URL = process.env.REACT_APP_SERVER_URL;
 
-export function fetchJson(path: string) {
+export function fetchJson(path: string): Promise<any> {
     console.log(`REST Server URL: ${BACKEND_URL}`);
     const url = `${BACKEND_URL}${path}`;
     const headers = {
-        "Accept" : "application/json",
-        "Authorization" : "Basic aHZvOmh2bw==",
-        'Content-Type' : "application/json"
+        "Accept": "application/json",
+        "Authorization": "Basic aHZvOmh2bw==",
+        'Content-Type': "application/json"
     };
 
     console.log(headers);
 
     return fetch(url, {
-        "headers" : headers,
-        "method" : "GET",
-        "mode" : "cors"
-    }, )
+        "headers": headers,
+        "method": "GET",
+        "mode": "cors"
+    },)
         .then(response => response.json())
         .catch(ex => {
             console.error('parsing failed', ex);
@@ -39,7 +39,7 @@ export function sendJson(method: string, path: string, payload: TrackDo | null) 
             'Content-Type': 'application/json'
         },
         'method': method,
-        "mode" : "cors"
+        "mode": "cors"
     })
         .then(response => response.json())
         .catch(ex => {

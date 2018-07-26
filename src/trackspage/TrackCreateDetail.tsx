@@ -63,7 +63,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         console.log(`Geosearch for  ${this.props.trackData.region}`);
         const provider = new OpenStreetMapProvider();
         provider.search({query: this.props.trackData.region}).then((value) => {
-            if (value.length <= 0) { return };
+            if (value.length <= 0) { return }
             console.log(value[0]);
             const topHitLocation = value[0];
             this.props.setMapCenter( {
