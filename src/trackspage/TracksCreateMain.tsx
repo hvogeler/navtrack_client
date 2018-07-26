@@ -48,13 +48,15 @@ export class TracksCreateMain extends React.Component {
         label: "Eifel, Germany",
         location: new LatLng(50.0, 6.98, 49),
     };
-
+    @observable private trackPts: TrackPtDo[] = [];
 
     constructor(props: any) {
         super(props);
         this.newTrack = TracksCreateMain.emptyTrack();
         this.changeTrack = this.changeTrack.bind(this);
         this.setMapCenter = this.setMapCenter.bind(this);
+        this.addTrackPt = this.addTrackPt.bind(this);
+        this.deleteTrackPt = this.deleteTrackPt.bind(this);
     }
 
     public render() {
@@ -64,14 +66,25 @@ export class TracksCreateMain extends React.Component {
                 <PageTitle title={"New Track"}/>
                 <TrackCreateController
                     trackData={this.newTrack}
-                    trackPts={[]}
+                    trackPts={this.trackPts}
                     additionalTrackInfo={this.additionalTrackInfo}
                     changeTrack={this.changeTrack}
                     mapCenter={this.mapCenter}
                     setMapCenter={this.setMapCenter}
+                    addTrackPt={this.addTrackPt}
+                    deleteTrackPt={this.deleteTrackPt}
                 />
             </div>
         );
+    }
+
+    private addTrackPt(trackPt: TrackPtDo) {
+        this.trackPts.push(trackPt)
+        console.log(this.trackPts.length)
+    }
+
+    private deleteTrackPt(idx: number) {
+        this.trackPts.filter((element, index, array) => index !== idx)
     }
 
     private changeTrack(track: TrackDo) {

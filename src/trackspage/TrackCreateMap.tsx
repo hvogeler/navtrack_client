@@ -1,8 +1,10 @@
 import {LatLng, LeafletMouseEvent} from "leaflet";
+import {action} from "mobx";
 // import * as L from "leaflet";
 import * as React from 'react';
 import {Map, Marker, Popup, TileLayer} from "react-leaflet";
 import {fetchJson} from "../backend/Backend";
+import {TrackPtDo} from "./TrackPtDo";
 import {IMapCenter} from "./TracksCreateMain";
 
 // const tileserverOSMStandard = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -14,6 +16,7 @@ const TILESERVER = process.env.REACT_APP_TILESERVER;
 interface ITrackCreateMap {
     mapCenter: IMapCenter;
     zoom: number;
+    addTrackPt: (trackPt: TrackPtDo) => void;
 }
 
 export interface IElevationResult {
@@ -58,12 +61,20 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         );
     }
 
+    @action
     private onClickHandler(event: LeafletMouseEvent) {
         console.log(event.latlng);
         let locationWithElevation: LatLng;
         fetchJson(`/api/elevation?lat=${event.latlng.lat}&lon=${event.latlng.lng}`).then((resp) => {
             locationWithElevation = new LatLng(resp.lat, resp.lng, resp.ele);
             console.log(`Elevation of: ${locationWithElevation.lat} / ${locationWithElevation.lng} = ${locationWithElevation.alt}`);
+            this.props.addTrackPt(
+                {
+                    ele: resp.ele,
+                    lat: resp.lat,
+                    lng: resp.lng,
+                }
+            )
         })
             .catch(ex => console.log(`Error on Elevation api ${ex}`));
 
