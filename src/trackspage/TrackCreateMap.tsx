@@ -1,8 +1,9 @@
 import {LatLng, LeafletMouseEvent} from "leaflet";
 import {action} from "mobx";
+import {observer} from "mobx-react";
 // import * as L from "leaflet";
 import * as React from 'react';
-import {Map, Marker, Popup, TileLayer} from "react-leaflet";
+import {LayerGroup, Map, Marker, Polyline, Popup, Rectangle, TileLayer} from "react-leaflet";
 import {fetchJson} from "../backend/Backend";
 import {TrackPtDo} from "./TrackPtDo";
 import {IMapCenter} from "./TracksCreateMain";
@@ -12,11 +13,13 @@ import {IMapCenter} from "./TracksCreateMain";
 // const tileserverThunderforestOutdoors = "http://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
 
 const TILESERVER = process.env.REACT_APP_TILESERVER;
+const markerRectSize = 0.0001;
 
 interface ITrackCreateMap {
     mapCenter: IMapCenter;
     zoom: number;
     addTrackPt: (trackPt: TrackPtDo) => void;
+    trackPts: TrackPtDo[];
 }
 
 export interface IElevationResult {
@@ -34,6 +37,7 @@ export interface IElevationResults {
     "status": string;
 }
 
+@observer
 export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
     private map: any;
 
@@ -44,6 +48,38 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
 
 
     public render() {
+        const trackPts = this.props.trackPts;
+        const lastTrackPt = trackPts[trackPts.length - 1];
+        let trackLayer: any;
+        if (trackPts.length > 0) {
+            trackLayer = (
+                <LayerGroup>
+                    <Polyline positions={
+                        trackPts.map((trackPt) => {
+                            return trackPt
+                        })}
+                              color={"#6b1fde"}
+                    />
+                    <Rectangle
+                        bounds={[[trackPts[0].lat - markerRectSize, trackPts[0].lng - markerRectSize], [trackPts[0].lat + markerRectSize, trackPts[0].lng + markerRectSize]]}
+                        color={"#00cc00"}
+                        fill={true}
+                        fillcolor={"#00cc00"}
+                        fillopacity={0.9}
+                    />
+                    <Rectangle
+                        bounds={[[lastTrackPt.lat - markerRectSize, lastTrackPt.lng - markerRectSize], [lastTrackPt.lat + markerRectSize, lastTrackPt.lng + markerRectSize]]}
+                        color={"#ffff00"}
+                        fill={true}
+                        fillcolor={"#ffff00"}
+                        fillopacity={0.9}
+                    />
+                </LayerGroup>
+
+            )
+        }
+
+
         return (
             <div className="border border-light rounded">
                 <Map id="viewMap" center={this.props.mapCenter.location} zoom={this.props.zoom}
@@ -56,6 +92,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                             color="yellow" radius={12}>
                         <Popup>{this.props.mapCenter.label}</Popup>
                     </Marker>
+                    {trackLayer}
                 </Map>
             </div>
         );

@@ -4,7 +4,7 @@ import {TileLayer} from "react-leaflet";
 import {Polyline} from "react-leaflet";
 import {ITrackDetailProps} from "./TrackDetailController";
 
-const markerRectSize = 0.0001
+const markerRectSize = 0.0001;
 const TILESERVER = process.env.REACT_APP_TILESERVER;
 
 export class TrackMap extends React.Component<ITrackDetailProps, any> {
