@@ -83,7 +83,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
 
 
         return (
-            <div className="border border-light rounded">
+            <div>
                 <Map id="viewMap" center={this.props.mapCenter.location} zoom={this.props.zoom}
                      onClick={this.onClickHandler} ref={(ref => this.map = ref)}>
                     <TileLayer

@@ -53,7 +53,7 @@ export class TracksCreateMain extends React.Component {
     constructor(props: any) {
         super(props);
         this.newTrack = TracksCreateMain.emptyTrack();
-        this.changeTrack = this.changeTrack.bind(this);
+        this.changeTrackData = this.changeTrackData.bind(this);
         this.setMapCenter = this.setMapCenter.bind(this);
         this.addTrackPt = this.addTrackPt.bind(this);
         this.deleteTrackPt = this.deleteTrackPt.bind(this);
@@ -68,7 +68,7 @@ export class TracksCreateMain extends React.Component {
                     trackData={this.newTrack}
                     trackPts={this.trackPts}
                     additionalTrackInfo={this.additionalTrackInfo}
-                    changeTrack={this.changeTrack}
+                    changeTrack={this.changeTrackData}
                     mapCenter={this.mapCenter}
                     setMapCenter={this.setMapCenter}
                     addTrackPt={this.addTrackPt}
@@ -88,7 +88,7 @@ export class TracksCreateMain extends React.Component {
         this.trackPts.filter((element, index, array) => index !== idx)
     }
 
-    private changeTrack(track: TrackDo) {
+    private changeTrackData(track: TrackDo) {
         this.newTrack = track;
     }
 
