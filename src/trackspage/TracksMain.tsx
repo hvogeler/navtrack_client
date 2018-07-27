@@ -106,14 +106,10 @@ export class TracksMain extends React.Component {
         }
         const doc = (new DOMParser()).parseFromString(this.currentTrack.gpx, 'text/xml');
         const elements = TracksMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
-        return elements.map((element) => {
-            return {
-                ele: 0,
-                lat: +(element.getAttribute("lat") || 0),
-                lng: +(element.getAttribute("lon") || 0),
-            }
-        })
-
+        return elements.map((element) =>
+            new TrackPtDo(+(element.getAttribute("lat") || 0),
+                +(element.getAttribute("lon") || 0),
+                0));
     }
 
     @computed

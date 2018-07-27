@@ -18,6 +18,7 @@ export interface ITrackCreateProps {
     setMapCenter: (mapCenter: IMapCenter) => void;
     addTrackPt: (trackPt: TrackPtDo) => void;
     deleteTrackPt: (idx: number) => void;
+    trackLengthInKm: number;
 }
 
 @observer
@@ -40,6 +41,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             setMapCenter={this.props.setMapCenter}
                             addTrackPt={this.props.addTrackPt}
                             deleteTrackPt={this.props.deleteTrackPt}
+                            trackLengthInKm={this.props.trackLengthInKm}
                         />
                     </div>
                 </div>
@@ -51,6 +53,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                                 zoom={13}
                                 addTrackPt={this.props.addTrackPt}
                                 trackPts={this.props.trackPts}
+                                trackLengthInKm={this.props.trackLengthInKm}
                             />
                         </div>
                         <div className="col-md-2">

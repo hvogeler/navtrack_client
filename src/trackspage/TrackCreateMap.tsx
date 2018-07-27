@@ -20,6 +20,7 @@ interface ITrackCreateMap {
     zoom: number;
     addTrackPt: (trackPt: TrackPtDo) => void;
     trackPts: TrackPtDo[];
+    trackLengthInKm: number;
 }
 
 export interface IElevationResult {
@@ -50,6 +51,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
     public render() {
         const trackPts = this.props.trackPts;
         const lastTrackPt = trackPts[trackPts.length - 1];
+        console.log(`Tracklength = ${this.props.trackLengthInKm}`)
         let trackLayer: any;
         if (trackPts.length > 0) {
             trackLayer = (
@@ -105,13 +107,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         fetchJson(`/api/elevation?lat=${event.latlng.lat}&lon=${event.latlng.lng}`).then((resp) => {
             locationWithElevation = new LatLng(resp.lat, resp.lng, resp.ele);
             console.log(`Elevation of: ${locationWithElevation.lat} / ${locationWithElevation.lng} = ${locationWithElevation.alt}`);
-            this.props.addTrackPt(
-                {
-                    ele: resp.ele,
-                    lat: resp.lat,
-                    lng: resp.lng,
-                }
-            )
+            this.props.addTrackPt(new TrackPtDo(resp.lat, resp.lng, resp.ele));
         })
             .catch(ex => console.log(`Error on Elevation api ${ex}`));
 

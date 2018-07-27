@@ -73,6 +73,7 @@ export class TracksCreateMain extends React.Component {
                     setMapCenter={this.setMapCenter}
                     addTrackPt={this.addTrackPt}
                     deleteTrackPt={this.deleteTrackPt}
+                    trackLengthInKm={this.trackLengthInKm}
                 />
             </div>
         );
@@ -101,13 +102,10 @@ export class TracksCreateMain extends React.Component {
         }
         const doc = (new DOMParser()).parseFromString(this.newTrack.gpx, 'text/xml');
         const elements = TracksCreateMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
-        return elements.map((element) => {
-            return {
-                ele: 0,
-                lat: +(element.getAttribute("lat") || 0),
-                lng: +(element.getAttribute("lon") || 0),
-            }
-        })
+        return elements.map((element) =>
+            new TrackPtDo(+(element.getAttribute("lat") || 0),
+                +(element.getAttribute("lon") || 0),
+                0));
 
     }
 
@@ -122,7 +120,7 @@ export class TracksCreateMain extends React.Component {
     @computed
     private get trackLengthInKm(): number {
         let akku = 0;
-        this.trackPtsFromGpx.forEach(
+        this.trackPts.forEach(
             (trackPt, idx, v) => {
                 if (idx === 0) {
                     return;
