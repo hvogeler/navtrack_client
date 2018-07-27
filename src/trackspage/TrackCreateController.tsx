@@ -44,27 +44,40 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                 </div>
                 <div className="contrainer-fluid">
                     <div className="row">
-                        <div className="col-9">
+                        <div className="col-md-9">
                             <TrackCreateMap
                                 mapCenter={this.props.mapCenter}
                                 zoom={13}
                                 addTrackPt={this.props.addTrackPt}
                             />
                         </div>
-                        <div className="col-3">
+                        <div className="col-md-3">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
                                     Trackpoints {this.props.trackPts.length}
                                 </div>
-                                <table id="TrackList1" className="table table-hover table-fixed">
-                                    <tbody>
-                                    {this.props.trackPts.reverse().map(it =>
-                                        <tr key={it.lat}>
-                                            <td>({it.lat.toFixed(4)}, {it.lng.toFixed(4)}): {it.ele.toFixed(0)} Meter</td>
+                                <div className="table-wrapper-scroll-y">
+                                    <table id="TrackPointsList" className="table table-hover">
+                                        <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Lat</th>
+                                            <th scope="col">Lon</th>
+                                            <th scope="col">Alt</th>
                                         </tr>
-                                    )}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        {this.props.trackPts.reverse().map((it, idx) =>
+                                            <tr id={idx.toString()} key={idx}>
+                                                <td>{this.props.trackPts.length - idx}</td>
+                                                <td>{it.lat.toFixed(4)}</td>
+                                                <td>{it.lng.toFixed(4)}</td>
+                                                <td>{it.ele.toFixed(0)}</td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

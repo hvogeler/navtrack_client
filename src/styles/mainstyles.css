@@ -33,14 +33,13 @@
     cursor:crosshair;
 }
 
-.table-fixed thead {
-    width: 97%;
-}
-.table-fixed tbody {
-    height: 540px;
-    overflow-y: auto;
-    width: 100%;
-}
-.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+.table-wrapper-scroll-y {
     display: block;
+    max-height: 500px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+#TrackPointsList th, #TrackPointsList td {
+    padding: 0.3rem;
 }
