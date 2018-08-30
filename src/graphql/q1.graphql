@@ -2,6 +2,7 @@
 query AllTracksQ1 {
                     allTracks {
                         trackname
+                        region
                         tracktypes {
                             tracktypename
                         }

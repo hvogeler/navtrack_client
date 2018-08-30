@@ -23,7 +23,7 @@ export class TracksMain extends React.Component {
         const elements: Element[] = [];
         let i: number;
         for (i = 0; i < nodeList.length; i++) {
-            console.log(`${i}. (${nodeList.item(i).getAttribute("lat")}, ${nodeList.item(i).getAttribute("lon")}`)
+            // console.log(`${i}. (${nodeList.item(i).getAttribute("lat")}, ${nodeList.item(i).getAttribute("lon")}`)
             elements.push(nodeList.item(i))
         }
         return elements
@@ -78,7 +78,7 @@ export class TracksMain extends React.Component {
     @action
     private refreshTrackListData() {
         fetchJson("/api/tracks")
-            .then((tracks) => {
+            .then((tracks: TrackDo[]) => {
                 this.trackListData = tracks;
                 this.currentTrackListId = tracks[0].id
             });
@@ -100,6 +100,7 @@ export class TracksMain extends React.Component {
                 query AllTracksQ1 {
                     allTracks {
                         trackname
+                        region
                         tracktypes {
                             tracktypename
                         }
@@ -109,7 +110,7 @@ export class TracksMain extends React.Component {
             }
         ).then( (result) => {
             const res = result.data.allTracks!.map( (value) => {
-                return value != null ? value.trackname : "";
+                return value != null ? value.region : "";
             });
             console.log(res);
         });

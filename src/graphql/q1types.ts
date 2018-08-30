@@ -13,6 +13,7 @@ export interface AllTracksQ1_allTracks_tracktypes {
 
 export interface AllTracksQ1_allTracks {
   trackname: string;
+  region: string | null;
   tracktypes: (AllTracksQ1_allTracks_tracktypes | null)[];
 }
 
