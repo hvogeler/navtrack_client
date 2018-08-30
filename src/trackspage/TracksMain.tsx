@@ -1,9 +1,12 @@
 import * as React from 'react';
 
+import ApolloClient from "apollo-boost";
+import gql from "graphql-tag";
 import {LatLng} from "leaflet";
 import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {fetchJson} from "../backend/Backend";
+import {AllTracksQ1} from "../graphql/q1types";
 import teaserimg from '../images/IMG_0107.jpg'
 import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
@@ -76,10 +79,40 @@ export class TracksMain extends React.Component {
     private refreshTrackListData() {
         fetchJson("/api/tracks")
             .then((tracks) => {
-                this.trackListData = tracks
+                this.trackListData = tracks;
                 this.currentTrackListId = tracks[0].id
-            })
+            });
 
+
+        const client = new ApolloClient({
+            request : async operation => {
+                operation.setContext({
+                    headers: {
+                        authorization: "Basic aHZvOmh2bw=="
+                    }
+                })
+            },
+            uri : "http://192.168.178.21:8080/graphql"
+        });
+
+        client.query<AllTracksQ1>({
+            query: gql`
+                query AllTracksQ1 {
+                    allTracks {
+                        trackname
+                        tracktypes {
+                            tracktypename
+                        }
+                    }
+                }
+            `
+            }
+        ).then( (result) => {
+            const res = result.data.allTracks!.map( (value) => {
+                return value != null ? value.trackname : "";
+            });
+            console.log(res);
+        });
     }
 
     private findIndexForTrackListid(id: number): number {

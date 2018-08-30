@@ -1,0 +1,10 @@
+#apollo-codegen generate **/*.graphql --schema schema.json --target typescript --output q1types.ts
+query AllTracksQ1 {
+                    allTracks {
+                        trackname
+                        tracktypes {
+                            tracktypename
+                        }
+                    }
+                }
+
