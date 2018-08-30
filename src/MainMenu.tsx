@@ -24,6 +24,9 @@ export class MainMenu extends React.Component<any, any> {
                             <li className="nav-item">
                                 <a className="nav-link" href="/docs">Documentation</a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/login">Login</a>
+                            </li>
                         </ul>
 
                         <form className="form-inline my-2 my-lg-0">

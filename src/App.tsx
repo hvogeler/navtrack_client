@@ -4,6 +4,7 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {DocsMain} from "./docspage/DocsMain";
 import {IntroMain} from "./intro/IntroMain";
+import {LoginDlgMain} from "./login/LoginDlgMain";
 import {MainMenu} from "./MainMenu";
 import './styles/mainstyles.css'
 import {TracksCreateMain} from "./trackspage/TracksCreateMain";
@@ -21,6 +22,7 @@ export class App extends React.Component {
                   <Route exact={true} path="/create" component={TracksCreateMain}/>
                   <Route exact={true} path="/docs" component={DocsMain}/>
                   <Route exact={true} path="/intro" component={IntroMain}/>
+                  <Route exact={true} path="/login" component={LoginDlgMain}/>
               </Switch>
           </Router>
       </div>
