@@ -4,7 +4,6 @@ import {LatLng} from "leaflet";
 import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import teaserimg from '../images/IMG_0107.jpg'
-import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateController} from "./TrackCreateController";
@@ -62,8 +61,7 @@ export class TracksCreateMain extends React.Component {
     public render() {
         return (
             <div>
-                <Teaser image={teaserimg}/>
-                <PageTitle title={"New Track"}/>
+                <Teaser image={teaserimg} title={"New Track"}/>
                 <TrackCreateController
                     trackData={this.newTrack}
                     trackPts={this.trackPts}

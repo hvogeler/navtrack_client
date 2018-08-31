@@ -8,7 +8,7 @@ import {observer} from "mobx-react";
 import {fetchJson} from "../backend/Backend";
 import {AllTracksQ1} from "../graphql/q1types";
 import teaserimg from '../images/IMG_0107.jpg'
-import {PageTitle} from "../PageTitle";
+// import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackDetailController} from "./TrackDetailController";
@@ -51,8 +51,7 @@ export class TracksMain extends React.Component {
         if (this.trackListData.length <= 0) {
             return (
                 <div>
-                    <Teaser image={teaserimg}/>
-                    <PageTitle title={"Tracks"}/>
+                    <Teaser image={teaserimg} title={"Tracks"}/>
                 </div>
             )
         }
@@ -60,8 +59,7 @@ export class TracksMain extends React.Component {
             const trackPts = this.trackPtsFromGpx;
             return (
                 <div>
-                    <Teaser image={teaserimg}/>
-                    <PageTitle title={"Tracks"}/>
+                    <Teaser image={teaserimg} title={"Tracks"}/>
                     <TrackList currentTrackListId={this.currentTrackListId}
                                setCurrentTrackListId={this.setCurrentTrack}
                                trackList={this.trackListData}/>

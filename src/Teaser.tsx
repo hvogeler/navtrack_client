@@ -2,7 +2,8 @@ import * as React from 'react'
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 
 interface ITeaserProps {
-    image: string
+    image: string;
+    title: string;
 }
 
 export class Teaser extends React.Component<ITeaserProps, any> {
@@ -13,7 +14,12 @@ export class Teaser extends React.Component<ITeaserProps, any> {
     public render() {
         return (
             <div className="container-fluid">
-                <img src={this.props.image} className="img-fluid"/>
+                <div className="img-thumbnail">
+                    <img src={this.props.image} className="img-fluid"/>
+                    <div className="text-white text-center display-3 post-content">
+                        {this.props.title}
+                    </div>
+                </div>
             </div>
         )
     }
