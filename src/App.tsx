@@ -5,31 +5,45 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {DocsMain} from "./docspage/DocsMain";
 import {IntroMain} from "./intro/IntroMain";
 import {LoginDlgMain} from "./login/LoginDlgMain";
-import {MainMenu} from "./MainMenu";
+import {RootStore} from "./RootStore";
 import './styles/mainstyles.css'
 import {TracksCreateMain} from "./trackspage/TracksCreateMain";
 import {TracksMain} from "./trackspage/TracksMain"
 
+export class App extends React.Component<any, any> {
 
 
-export class App extends React.Component {
+    private rootStore: RootStore;
 
     constructor(props: any) {
         super(props);
+        console.log(`Initialize rootStore ${Date.now()}`);
+        this.rootStore = new RootStore();
+
+
+        this.rootStore.uiStore.secToken = "testtest";
+        console.log(`+++ rootStore created. SecToken = ${this.rootStore.uiStore.secToken}`);
+
     }
+
 
     public render() {
         return (
             <div className="App">
-                <MainMenu/>
                 <Router>
                     <Switch>
-                        <Route exact={true} path="/" component={TracksMain}/>
-                        <Route exact={true} path="/tracks" component={TracksMain}/>
-                        <Route exact={true} path="/create" component={TracksCreateMain}/>
-                        <Route exact={true} path="/docs" component={DocsMain}/>
-                        <Route exact={true} path="/intro" component={IntroMain}/>
-                        <Route exact={true} path="/login" component={LoginDlgMain}/>
+                        <Route exact={true} path="/"
+                               render={(props) => <TracksMain {...props} rootStore={this.rootStore}/>}/>
+                        <Route exact={true} path="/tracks"
+                               render={(props) => <TracksMain {...props} rootStore={this.rootStore}/>}/>
+                        <Route exact={true} path="/create"
+                               render={(props) => <TracksCreateMain {...props} rootStore={this.rootStore}/>}/>
+                        <Route exact={true} path="/docs"
+                               render={(props) => <DocsMain {...props} rootStore={this.rootStore}/>}/>
+                        <Route exact={true} path="/intro"
+                               render={(props) => <IntroMain {...props} rootStore={this.rootStore}/>}/>
+                        <Route exact={true} path="/login"
+                               render={(props) => <LoginDlgMain {...props} rootStore={this.rootStore!}/>}/>
                     </Switch>
                 </Router>
             </div>

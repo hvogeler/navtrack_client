@@ -5,9 +5,12 @@ import gql from "graphql-tag";
 import {LatLng} from "leaflet";
 import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
+import {RouteComponentProps} from "react-router";
 import {fetchJson} from "../backend/Backend";
 import {AllTracksQ1} from "../graphql/q1types";
 import teaserimg from '../images/IMG_0107.jpg'
+import {MainMenu} from "../MainMenu";
+import {RootStore} from "../RootStore";
 // import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
@@ -16,8 +19,12 @@ import {TrackDo} from "./TrackDo";
 import {TrackList} from "./TrackList";
 import {TrackPtDo} from "./TrackPtDo";
 
+interface ITracksMain extends RouteComponentProps<any> {
+    rootStore: RootStore;
+}
+
 @observer
-export class TracksMain extends React.Component {
+export class TracksMain extends React.Component<ITracksMain, any> {
 
     private static nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
         const elements: Element[] = [];
@@ -34,7 +41,7 @@ export class TracksMain extends React.Component {
 
     @observable private trackListData: TrackDo[] = [];
 
-    constructor(props: any) {
+    constructor(props: ITracksMain) {
         super(props);
         this.setCurrentTrack = this.setCurrentTrack.bind(this);
     }
@@ -51,6 +58,7 @@ export class TracksMain extends React.Component {
         if (this.trackListData.length <= 0) {
             return (
                 <div>
+                    <MainMenu rootStore={this.props.rootStore!}/>
                     <Teaser image={teaserimg} title={"Tracks"}/>
                 </div>
             )
@@ -59,6 +67,7 @@ export class TracksMain extends React.Component {
             const trackPts = this.trackPtsFromGpx;
             return (
                 <div>
+                    <MainMenu rootStore={this.props.rootStore!}/>
                     <Teaser image={teaserimg} title={"Tracks"}/>
                     <TrackList currentTrackListId={this.currentTrackListId}
                                setCurrentTrackListId={this.setCurrentTrack}

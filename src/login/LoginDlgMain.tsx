@@ -1,15 +1,21 @@
 
 import {observer} from "mobx-react";
 import * as React from "react";
+import {RouteComponentProps} from "react-router";
 import teaserimg from '../images/IMG_0107.jpg'
-import {rootStore} from "../RootStore";
+import {MainMenu} from "../MainMenu";
+import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
 import {LoginDlg} from "./LoginDlg";
 
-@observer
-export class LoginDlgMain extends React.Component<any, any> {
+interface ILoginDlgMain extends RouteComponentProps<any> {
+    rootStore: RootStore;
+}
 
-    constructor(props: any) {
+@observer
+export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
+
+    constructor(props: ILoginDlgMain) {
         super(props);
         this.setCredentials = this.setCredentials.bind(this);
         this.logOut = this.logOut.bind(this);
@@ -19,23 +25,25 @@ export class LoginDlgMain extends React.Component<any, any> {
     public render() {
         return (
             <div>
+                <MainMenu rootStore={this.props.rootStore!}/>
                 <Teaser image={teaserimg} title={"Login"}/>
-                <LoginDlg setCredentials={this.setCredentials} isLoggedIn={rootStore.uiStore.isLoggedIn} logout={this.logOut}/>
+                <LoginDlg setCredentials={this.setCredentials} isLoggedIn={this.props.rootStore.uiStore.isLoggedIn} logout={this.logOut}/>
              </div>
        );
     }
 
     private setCredentials(user: string | null, password: string | null) {
-        rootStore.uiStore.user = user;
-        rootStore.uiStore.password = password;
-        rootStore.uiStore.isLoggedIn = true;
+        console.log(`LoginDlgMain: setCredentials for ${user}`);
+        this.props.rootStore.uiStore.user = user;
+        this.props.rootStore.uiStore.password = password;
+        this.props.rootStore.uiStore.isLoggedIn = true;
     }
 
     private logOut() {
-        console.log(`Logging out ${rootStore.uiStore.user}/${rootStore.uiStore.password}`);
-        rootStore.uiStore.user = null;
-        rootStore.uiStore.password = null;
-        rootStore.uiStore.isLoggedIn = false;
+        console.log(`Logging out ${this.props.rootStore.uiStore.user}/${this.props.rootStore.uiStore.password}`);
+        this.props.rootStore.uiStore.user = null;
+        this.props.rootStore.uiStore.password = null;
+        this.props.rootStore.uiStore.isLoggedIn = false;
     }
 
 }

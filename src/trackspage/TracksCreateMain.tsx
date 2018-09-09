@@ -3,7 +3,10 @@ import * as React from 'react';
 import {LatLng} from "leaflet";
 import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
+import {RouteComponentProps} from "react-router";
 import teaserimg from '../images/IMG_0107.jpg'
+import {MainMenu} from "../MainMenu";
+import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateController} from "./TrackCreateController";
@@ -15,8 +18,12 @@ export interface IMapCenter {
     label: string;
 }
 
+interface ITracksCreateMain extends RouteComponentProps<any> {
+    rootStore: RootStore;
+}
+
 @observer
-export class TracksCreateMain extends React.Component {
+export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private static nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
         const elements: Element[] = [];
@@ -49,7 +56,7 @@ export class TracksCreateMain extends React.Component {
     };
     @observable private trackPts: TrackPtDo[] = [];
 
-    constructor(props: any) {
+    constructor(props: ITracksCreateMain) {
         super(props);
         this.newTrack = TracksCreateMain.emptyTrack();
         this.changeTrackData = this.changeTrackData.bind(this);
@@ -61,6 +68,7 @@ export class TracksCreateMain extends React.Component {
     public render() {
         return (
             <div>
+                <MainMenu rootStore={this.props.rootStore}/>
                 <Teaser image={teaserimg} title={"New Track"}/>
                 <TrackCreateController
                     trackData={this.newTrack}

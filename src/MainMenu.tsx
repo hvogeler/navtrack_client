@@ -1,15 +1,26 @@
 import {observer} from "mobx-react";
 import * as React from 'react'
+import {Link} from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
-import {rootStore} from "./RootStore";
+import {RootStore} from "./RootStore";
+
+interface IMainMenu  {
+    rootStore: RootStore;
+}
+
 
 @observer
-export class MainMenu extends React.Component<any, any> {
+export class MainMenu extends React.Component<IMainMenu, any> {
+    constructor(props: IMainMenu) {
+        super(props);
+    }
+
     public render() {
+        console.log(`MainMenu: SecToken = ${this.props.rootStore.uiStore.secToken}, user = ${this.props.rootStore.uiStore.user}`);
         return (
             <div className="container-fluid">
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <a className="navbar-brand" href="/intro">Navure</a>
+                    <Link className="navbar-brand" to="/intro">Navure</Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -19,19 +30,17 @@ export class MainMenu extends React.Component<any, any> {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item active">
-                                <a className="nav-link" href="/tracks">Tracks <span className="sr-only">(current)</span></a>
+                                <Link className="nav-link" to={"/tracks"}>Tracks <span className="sr-only">(current)</span></Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/create">Create</a>
+                                <Link className="nav-link" to="/create">Create</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/docs">Documentation</a>
+                                <Link className="nav-link" to="/docs">Documentation</Link>
                             </li>
-                            { rootStore.uiStore.isLoggedIn ? (<div>{rootStore.uiStore.user}</div>) :
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/login">Login</a>
+                                    <Link className="nav-link" to="/login">{this.props.rootStore.uiStore.isLoggedIn ? `Logged in as ${this.props.rootStore.uiStore.user}` : "Login"}</Link>
                                 </li>
-                            }
                         </ul>
 
                         <form className="form-inline my-2 my-lg-0">
