@@ -10,7 +10,13 @@ import './styles/mainstyles.css'
 import {TracksCreateMain} from "./trackspage/TracksCreateMain";
 import {TracksMain} from "./trackspage/TracksMain"
 
+
+
 export class App extends React.Component {
+
+    constructor(props: any) {
+        super(props);
+    }
 
     public render() {
         return (
@@ -29,5 +35,6 @@ export class App extends React.Component {
             </div>
         );
     }
+
 }
 

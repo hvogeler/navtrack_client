@@ -2,6 +2,7 @@ import {observable} from "mobx";
 import {observer} from "mobx-react";
 import * as React from "react";
 import {ChangeEvent} from "react";
+import {rootStore} from "../RootStore";
 
 export interface ILoginDlg {
     setCredentials: (user: string | null, password: string | null) => void;
@@ -23,7 +24,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
     }
 
     public render() {
-        if (!this.props.isLoggedIn) {
+        if (!rootStore.uiStore.isLoggedIn) {
             return (
                 <div className="container col-sm-5 bg-light mt-4 pt-4 pb-4 border rounded">
                     <form>

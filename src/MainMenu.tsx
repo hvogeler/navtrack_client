@@ -1,6 +1,9 @@
+import {observer} from "mobx-react";
 import * as React from 'react'
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
+import {rootStore} from "./RootStore";
 
+@observer
 export class MainMenu extends React.Component<any, any> {
     public render() {
         return (
@@ -24,9 +27,11 @@ export class MainMenu extends React.Component<any, any> {
                             <li className="nav-item">
                                 <a className="nav-link" href="/docs">Documentation</a>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/login">Login</a>
-                            </li>
+                            { rootStore.uiStore.isLoggedIn ? (<div>{rootStore.uiStore.user}</div>) :
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/login">Login</a>
+                                </li>
+                            }
                         </ul>
 
                         <form className="form-inline my-2 my-lg-0">
