@@ -132,7 +132,7 @@ export class TracksMain extends React.Component<ITracksMain, any> {
 
     @action
     private setCurrentTrack(id: number) {
-        this.currentTrackListId = id
+        this.currentTrackListId = id;
     }
 
     @computed

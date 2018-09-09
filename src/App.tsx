@@ -12,18 +12,12 @@ import {TracksMain} from "./trackspage/TracksMain"
 
 export class App extends React.Component<any, any> {
 
-
     private rootStore: RootStore;
 
     constructor(props: any) {
         super(props);
         console.log(`Initialize rootStore ${Date.now()}`);
         this.rootStore = new RootStore();
-
-
-        this.rootStore.uiStore.secToken = "testtest";
-        console.log(`+++ rootStore created. SecToken = ${this.rootStore.uiStore.secToken}`);
-
     }
 
 
