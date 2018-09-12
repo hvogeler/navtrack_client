@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'isomorphic-fetch';
+import {globalRootStore} from "../App";
 import {TrackDo} from "../trackspage/TrackDo";
 
 
@@ -13,14 +14,14 @@ export function fetchJson(path: string): Promise<any> {
     const graphqlurl = `${BACKEND_URL}/graphql`;
     const headers = {
         "Accept": "application/json",
-        "Authorization": "Basic aHZvOmh2bw==",
+        "Authorization": `Bearer ${globalRootStore.uiStore.secToken}`,
         'Content-Type': "application/json"
     };
 
     console.log(headers);
 
     fetch(graphqlurl, {
-        "body" : JSON.stringify({ "query" : "{ allTracks { trackname }}"}),
+        "body": JSON.stringify({"query": "{ allTracks { trackname }}"}),
         "headers": headers,
         "method": "POST",
         "mode": "cors"
@@ -28,11 +29,34 @@ export function fetchJson(path: string): Promise<any> {
         .then(response => response.json())
         .catch(ex => {
             console.error('parsing failed', ex);
-        }).then( txtbody => console.log(txtbody));
+        }).then(txtbody => console.log(txtbody));
 
     return fetch(url, {
         "headers": headers,
         "method": "GET",
+        "mode": "cors"
+    },)
+        .then(response => response.json())
+        .catch(ex => {
+            console.error('parsing failed', ex);
+        });
+}
+
+export function fetchJsonPost(path: string, body: string): Promise<any> {
+    console.log(`REST Server URL: ${BACKEND_URL}`);
+    const url = `${BACKEND_URL}${path}`;
+    const headers = {
+        "Accept": "application/json",
+        "Authorization": "Basic aHZvOmh2bw==",
+        'Content-Type': "application/json"
+    };
+
+    console.log(headers);
+
+    return fetch(url, {
+        "body" : body,
+        "headers": headers,
+        "method": "POST",
         "mode": "cors"
     },)
         .then(response => response.json())

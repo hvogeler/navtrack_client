@@ -32,9 +32,11 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                             <li className="nav-item active">
                                 <Link className="nav-link" to={"/tracks"}>Tracks <span className="sr-only">(current)</span></Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/create">Create</Link>
-                            </li>
+                            { this.props.rootStore.uiStore.isLoggedIn ?
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/create">Create</Link>
+                                </li> : ""
+                            }
                             <li className="nav-item">
                                 <Link className="nav-link" to="/docs">Documentation</Link>
                             </li>
@@ -43,11 +45,13 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                                 </li>
                         </ul>
 
-                        <form className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2" type="search" placeholder="Search"
-                                   aria-label="Search"/>
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                        {this.props.rootStore.uiStore.isLoggedIn ?
+                            <form className="form-inline my-2 my-lg-0">
+                                <input className="form-control mr-sm-2" type="search" placeholder="Search"
+                                       aria-label="Search"/>
+                                <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </form> : ""
+                        }
                     </div>
                 </nav>
             </div>

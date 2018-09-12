@@ -4,7 +4,7 @@ import * as React from "react";
 import {ChangeEvent} from "react";
 
 export interface ILoginDlg {
-    setCredentials: (user: string | null, password: string | null) => void;
+    setCredentials: (user: string | null, password: string | null) => Promise<any>;
     logout: () => void;
     isLoggedIn: boolean;
 }
@@ -93,7 +93,11 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
             this.errmsg = "Please enter username and password!";
         } else {
             this.errmsg = null;
-            this.props.setCredentials(this.user, this.password);
+            this.props.setCredentials(this.user, this.password).then(x => {
+                if (!this.props.isLoggedIn) {
+                    this.errmsg = "Login failed, please try again"
+                }
+            });
         }
     }
 }

@@ -10,6 +10,8 @@ import './styles/mainstyles.css'
 import {TracksCreateMain} from "./trackspage/TracksCreateMain";
 import {TracksMain} from "./trackspage/TracksMain"
 
+export let globalRootStore: RootStore;
+
 export class App extends React.Component<any, any> {
 
     private rootStore: RootStore;
@@ -18,8 +20,8 @@ export class App extends React.Component<any, any> {
         super(props);
         console.log(`Initialize rootStore ${Date.now()}`);
         this.rootStore = new RootStore();
+        globalRootStore = this.rootStore
     }
-
 
     public render() {
         return (
