@@ -7,6 +7,7 @@ import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {RouteComponentProps} from "react-router";
 import {fetchJson} from "../backend/Backend";
+import {TrackDo} from "../dataObjects/TrackDo";
 import {AllTracksQ1} from "../graphql/q1types";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
@@ -15,7 +16,6 @@ import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackDetailController} from "./TrackDetailController";
-import {TrackDo} from "./TrackDo";
 import {TrackList} from "./TrackList";
 import {TrackPtDo} from "./TrackPtDo";
 

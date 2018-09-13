@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import 'isomorphic-fetch';
 import {globalRootStore} from "../App";
-import {TrackDo} from "../trackspage/TrackDo";
+import {TrackDo} from "../dataObjects/TrackDo";
 
 
 // TODO: make backend URL configurable

@@ -27,7 +27,7 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Country</th>
-                        <td className="text-left">{this.props.trackData.country}</td>
+                        <td className="text-left">{this.props.trackData.country!.name}</td>
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Region</th>
@@ -35,7 +35,7 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Owner</th>
-                        <td className="text-left">{this.props.trackData.ownerid}</td>
+                        <td className="text-left">{this.props.trackData.owner!.username}</td>
                     </tr>
                     <tr>
                         <th scope="row" className="text-right">Length(Km)</th>

@@ -1,6 +1,6 @@
 import {action} from "mobx";
 import * as React from 'react';
-import {TrackDo} from "./TrackDo";
+import {TrackDo} from "../dataObjects/TrackDo";
 
 
 interface ITrackListProps {
@@ -36,7 +36,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             onMouseEnter={() => this.onMouseEnter(it.id)}>
                             <th scope="row">{it.id}</th>
                             <td className="text-left">{it.trackname}</td>
-                            <td>{it.country}</td>
+                            <td>{it.country!.name}</td>
                             <td>{it.region}</td>
                             <td>{it.created}</td>
                         </tr>

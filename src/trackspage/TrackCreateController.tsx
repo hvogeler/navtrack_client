@@ -1,10 +1,10 @@
 import {observer} from "mobx-react";
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
+import {TrackDo} from "../dataObjects/TrackDo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateDetail} from "./TrackCreateDetail";
 import {TrackCreateMap} from "./TrackCreateMap";
-import {TrackDo} from "./TrackDo";
 import {TrackPointList} from "./TrackPointList";
 import {TrackPtDo} from "./TrackPtDo";
 import {IMapCenter} from "./TracksCreateMain";

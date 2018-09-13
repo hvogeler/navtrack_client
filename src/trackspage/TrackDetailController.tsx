@@ -1,8 +1,8 @@
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
+import {TrackDo} from "../dataObjects/TrackDo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackDetail} from "./TrackDetail";
-import {TrackDo} from "./TrackDo";
 import {TrackMap} from "./TrackMap";
 import {TrackPtDo} from "./TrackPtDo";
 

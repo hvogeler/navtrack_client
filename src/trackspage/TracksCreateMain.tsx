@@ -4,13 +4,13 @@ import {LatLng} from "leaflet";
 import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {RouteComponentProps} from "react-router";
+import {TrackDo} from "../dataObjects/TrackDo";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
 import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateController} from "./TrackCreateController";
-import {TrackDo} from "./TrackDo";
 import {TrackPtDo} from "./TrackPtDo";
 
 export interface IMapCenter {
@@ -37,12 +37,12 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private static emptyTrack(): TrackDo {
         return {
-            country: "",
+            country: null,
             created: "",
             description: "",
             gpx: "",
             id: 0,
-            ownerid: "",
+            owner: null,
             region: "",
             trackname: "",
             tracktypes: []
