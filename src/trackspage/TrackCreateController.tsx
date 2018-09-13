@@ -19,6 +19,7 @@ export interface ITrackCreateProps {
     addTrackPt: (trackPt: TrackPtDo) => void;
     deleteTrackPt: (idx: number) => void;
     trackLengthInKm: number;
+    countries: string[];
 }
 
 @observer
@@ -42,6 +43,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             addTrackPt={this.props.addTrackPt}
                             deleteTrackPt={this.props.deleteTrackPt}
                             trackLengthInKm={this.props.trackLengthInKm}
+                            countries={this.props.countries}
                         />
                     </div>
                 </div>

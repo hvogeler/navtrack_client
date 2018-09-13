@@ -4,6 +4,8 @@ import {LatLng} from "leaflet";
 import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {RouteComponentProps} from "react-router";
+import {globalRootStore} from "../App";
+import {fetchJson} from "../backend/Backend";
 import {TrackDo} from "../dataObjects/TrackDo";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
@@ -65,6 +67,10 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         this.deleteTrackPt = this.deleteTrackPt.bind(this);
     }
 
+    public componentWillMount() {
+        this.getCountries();
+    }
+
     public render() {
         return (
             <div>
@@ -80,9 +86,21 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
                     addTrackPt={this.addTrackPt}
                     deleteTrackPt={this.deleteTrackPt}
                     trackLengthInKm={this.trackLengthInKm}
+                    countries={globalRootStore.uiStore.countries}
                 />
             </div>
         );
+    }
+
+    private getCountries() {
+        if (globalRootStore.uiStore.countries.length === 0) {
+            fetchJson("/api/countries")
+                .then((countries: string[]) => {
+                    globalRootStore.uiStore.countries = countries;
+                });
+        } else {
+            console.log("countries still exist. not fetched again.")
+        }
     }
 
     private addTrackPt(trackPt: TrackPtDo) {

@@ -5,4 +5,5 @@ export class UiStore {
     @observable public password: string | null;
     @observable public isLoggedIn: boolean = false;
     @observable public secToken: string | null;
+    @observable public countries: string[] = [];
 }
