@@ -1,13 +1,19 @@
 import {LatLng} from "leaflet";
 import {OpenStreetMapProvider} from 'leaflet-geosearch';
+import * as moment from "moment";
 import * as React from 'react';
 import {globalRootStore} from "../App";
+import {CountryDo} from "../dataObjects/CountryDo";
+import {TrackTypeDo} from "../dataObjects/TrackTypeDo";
 import {ITrackCreateProps} from "./TrackCreateController";
 
 export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
+
+
     constructor(props: ITrackCreateProps) {
         super(props);
         this.onChangeHandler = this.onChangeHandler.bind(this);
+        this.onChangeHandlerSelect = this.onChangeHandlerSelect.bind(this);
         this.onBlurHandler = this.onBlurHandler.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
@@ -42,7 +48,8 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                         </div>
                                         <div className="form-group col-2 text-left">
                                             <label htmlFor="country">Country</label>
-                                            <select id="inputState" className="form-control">
+                                            <select id="country" className="form-control"
+                                                    onChange={this.onChangeHandlerSelect}>
                                                 <option selected={true}>Choose...</option>
                                                 {this.props.countries.map(value => {
                                                     return (<option key={value}>{value}</option>)
@@ -56,21 +63,33 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             <input type="text" className="form-control" id="region"
                                                    onChange={this.onChangeHandler}
                                                    onBlur={this.onBlurHandler}/>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="form-group col-2 text-left">
-                                            <label htmlFor="owner">Owner</label>
-                                            <input type="text" className="form-control" id="owner"
-                                                   onChange={this.onChangeHandler}/>
-                                        </div>
-                                        <div className="form-group col-2 text-left">
-                                            <label htmlFor="created">Created</label>
-                                            <input type="text" className="form-control" id="created"
-                                                   onChange={this.onChangeHandler}/>
                                             <button type="submit" className="btn btn-light" hidden={true}>Enter</button>
                                         </div>
+                                        <div className="form-group col-2 text-left">
+                                            <label htmlFor="tracktype">Tracktype</label>
+                                            <select id="tracktype" className="form-control" multiple={true}
+                                                    onChange={this.onChangeHandlerSelect}>
+                                                {this.props.tracktypes.map(value => {
+                                                    return (<option key={value}>{value}</option>)
+                                                })}
+                                            </select>
+                                            {/*<input type="text" className="form-control" id="country"*/}
+                                            {/*onChange={this.onChangeHandler}/>*/}
+                                        </div>
                                     </div>
+                                    {/*<div className="row">*/}
+                                    {/*<div className="form-group col-2 text-left">*/}
+                                    {/*<label htmlFor="owner">Owner</label>*/}
+                                    {/*<input type="text" className="form-control" id="owner" readOnly={true}*/}
+                                    {/*value={globalRootStore.uiStore.user || "not logged in"}/>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="form-group col-2 text-left">*/}
+                                    {/*<label htmlFor="created">Created</label>*/}
+                                    {/*<input type="text" className="form-control" id="created"*/}
+                                    {/*onChange={this.onChangeHandler}/>*/}
+                                    {/*<button type="submit" className="btn btn-light" hidden={true}>Enter</button>*/}
+                                    {/*</div>*/}
+                                    {/*</div>*/}
                                 </div>
                             </form>
                         </div>
@@ -112,6 +131,26 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         )
     }
 
+    private onChangeHandlerSelect(event: React.FormEvent<HTMLSelectElement>) {
+        const inputField = event.currentTarget.id;
+        if (inputField === "country") {
+            const country = new CountryDo();
+            country.name = event.currentTarget.value;
+            this.props.trackData.country = country;
+        }
+        if (inputField === "tracktype") {
+            this.props.trackData.tracktypes = [];
+            const len = event.currentTarget.options.length;
+            for (let i=0; i < len; i++) {
+                if (event.currentTarget.options[i].selected) {
+                    const tracktype = new TrackTypeDo();
+                    tracktype.tracktypename = event.currentTarget.options[i].value;
+                    this.props.trackData.tracktypes.push(tracktype);
+                }
+            }
+        }
+    }
+
     private onBlurHandler(event: React.FormEvent) {
         console.log(`Geosearch for  ${this.props.trackData.region}`);
         const provider = new OpenStreetMapProvider();
@@ -130,7 +169,11 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     }
 
     private onSubmitHandler(event: React.FormEvent) {
-        Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`))
+        this.props.trackData.owner = globalRootStore.uiStore.userDo;
+        this.props.trackData.created = moment().format();
+        Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`));
+        console.log(`Country = ${this.props.trackData.country!.name}`);
+        console.log(`Tracktypes = ${this.props.trackData.tracktypes.map(value => value.tracktypename).join(", ")}`);
         event.preventDefault();
     }
 

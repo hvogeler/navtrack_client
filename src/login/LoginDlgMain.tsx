@@ -2,6 +2,7 @@ import {observer} from "mobx-react";
 import * as React from "react";
 import {RouteComponentProps} from "react-router";
 import {fetchJsonPost} from "../backend/Backend";
+import {UserDo} from "../dataObjects/UserDo";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
 import {RootStore} from "../RootStore";
@@ -15,6 +16,7 @@ interface ILoginDlgMain extends RouteComponentProps<any> {
 
 interface IJwtResponse {
     jwt: string;
+    user: UserDo;
 }
 
 @observer
@@ -44,12 +46,14 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
             .then((response: any) => {
                 const {status} = response;
                 if (status === undefined) {
-                    const jwtResponse = response as IJwtResponse
+                    const jwtResponse = response as IJwtResponse;
                     this.props.rootStore.uiStore.user = user;
                     this.props.rootStore.uiStore.password = password;
                     this.props.rootStore.uiStore.isLoggedIn = true;
                     this.props.rootStore.uiStore.secToken = jwtResponse.jwt;
+                    this.props.rootStore.uiStore.userDo = jwtResponse.user;
                     console.log(`LoginDlgMain: Received token ${jwtResponse.jwt}`);
+                    console.log(`LoginDlgMain: Received user ${jwtResponse.user.username}`);
                 } else {
                     console.log(`LoginDlgMain: Received error response ${status}`);
 
@@ -62,6 +66,7 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
         this.props.rootStore.uiStore.password = null;
         this.props.rootStore.uiStore.isLoggedIn = false;
         this.props.rootStore.uiStore.secToken = null;
+        this.props.rootStore.uiStore.userDo = null;
 
     }
 

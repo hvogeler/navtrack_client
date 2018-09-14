@@ -69,6 +69,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
 
     public componentWillMount() {
         this.getCountries();
+        this.getTracktypes();
     }
 
     public render() {
@@ -87,6 +88,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
                     deleteTrackPt={this.deleteTrackPt}
                     trackLengthInKm={this.trackLengthInKm}
                     countries={globalRootStore.uiStore.countries}
+                    tracktypes={globalRootStore.uiStore.tracktypes}
                 />
             </div>
         );
@@ -100,6 +102,17 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
                 });
         } else {
             console.log("countries still exist. not fetched again.")
+        }
+    }
+
+    private getTracktypes() {
+        if (globalRootStore.uiStore.tracktypes.length === 0) {
+            fetchJson("/api/tracktypes")
+                .then((tracktypes: string[]) => {
+                    globalRootStore.uiStore.tracktypes = tracktypes;
+                });
+        } else {
+            console.log("tracktypes still exist. not fetched again.")
         }
     }
 

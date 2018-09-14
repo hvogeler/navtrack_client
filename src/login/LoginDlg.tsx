@@ -1,7 +1,7 @@
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import * as React from "react";
-import {ChangeEvent} from "react";
+import {ChangeEvent, FormEvent} from "react";
 
 export interface ILoginDlg {
     setCredentials: (user: string | null, password: string | null) => Promise<any>;
@@ -26,7 +26,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
         if (!this.props.isLoggedIn) {
             return (
                 <div className="container col-sm-5 bg-light mt-4 pt-4 pb-4 border rounded">
-                    <form>
+                    <form onSubmit={(event: FormEvent<HTMLFormElement>) => this.loginButtonClicked(event)}>
                         <div className="form-group row">
                             <label htmlFor="username" className="sr-only">Username</label>
                             <div className="col-sm-12">
@@ -50,8 +50,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
 
                         <div className="form-group row">
                             <div className="col-sm-12">
-                                <button type="button" className="btn btn-outline-secondary"
-                                        onClick={() => this.loginButtonClicked()}>Login
+                                <button type="submit" className="btn btn-outline-secondary">Login
                                 </button>
                             </div>
                         </div>
@@ -88,7 +87,8 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
         }
     }
 
-    private loginButtonClicked() {
+    private loginButtonClicked(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
         if (this.user === null || this.password === null) {
             this.errmsg = "Please enter username and password!";
         } else {
