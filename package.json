@@ -2,6 +2,7 @@
   "name": "navtrack",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://www.hvo.de/navtrack",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.1.1",
     "apollo-boost": "^0.1.15",
