@@ -1,14 +1,10 @@
-import * as React from 'react';
-
-import ApolloClient from "apollo-boost";
-import gql from "graphql-tag";
 import {LatLng} from "leaflet";
 import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
+import * as React from 'react';
 import {RouteComponentProps} from "react-router";
 import {fetchJson} from "../backend/Backend";
 import {TrackDo} from "../dataObjects/TrackDo";
-import {AllTracksQ1} from "../graphql/q1types";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
 import {RootStore} from "../RootStore";
@@ -91,36 +87,37 @@ export class TracksMain extends React.Component<ITracksMain, any> {
             });
 
 
-        const client = new ApolloClient({
-            request : async operation => {
-                operation.setContext({
-                    headers: {
-                        authorization: "Basic aHZvOmh2bw=="
-                    }
-                })
-            },
-            uri : "http://192.168.178.21:8080/graphql"
-        });
+        // const client = new ApolloClient({
+        //     request : async operation => {
+        //         operation.setContext({
+        //             headers: {
+        //                 authorization: "Basic aHZvOmh2bw==",
+        //                 "mode": "no-cors"
+        //             }
+        //         })
+        //     },
+        //     uri : "http://192.168.178.21:8080/graphql"
+        // });
 
-        client.query<AllTracksQ1>({
-            query: gql`
-                query AllTracksQ1 {
-                    allTracks {
-                        trackname
-                        region
-                        tracktypes {
-                            tracktypename
-                        }
-                    }
-                }
-            `
-            }
-        ).then( (result) => {
-            const res = result.data.allTracks!.map( (value) => {
-                return value != null ? value.region : "";
-            });
-            console.log(res);
-        });
+        // client.query<AllTracksQ1>({
+        //     query: gql`
+        //         query AllTracksQ1 {
+        //             allTracks {
+        //                 trackname
+        //                 region
+        //                 tracktypes {
+        //                     tracktypename
+        //                 }
+        //             }
+        //         }
+        //     `
+        //     }
+        // ).then( (result) => {
+        //     const res = result.data.allTracks!.map( (value) => {
+        //         return value != null ? value.region : "";
+        //     });
+        //     console.log(`===>> ${res}`);
+        // });
     }
 
     private findIndexForTrackListid(id: number): number {

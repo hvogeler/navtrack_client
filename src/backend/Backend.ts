@@ -24,7 +24,7 @@ export function fetchJson(path: string): Promise<any> {
         "body": JSON.stringify({"query": "{ allTracks { trackname }}"}),
         "headers": headers,
         "method": "POST",
-        "mode": "cors"
+        "mode": "no-cors"
     },)
         .then(response => response.json())
         .catch(ex => {
