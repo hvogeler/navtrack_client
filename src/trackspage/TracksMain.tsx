@@ -4,12 +4,12 @@ import {observer} from "mobx-react";
 import * as React from 'react';
 import {RouteComponentProps} from "react-router";
 import {fetchJson} from "../backend/Backend";
-import {TrackDo} from "../dataObjects/TrackDo";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
 import {RootStore} from "../RootStore";
 // import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
+import {TrackTo} from "../transport/TrackTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackDetailController} from "./TrackDetailController";
 import {TrackList} from "./TrackList";
@@ -35,7 +35,7 @@ export class TracksMain extends React.Component<ITracksMain, any> {
     @observable
     public currentTrackListId: number = 1;
 
-    @observable private trackListData: TrackDo[] = [];
+    @observable private trackListData: TrackTo[] = [];
 
     constructor(props: ITracksMain) {
         super(props);
@@ -81,7 +81,7 @@ export class TracksMain extends React.Component<ITracksMain, any> {
     @action
     private refreshTrackListData() {
         fetchJson("/api/tracks")
-            .then((tracks: TrackDo[]) => {
+            .then((tracks: TrackTo[]) => {
                 this.trackListData = tracks;
                 this.currentTrackListId = tracks[0].id
             });
@@ -133,7 +133,7 @@ export class TracksMain extends React.Component<ITracksMain, any> {
     }
 
     @computed
-    private get currentTrack(): TrackDo {
+    private get currentTrack(): TrackTo {
         return this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]
     }
 

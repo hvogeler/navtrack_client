@@ -1,10 +1,10 @@
 import {action} from "mobx";
 import * as React from 'react';
-import {TrackDo} from "../dataObjects/TrackDo";
+import {TrackTo} from "../transport/TrackTo";
 
 
 interface ITrackListProps {
-    trackList: TrackDo[];
+    trackList: TrackTo[];
     currentTrackListId: number;
     setCurrentTrackListId: (id: number) => void;
 }

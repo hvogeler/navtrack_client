@@ -2,11 +2,11 @@ import {observer} from "mobx-react";
 import * as React from "react";
 import {RouteComponentProps} from "react-router";
 import {fetchJsonPost} from "../backend/Backend";
-import {UserDo} from "../dataObjects/UserDo";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
 import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
+import {UserTo} from "../transport/UserTo";
 import {LoginDlg} from "./LoginDlg";
 
 
@@ -16,7 +16,7 @@ interface ILoginDlgMain extends RouteComponentProps<any> {
 
 interface IJwtResponse {
     jwt: string;
-    user: UserDo;
+    user: UserTo;
 }
 
 @observer

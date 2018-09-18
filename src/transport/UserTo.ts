@@ -1,11 +1,11 @@
-import {RoleDo} from "./RoleDo";
+import {RoleTo} from "./RoleTo";
 
-export class UserDo {
+export class UserTo {
     public id: number;
     public username: string;
     public password: string;
     public email: string;
     public description: string;
     public enabled: boolean;
-    public roles: [RoleDo];
+    public roles: [RoleTo];
 }

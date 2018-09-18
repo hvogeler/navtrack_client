@@ -1,13 +1,13 @@
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
-import {TrackDo} from "../dataObjects/TrackDo";
+import {TrackTo} from "../transport/TrackTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackDetail} from "./TrackDetail";
 import {TrackMap} from "./TrackMap";
 import {TrackPtDo} from "./TrackPtDo";
 
 export interface ITrackDetailProps {
-    trackData: TrackDo;
+    trackData: TrackTo;
     trackPts: TrackPtDo[];
     additionalTrackInfo: AdditionalTrackInfo;
 }

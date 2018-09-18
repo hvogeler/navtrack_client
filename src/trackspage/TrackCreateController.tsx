@@ -1,7 +1,9 @@
 import {observer} from "mobx-react";
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
-import {TrackDo} from "../dataObjects/TrackDo";
+import {CountryTo} from "../transport/CountryTo";
+import {TrackTo} from "../transport/TrackTo";
+import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateDetail} from "./TrackCreateDetail";
 import {TrackCreateMap} from "./TrackCreateMap";
@@ -10,17 +12,17 @@ import {TrackPtDo} from "./TrackPtDo";
 import {IMapCenter} from "./TracksCreateMain";
 
 export interface ITrackCreateProps {
-    trackData: TrackDo;
+    trackData: TrackTo;
     trackPts: TrackPtDo[];
     additionalTrackInfo: AdditionalTrackInfo;
-    changeTrack: (track: TrackDo) => void;
+    changeTrack: (track: TrackTo) => void;
     mapCenter: IMapCenter;
     setMapCenter: (mapCenter: IMapCenter) => void;
     addTrackPt: (trackPt: TrackPtDo) => void;
     deleteTrackPt: (idx: number) => void;
     trackLengthInKm: number;
-    countries: string[];
-    tracktypes: string[];
+    countries: CountryTo[];
+    tracktypes: TrackTypeTo[];
 }
 
 @observer

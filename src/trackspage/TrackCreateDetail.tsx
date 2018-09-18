@@ -3,8 +3,8 @@ import {OpenStreetMapProvider} from 'leaflet-geosearch';
 import * as moment from "moment";
 import * as React from 'react';
 import {globalRootStore} from "../App";
-import {CountryDo} from "../dataObjects/CountryDo";
-import {TrackTypeDo} from "../dataObjects/TrackTypeDo";
+import {CountryTo} from "../transport/CountryTo";
+import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {ITrackCreateProps} from "./TrackCreateController";
 
 export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
@@ -52,7 +52,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                                     onChange={this.onChangeHandlerSelect}>
                                                 <option selected={true}>Choose...</option>
                                                 {this.props.countries.map(value => {
-                                                    return (<option key={value}>{value}</option>)
+                                                    return (<option key={value.id}>{value.name}</option>)
                                                 })}
                                             </select>
                                             {/*<input type="text" className="form-control" id="country"*/}
@@ -70,7 +70,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             <select id="tracktype" className="form-control" multiple={true}
                                                     onChange={this.onChangeHandlerSelect}>
                                                 {this.props.tracktypes.map(value => {
-                                                    return (<option key={value}>{value}</option>)
+                                                    return (<option key={value.id}>{value.tracktypename}</option>)
                                                 })}
                                             </select>
                                             {/*<input type="text" className="form-control" id="country"*/}
@@ -134,7 +134,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     private onChangeHandlerSelect(event: React.FormEvent<HTMLSelectElement>) {
         const inputField = event.currentTarget.id;
         if (inputField === "country") {
-            const country = new CountryDo();
+            const country = new CountryTo();
             country.name = event.currentTarget.value;
             this.props.trackData.country = country;
         }
@@ -143,7 +143,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             const len = event.currentTarget.options.length;
             for (let i=0; i < len; i++) {
                 if (event.currentTarget.options[i].selected) {
-                    const tracktype = new TrackTypeDo();
+                    const tracktype = new TrackTypeTo();
                     tracktype.tracktypename = event.currentTarget.options[i].value;
                     this.props.trackData.tracktypes.push(tracktype);
                 }

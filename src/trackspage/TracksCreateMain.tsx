@@ -6,11 +6,13 @@ import {observer} from "mobx-react";
 import {RouteComponentProps} from "react-router";
 import {globalRootStore} from "../App";
 import {fetchJson} from "../backend/Backend";
-import {TrackDo} from "../dataObjects/TrackDo";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu} from "../MainMenu";
 import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
+import {CountryTo} from "../transport/CountryTo";
+import {TrackTo} from "../transport/TrackTo";
+import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateController} from "./TrackCreateController";
 import {TrackPtDo} from "./TrackPtDo";
@@ -37,7 +39,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         return elements
     }
 
-    private static emptyTrack(): TrackDo {
+    private static emptyTrack(): TrackTo {
         return {
             country: null,
             created: "",
@@ -51,7 +53,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         }
     }
 
-    @observable private newTrack: TrackDo;
+    @observable private newTrack: TrackTo;
     @observable private mapCenter: IMapCenter = {
         label: "Eifel, Germany",
         location: new LatLng(50.0, 6.98, 49),
@@ -97,7 +99,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
     private getCountries() {
         if (globalRootStore.uiStore.countries.length === 0) {
             fetchJson("/api/countries")
-                .then((countries: string[]) => {
+                .then((countries: CountryTo[]) => {
                     globalRootStore.uiStore.countries = countries;
                 });
         } else {
@@ -108,7 +110,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
     private getTracktypes() {
         if (globalRootStore.uiStore.tracktypes.length === 0) {
             fetchJson("/api/tracktypes")
-                .then((tracktypes: string[]) => {
+                .then((tracktypes: TrackTypeTo[]) => {
                     globalRootStore.uiStore.tracktypes = tracktypes;
                 });
         } else {
@@ -125,7 +127,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         this.trackPts.filter((element, index, array) => index !== idx)
     }
 
-    private changeTrackData(track: TrackDo) {
+    private changeTrackData(track: TrackTo) {
         this.newTrack = track;
     }
 

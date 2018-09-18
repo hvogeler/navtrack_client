@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import 'isomorphic-fetch';
 import {globalRootStore} from "../App";
-import {TrackDo} from "../dataObjects/TrackDo";
+import {TrackTo} from "../transport/TrackTo";
 
 
 // TODO: make backend URL configurable
@@ -65,7 +65,7 @@ export function fetchJsonPost(path: string, body: string): Promise<any> {
         });
 }
 
-export function sendJson(method: string, path: string, payload: TrackDo | null) {
+export function sendJson(method: string, path: string, payload: TrackTo | null) {
     const url = `${BACKEND_URL}${path}`;
     return fetch(url, {
         'body': JSON.stringify(payload),
