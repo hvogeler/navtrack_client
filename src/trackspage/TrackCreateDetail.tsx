@@ -80,29 +80,31 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             {/*<input type="text" className="form-control" id="country"*/}
                                             {/*onChange={this.onChangeHandler}/>*/}
                                         </div>
-                                        <div className="form-group col-1 text-left">
-                                            <button type="submit" className="btn btn-info btn-outline-light"
+                                    </div>
+                                    <div className="row">
+                                        <div className="form-group col-2 text-left">
+                                            <button type="submit" className={`btn btn-info ${this.saveButtonOutline()}`}
                                                     hidden={false}>Save Track
                                             </button>
                                         </div>
-                                    </div>
-                                    {(this.errorMsg != null) ?
-                                        <div className="form-group col-12 border-danger rounded" style={{backgroundColor : 'red'}}>
-                                            <div className="row col-6 text-light text-center">
-                                                {this.errorMsg}
+                                        {(this.errorMsg != null) ?
+                                            <div className="form-group col-8 border-danger rounded"
+                                                 style={{backgroundColor: 'red'}}>
+                                                <div className="text-light text-center justify-content-center align-self-center">
+                                                    {this.errorMsg}
+                                                </div>
                                             </div>
-                                        </div>
                                             : ""
-                                    }
-                                    {(this.okMsg != null) ?
-                                        <div className="form-group col-12">
-                                            <div className="row col-6 text-light text-center">
-                                                {this.okMsg}
+                                        }
+                                        {(this.okMsg != null) ?
+                                            <div className="form-group col-8">
+                                                <div className="text-light text-center">
+                                                    {this.okMsg}
+                                                </div>
                                             </div>
-                                        </div>
-                                        : ""
-                                    }
-
+                                            : ""
+                                        }
+                                    </div>
                                     {/*<div className="row">*/}
                                     {/*<div className="form-group col-2 text-left">*/}
                                     {/*<label htmlFor="owner">Owner</label>*/}
@@ -164,6 +166,15 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     //         return false;
     //     }
     // }
+
+    private saveButtonOutline() : string {
+        let outline = "btn-outline-light";
+
+        if (this.errorMsg != null) {outline = "btn-outline-danger"};
+        if (this.okMsg != null) {outline = "btn-outline-light"};
+
+        return outline;
+    }
 
     private onChangeHandlerSelect(event: React.FormEvent<HTMLSelectElement>) {
         const inputField = event.currentTarget.id;
