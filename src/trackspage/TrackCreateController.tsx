@@ -20,6 +20,7 @@ export interface ITrackCreateProps {
     setMapCenter: (mapCenter: IMapCenter) => void;
     addTrackPt: (trackPt: TrackPtDo) => void;
     deleteTrackPt: (idx: number) => void;
+    saveTrack: () => boolean;
     trackLengthInKm: number;
     countries: CountryTo[];
     tracktypes: TrackTypeTo[];
@@ -48,6 +49,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             trackLengthInKm={this.props.trackLengthInKm}
                             countries={this.props.countries}
                             tracktypes={this.props.tracktypes}
+                            saveTrack={this.props.saveTrack}
                         />
                     </div>
                 </div>
@@ -70,5 +72,6 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
             </div>
         )
     }
+
 }
 

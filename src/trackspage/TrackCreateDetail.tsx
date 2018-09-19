@@ -1,5 +1,7 @@
 import {LatLng} from "leaflet";
 import {OpenStreetMapProvider} from 'leaflet-geosearch';
+import {observable} from "mobx";
+import {observer} from "mobx-react";
 import * as moment from "moment";
 import * as React from 'react';
 import {globalRootStore} from "../App";
@@ -7,8 +9,11 @@ import {CountryTo} from "../transport/CountryTo";
 import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {ITrackCreateProps} from "./TrackCreateController";
 
+@observer
 export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
 
+    @observable private errorMsg: string | null = null;
+    @observable private okMsg: string | null = null;
 
     constructor(props: ITrackCreateProps) {
         super(props);
@@ -27,8 +32,8 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                     </div>
                 </div>
             </div>)
-        } else {
-
+        }
+        else {
             return (
                 <div className="container-fluid">
                     <div className="row no-gutters">
@@ -75,12 +80,29 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             {/*<input type="text" className="form-control" id="country"*/}
                                             {/*onChange={this.onChangeHandler}/>*/}
                                         </div>
-                                    </div>
-                                    <div className="row justify-content-end">
-                                        <div className="form-group col-3 text-left">
-                                            <button type="submit" className="btn btn-info btn-outline-light" hidden={!this.isShowSaveButton()}>Save Track</button>
+                                        <div className="form-group col-1 text-left">
+                                            <button type="submit" className="btn btn-info btn-outline-light"
+                                                    hidden={false}>Save Track
+                                            </button>
                                         </div>
                                     </div>
+                                    {(this.errorMsg != null) ?
+                                        <div className="form-group col-12 border-danger rounded" style={{backgroundColor : 'red'}}>
+                                            <div className="row col-6 text-light text-center">
+                                                {this.errorMsg}
+                                            </div>
+                                        </div>
+                                            : ""
+                                    }
+                                    {(this.okMsg != null) ?
+                                        <div className="form-group col-12">
+                                            <div className="row col-6 text-light text-center">
+                                                {this.okMsg}
+                                            </div>
+                                        </div>
+                                        : ""
+                                    }
+
                                     {/*<div className="row">*/}
                                     {/*<div className="form-group col-2 text-left">*/}
                                     {/*<label htmlFor="owner">Owner</label>*/}
@@ -135,13 +157,13 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         )
     }
 
-    private isShowSaveButton() : boolean {
-        if (this.props.trackData.country != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // private isShowSaveButton() : boolean {
+    //     if (this.props.trackData.country != null) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     private onChangeHandlerSelect(event: React.FormEvent<HTMLSelectElement>) {
         const inputField = event.currentTarget.id;
@@ -153,7 +175,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         if (inputField === "tracktype") {
             this.props.trackData.tracktypes = [];
             const len = event.currentTarget.options.length;
-            for (let i=0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 if (event.currentTarget.options[i].selected) {
                     const tracktype = new TrackTypeTo();
                     tracktype.tracktypename = event.currentTarget.options[i].value;
@@ -181,12 +203,30 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     }
 
     private onSubmitHandler(event: React.FormEvent) {
+        event.preventDefault();
+        if (this.props.trackData.trackname === null
+            || this.props.trackData.country === null
+            || this.props.trackData.region === null
+            || this.props.trackData.trackname === ""
+            || this.props.trackData.region === ""
+            || this.props.trackData.tracktypes.length === 0
+        ) {
+            this.okMsg = null;
+            this.errorMsg = "Trackname, Country, Region and at least one Tracktype must be entered";
+            return
+        }
+        this.errorMsg = null;
+        this.okMsg = `Track ${this.props.trackData.trackname} saved`;
         this.props.trackData.owner = globalRootStore.uiStore.userDo;
         this.props.trackData.created = moment().format();
+        if (!this.props.saveTrack()) {
+            this.okMsg = null;
+            this.errorMsg = "Track could not be saved. Did you select Trackpoints on the map below?";
+            return
+        }
         Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`));
         console.log(`Country = ${this.props.trackData.country!.name}`);
         console.log(`Tracktypes = ${this.props.trackData.tracktypes.map(value => value.tracktypename).join(", ")}`);
-        event.preventDefault();
     }
 
 }

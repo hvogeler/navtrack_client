@@ -67,6 +67,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         this.setMapCenter = this.setMapCenter.bind(this);
         this.addTrackPt = this.addTrackPt.bind(this);
         this.deleteTrackPt = this.deleteTrackPt.bind(this);
+        this.saveTrack = this.saveTrack.bind(this);
     }
 
     public componentWillMount() {
@@ -95,6 +96,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
                     trackLengthInKm={this.trackLengthInKm}
                     countries={globalRootStore.uiStore.countries}
                     tracktypes={globalRootStore.uiStore.tracktypes}
+                    saveTrack={this.saveTrack}
                 />
             </div>
         );
@@ -129,6 +131,13 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private deleteTrackPt(idx: number) {
         this.trackPts.filter((element, index, array) => index !== idx)
+    }
+
+    private saveTrack() : boolean {
+        if (this.trackPts.length <= 0) {
+            return false;
+        }
+        return true;
     }
 
     private changeTrackData(track: TrackTo) {
