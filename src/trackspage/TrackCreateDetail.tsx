@@ -63,7 +63,6 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             <input type="text" className="form-control" id="region"
                                                    onChange={this.onChangeHandler}
                                                    onBlur={this.onBlurHandler}/>
-                                            <button type="submit" className="btn btn-light" hidden={true}>Enter</button>
                                         </div>
                                         <div className="form-group col-2 text-left">
                                             <label htmlFor="tracktype">Tracktype</label>
@@ -75,6 +74,11 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             </select>
                                             {/*<input type="text" className="form-control" id="country"*/}
                                             {/*onChange={this.onChangeHandler}/>*/}
+                                        </div>
+                                    </div>
+                                    <div className="row justify-content-end">
+                                        <div className="form-group col-3 text-left">
+                                            <button type="submit" className="btn btn-info btn-outline-light" hidden={!this.isShowSaveButton()}>Save Track</button>
                                         </div>
                                     </div>
                                     {/*<div className="row">*/}
@@ -129,6 +133,14 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                 [inputField]: event.currentTarget.value
             }
         )
+    }
+
+    private isShowSaveButton() : boolean {
+        if (this.props.trackData.country != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private onChangeHandlerSelect(event: React.FormEvent<HTMLSelectElement>) {

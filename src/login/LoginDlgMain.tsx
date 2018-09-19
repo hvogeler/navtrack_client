@@ -1,9 +1,10 @@
 import {observer} from "mobx-react";
 import * as React from "react";
 import {RouteComponentProps} from "react-router";
+import {globalRootStore} from "../App";
 import {fetchJsonPost} from "../backend/Backend";
 import teaserimg from '../images/IMG_0107.jpg'
-import {MainMenu} from "../MainMenu";
+import {MainMenu, MenuItem} from "../MainMenu";
 import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
 import {UserTo} from "../transport/UserTo";
@@ -27,6 +28,10 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
         this.setCredentials = this.setCredentials.bind(this);
         this.logOut = this.logOut.bind(this);
         this.setState = this.setState.bind(this);
+    }
+
+    public componentDidMount() {
+        globalRootStore.uiStore.currentMenuItem = MenuItem.login;
     }
 
     public render() {

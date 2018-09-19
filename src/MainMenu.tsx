@@ -2,15 +2,24 @@ import {observer} from "mobx-react";
 import * as React from 'react'
 import {Link} from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
+import {globalRootStore} from "./App";
 import {RootStore} from "./RootStore";
 
-interface IMainMenu  {
+interface IMainMenu {
     rootStore: RootStore;
 }
 
+export enum MenuItem {
+    tracks,
+    login,
+    docs,
+    create,
+    navure
+}
 
 @observer
 export class MainMenu extends React.Component<IMainMenu, any> {
+
     constructor(props: IMainMenu) {
         super(props);
     }
@@ -29,20 +38,22 @@ export class MainMenu extends React.Component<IMainMenu, any> {
 
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <Link className="nav-link" to={"/tracks"}>Tracks <span className="sr-only">(current)</span></Link>
+                            <li className={`nav-item ${this.isActiveMenuItem(MenuItem.tracks)}`}>
+                                <Link className="nav-link" to={"/tracks"}>Tracks <span
+                                    className="sr-only">(current)</span></Link>
                             </li>
-                            { this.props.rootStore.uiStore.isLoggedIn ?
-                                <li className="nav-item">
+                            {this.props.rootStore.uiStore.isLoggedIn ?
+                                <li className={`nav-item ${this.isActiveMenuItem(MenuItem.create)}`}>
                                     <Link className="nav-link" to="/create">Create</Link>
                                 </li> : ""
                             }
-                            <li className="nav-item">
+                            <li className={`nav-item ${this.isActiveMenuItem(MenuItem.docs)}`}>
                                 <Link className="nav-link" to="/docs">Documentation</Link>
                             </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/login">{this.props.rootStore.uiStore.isLoggedIn ? `Logged in as ${this.props.rootStore.uiStore.user}` : "Login"}</Link>
-                                </li>
+                            <li className={`nav-item ${this.isActiveMenuItem(MenuItem.login)}`}>
+                                <Link className="nav-link"
+                                      to="/login">{this.props.rootStore.uiStore.isLoggedIn ? `Logged in as ${this.props.rootStore.uiStore.user}` : "Login"}</Link>
+                            </li>
                         </ul>
 
                         {this.props.rootStore.uiStore.isLoggedIn ?
@@ -56,5 +67,12 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                 </nav>
             </div>
         )
+    }
+
+    private isActiveMenuItem(menuItem: MenuItem): string {
+        if (menuItem === globalRootStore.uiStore.currentMenuItem) {
+            return "active";
+        }
+        return "";
     }
 }

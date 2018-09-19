@@ -7,6 +7,11 @@ interface ITeaserProps {
 }
 
 export class Teaser extends React.Component<ITeaserProps, any> {
+    // private styles = {
+    //     backgroundColor: 'rgba(255,255,255,0.6)',
+    //     height: '20px',
+    // };
+
     constructor(props: ITeaserProps) {
         super(props)
     }
@@ -16,8 +21,10 @@ export class Teaser extends React.Component<ITeaserProps, any> {
             <div className="container-fluid">
                 <div className="img-thumbnail">
                     <img src={this.props.image} className="img-fluid"/>
-                    <div className="text-white text-center display-3 post-content">
+                    <div className="text-secondary h-25 post-content small">
+                        <h1>
                         {this.props.title}
+                        </h1>
                     </div>
                 </div>
             </div>

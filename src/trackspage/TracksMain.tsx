@@ -3,9 +3,10 @@ import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import * as React from 'react';
 import {RouteComponentProps} from "react-router";
+import {globalRootStore} from "../App";
 import {fetchJson} from "../backend/Backend";
 import teaserimg from '../images/IMG_0107.jpg'
-import {MainMenu} from "../MainMenu";
+import {MainMenu, MenuItem} from "../MainMenu";
 import {RootStore} from "../RootStore";
 // import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
@@ -47,7 +48,8 @@ export class TracksMain extends React.Component<ITracksMain, any> {
     }
 
     public componentDidMount() {
-        this.refreshTrackListData()
+        this.refreshTrackListData();
+        globalRootStore.uiStore.currentMenuItem = MenuItem.tracks;
     }
 
     public render() {

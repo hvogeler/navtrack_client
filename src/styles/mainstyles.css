@@ -45,11 +45,13 @@
 }
 
 .post-content {
-    background: white repeat scroll 0 0 #FFFFFF;
+    /*background: repeat scroll 0 0 #FFFFFF;*/
+    /*background-color: rgba(255,255,255,0.6);*/
     opacity: 1;
     margin: -54px 20px 12px;
-    top: 190px;
-    left: 35%;
-    width: 25%;
+    top: 120px;
+    left: 6%;
+    width: 30%;
     position: absolute;
 }
+

@@ -1,4 +1,5 @@
 import {observable} from "mobx";
+import {MenuItem} from "./MainMenu";
 import {CountryTo} from "./transport/CountryTo";
 import {TrackTypeTo} from "./transport/TrackTypeTo";
 import {UserTo} from "./transport/UserTo";
@@ -11,4 +12,5 @@ export class UiStore {
     @observable public secToken: string | null;
     @observable public countries: CountryTo[] = [];
     @observable public tracktypes: TrackTypeTo[] = [];
+    @observable public currentMenuItem: MenuItem = MenuItem.tracks;
 }
