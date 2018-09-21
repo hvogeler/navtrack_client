@@ -47,7 +47,7 @@ export function fetchJsonPost(path: string, body: string): Promise<any> {
     const url = `${BACKEND_URL}${path}`;
     const headers = {
         "Accept": "application/json",
-        "Authorization": "Basic aHZvOmh2bw==",
+        "Authorization": `Bearer ${globalRootStore.uiStore.secToken}`,
         'Content-Type': "application/json"
     };
 

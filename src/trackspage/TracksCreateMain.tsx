@@ -5,7 +5,7 @@ import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {RouteComponentProps} from "react-router";
 import {globalRootStore} from "../App";
-import {fetchJson} from "../backend/Backend";
+import {fetchJson, fetchJsonPost} from "../backend/Backend";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu, MenuItem} from "../MainMenu";
 import {RootStore} from "../RootStore";
@@ -24,6 +24,10 @@ export interface IMapCenter {
 
 interface ITracksCreateMain extends RouteComponentProps<any> {
     rootStore: RootStore;
+}
+
+interface IJson2GpxResponse {
+    gpx : string
 }
 
 @observer
@@ -133,10 +137,20 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         this.trackPts.filter((element, index, array) => index !== idx)
     }
 
-    private saveTrack() : boolean {
+    private saveTrack(): boolean {
         if (this.trackPts.length <= 0) {
             return false;
         }
+
+        fetchJsonPost(`/api/trackutil/json2gpx?trackname=${this.newTrack.trackname}&author=${this.newTrack.owner!.username}`,
+            JSON.stringify(this.trackPts)).then((resp : IJson2GpxResponse) => {
+            this.newTrack.gpx = resp.gpx;
+
+            console.log(`gpx: ${resp.gpx}`);
+            // here save the track
+        })
+            .catch(ex => console.log(`Error on json2gpx api : ${ex}`));
+
 
         return true;
     }

@@ -23,19 +23,10 @@ interface ITrackCreateMap {
     trackLengthInKm: number;
 }
 
-export interface IElevationResult {
-    "elevation": number;
-    "location": {
-        "lat": number;
-        "lng": number;
-    },
-    "resolution": number;
-}
-
-export interface IElevationResults {
-    "error_message": string | null;
-    "results": IElevationResult[];
-    "status": string;
+interface IGetElevationResponse {
+    lat : number,
+    lng : number,
+    ele : number
 }
 
 @observer
@@ -104,7 +95,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
     private onClickHandler(event: LeafletMouseEvent) {
         console.log(event.latlng);
         let locationWithElevation: LatLng;
-        fetchJson(`/api/trackutil/elevation?lat=${event.latlng.lat}&lon=${event.latlng.lng}`).then((resp) => {
+        fetchJson(`/api/trackutil/elevation?lat=${event.latlng.lat}&lon=${event.latlng.lng}`).then((resp : IGetElevationResponse) => {
             locationWithElevation = new LatLng(resp.lat, resp.lng, resp.ele);
             console.log(`Elevation of: ${locationWithElevation.lat} / ${locationWithElevation.lng} = ${locationWithElevation.alt}`);
             this.props.addTrackPt(new TrackPtDo(resp.lat, resp.lng, resp.ele));
