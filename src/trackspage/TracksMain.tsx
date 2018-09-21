@@ -44,7 +44,20 @@ export class TracksMain extends React.Component<ITracksMain, any> {
     }
 
     public componentWillMount() {
-        this.refreshTrackListData()
+        this.refreshTrackListData();
+
+//        const doc = document.implementation.createDocument("", "", null);
+//         const gpxEl = doc.createElementNS("http://www.topografix.com/GPX/1/1", "gpx");
+//         gpxEl.setAttribute("creator", "NavTrack (c) Heiko Vogeler");
+//         const metadataEl = doc.createElement("metadata");
+//         const name = doc.createElement("name");
+//         name.innerHTML = "hvogeler";
+//         metadataEl.appendChild(name);
+//         gpxEl.appendChild(metadataEl);
+//         doc.appendChild(gpxEl);
+//         const xmlstring = new XMLSerializer().serializeToString(doc);
+//         console.log(xmlstring);
+
     }
 
     public componentDidMount() {

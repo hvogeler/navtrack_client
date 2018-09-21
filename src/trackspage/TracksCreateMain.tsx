@@ -137,6 +137,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         if (this.trackPts.length <= 0) {
             return false;
         }
+
         return true;
     }
 

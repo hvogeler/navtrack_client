@@ -23,11 +23,13 @@
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "2.16.0"
   },
+  "main": "src/electron-starter.js",
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron ."
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "0.0.34",
@@ -40,6 +42,7 @@
     "@types/react-dom": "^16.0.6",
     "@types/react-leaflet": "^1.1.5",
     "@types/react-router-dom": "^4.2.7",
+    "electron": "^3.0.0",
     "mobx-react-devtools": "^6.0.1",
     "typescript": "^2.9.2"
   }
