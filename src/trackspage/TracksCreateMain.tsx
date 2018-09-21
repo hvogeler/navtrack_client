@@ -45,7 +45,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private static emptyTrack(): TrackTo {
         return {
-            country: null,
+            country: "",
             created: "",
             description: "",
             gpx: "",

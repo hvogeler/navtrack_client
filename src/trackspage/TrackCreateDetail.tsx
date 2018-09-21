@@ -5,8 +5,6 @@ import {observer} from "mobx-react";
 import * as moment from "moment";
 import * as React from 'react';
 import {globalRootStore} from "../App";
-import {CountryTo} from "../transport/CountryTo";
-import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {ITrackCreateProps} from "./TrackCreateController";
 
 @observer
@@ -179,18 +177,14 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     private onChangeHandlerSelect(event: React.FormEvent<HTMLSelectElement>) {
         const inputField = event.currentTarget.id;
         if (inputField === "country") {
-            const country = new CountryTo();
-            country.name = event.currentTarget.value;
-            this.props.trackData.country = country;
+            this.props.trackData.country = event.currentTarget.value;
         }
         if (inputField === "tracktype") {
             this.props.trackData.tracktypes = [];
             const len = event.currentTarget.options.length;
             for (let i = 0; i < len; i++) {
                 if (event.currentTarget.options[i].selected) {
-                    const tracktype = new TrackTypeTo();
-                    tracktype.tracktypename = event.currentTarget.options[i].value;
-                    this.props.trackData.tracktypes.push(tracktype);
+                    this.props.trackData.tracktypes.push(event.currentTarget.options[i].value);
                 }
             }
         }
@@ -236,8 +230,8 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             return
         }
         Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`));
-        console.log(`Country = ${this.props.trackData.country!.name}`);
-        console.log(`Tracktypes = ${this.props.trackData.tracktypes.map(value => value.tracktypename).join(", ")}`);
+        console.log(`Country = ${this.props.trackData.country}`);
+        console.log(`Tracktypes = ${this.props.trackData.tracktypes.join(", ")}`);
     }
 
 }
