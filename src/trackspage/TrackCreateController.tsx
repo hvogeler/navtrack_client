@@ -20,10 +20,11 @@ export interface ITrackCreateProps {
     setMapCenter: (mapCenter: IMapCenter) => void;
     addTrackPt: (trackPt: TrackPtDo) => void;
     deleteTrackPt: (idx: number) => void;
-    saveTrack: () => boolean;
+    saveTrack: () => string;
     trackLengthInKm: number;
     countries: CountryTo[];
     tracktypes: TrackTypeTo[];
+    errorMsg: string | null;
 }
 
 @observer
@@ -50,6 +51,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             countries={this.props.countries}
                             tracktypes={this.props.tracktypes}
                             saveTrack={this.props.saveTrack}
+                            errorMsg={this.props.errorMsg}
                         />
                     </div>
                 </div>

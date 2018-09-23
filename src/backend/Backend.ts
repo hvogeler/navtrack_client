@@ -59,7 +59,9 @@ export function fetchJsonPost(path: string, body: string): Promise<any> {
         "method": "POST",
         "mode": "cors"
     },)
-        .then(response => response.json())
+        .then(response => {
+                return response.json();
+        })
         .catch(ex => {
             console.error('parsing failed', ex);
         });

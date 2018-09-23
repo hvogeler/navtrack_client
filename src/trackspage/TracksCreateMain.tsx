@@ -27,7 +27,7 @@ interface ITracksCreateMain extends RouteComponentProps<any> {
 }
 
 interface IJson2GpxResponse {
-    gpx : string
+    gpx: string
 }
 
 @observer
@@ -63,6 +63,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         location: new LatLng(50.0, 6.98, 49),
     };
     @observable private trackPts: TrackPtDo[] = [];
+    @observable private errorMsg: string | null = null;
 
     constructor(props: ITracksCreateMain) {
         super(props);
@@ -101,6 +102,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
                     countries={globalRootStore.uiStore.countries}
                     tracktypes={globalRootStore.uiStore.tracktypes}
                     saveTrack={this.saveTrack}
+                    errorMsg={this.errorMsg}
                 />
             </div>
         );
@@ -137,22 +139,38 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
         this.trackPts.filter((element, index, array) => index !== idx)
     }
 
-    private saveTrack(): boolean {
+    private saveTrack(): string {
+        this.errorMsg = null;
         if (this.trackPts.length <= 0) {
-            return false;
+            return "No Trackpoints. Please select some track points for the track";
         }
 
+        // convert tracklist to gpx track
         fetchJsonPost(`/api/trackutil/json2gpx?trackname=${this.newTrack.trackname}&author=${this.newTrack.owner!.username}`,
-            JSON.stringify(this.trackPts)).then((resp : IJson2GpxResponse) => {
-            this.newTrack.gpx = resp.gpx;
+            JSON.stringify(this.trackPts))
+            .then((json2GpxResponse: IJson2GpxResponse) => {
+                this.newTrack.gpx = json2GpxResponse.gpx;
+                console.log(`gpx: ${json2GpxResponse.gpx}`);
 
-            console.log(`gpx: ${resp.gpx}`);
-            // here save the track
-        })
-            .catch(ex => console.log(`Error on json2gpx api : ${ex}`));
-
-
-        return true;
+                // here save the track
+                fetchJsonPost(`/api/createtrack`,
+                    JSON.stringify(this.newTrack))
+                    .then((saveResp: TrackTo) => {
+                        if (saveResp !== undefined) {
+                            const createdTrack = saveResp;
+                            console.log(`new track is: ${createdTrack.trackname}, id: ${createdTrack.id}`);
+                        }
+                    })
+                    .catch(ex => {
+                        this.errorMsg = `Error on createTrack api : ${ex}`;
+                        console.log(this.errorMsg)
+                    });
+            })
+            .catch(ex => {
+                this.errorMsg = `Error on json2gpx api : ${ex}`;
+                console.log(this.errorMsg)
+            });
+        return "OK";
     }
 
     private changeTrackData(track: TrackTo) {

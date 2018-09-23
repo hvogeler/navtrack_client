@@ -85,11 +85,11 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                                     hidden={false}>Save Track
                                             </button>
                                         </div>
-                                        {(this.errorMsg != null) ?
+                                        {(this.errorMsg != null || this.props.errorMsg != null) ?
                                             <div className="form-group col-8 border-danger rounded"
                                                  style={{backgroundColor: 'red'}}>
                                                 <div className="text-light text-center justify-content-center align-self-center">
-                                                    {this.errorMsg}
+                                                    {this.props.errorMsg || this.errorMsg}
                                                 </div>
                                             </div>
                                             : ""
@@ -224,9 +224,10 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         this.okMsg = `Track ${this.props.trackData.trackname} saved`;
         this.props.trackData.owner = globalRootStore.uiStore.userDo;
         this.props.trackData.created = moment().format();
-        if (!this.props.saveTrack()) {
+        const ret = this.props.saveTrack();
+        if (ret !== "OK") {
             this.okMsg = null;
-            this.errorMsg = "Track could not be saved. Did you select Trackpoints on the map below?";
+            this.errorMsg = ret;
             return
         }
         Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`));
