@@ -131,7 +131,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
     }
 
     private addTrackPt(trackPt: TrackPtDo) {
-        this.trackPts.push(trackPt)
+        this.trackPts.push(trackPt);
         console.log(this.trackPts.length)
     }
 
@@ -155,10 +155,17 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
                 // here save the track
                 fetchJsonPost(`/api/createtrack`,
                     JSON.stringify(this.newTrack))
-                    .then((saveResp: TrackTo) => {
+                    .then((saveResp) => {
                         if (saveResp !== undefined) {
-                            const createdTrack = saveResp;
-                            console.log(`new track is: ${createdTrack.trackname}, id: ${createdTrack.id}`);
+                            const createdTrack: TrackTo = saveResp;
+                            if (createdTrack.trackname !== undefined) {
+                                console.log(`new track is: ${createdTrack.trackname}, id: ${createdTrack.id}`);
+                                this.newTrack = createdTrack;
+                                this.errorMsg = null
+                            } else {
+                                this.errorMsg = `Error on createTrack api : ${saveResp.message}`;
+                                console.log(this.errorMsg)
+                            }
                         }
                     })
                     .catch(ex => {

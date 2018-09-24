@@ -94,10 +94,10 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             </div>
                                             : ""
                                         }
-                                        {(this.okMsg != null) ?
+                                        {(this.okMsg != null && this.props.errorMsg == null) ?
                                             <div className="form-group col-8">
                                                 <div className="text-light text-center">
-                                                    {this.okMsg}
+                                                    {`Track ${this.props.trackData.trackname} saved with id ${this.props.trackData.id}`}
                                                 </div>
                                             </div>
                                             : ""
@@ -221,7 +221,6 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             return
         }
         this.errorMsg = null;
-        this.okMsg = `Track ${this.props.trackData.trackname} saved`;
         this.props.trackData.owner = globalRootStore.uiStore.userDo;
         this.props.trackData.created = moment().format();
         const ret = this.props.saveTrack();
@@ -230,6 +229,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             this.errorMsg = ret;
             return
         }
+        this.okMsg = `Track ${this.props.trackData.trackname} saved with id ${this.props.trackData.id}`;
         Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`));
         console.log(`Country = ${this.props.trackData.country}`);
         console.log(`Tracktypes = ${this.props.trackData.tracktypes.join(", ")}`);

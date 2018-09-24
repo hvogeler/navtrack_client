@@ -3,8 +3,6 @@ import 'isomorphic-fetch';
 import {globalRootStore} from "../App";
 import {TrackTo} from "../transport/TrackTo";
 
-
-// TODO: make backend URL configurable
 // const BACKEND_URL = 'http://localhost:8080';
 const BACKEND_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -59,11 +57,9 @@ export function fetchJsonPost(path: string, body: string): Promise<any> {
         "method": "POST",
         "mode": "cors"
     },)
-        .then(response => {
-                return response.json();
-        })
+        .then(response => response.json())
         .catch(ex => {
-            console.error('parsing failed', ex);
+            console.error('fetch from server failed', ex.toString());
         });
 }
 
