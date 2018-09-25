@@ -57,10 +57,12 @@
 
 .md-yellow {
     color: #ffc107;
+    font-size: 18px;
 }
 
 .md-grey {
     color: slategray;
+    font-size: 18px;
 }
 
 .hand-pointer {
