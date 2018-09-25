@@ -1,6 +1,7 @@
 import {action} from "mobx";
 import * as moment from "moment";
 import * as React from 'react';
+import {globalRootStore} from "../App";
 import {TrackTo} from "../transport/TrackTo";
 
 
@@ -25,6 +26,9 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                         <th scope="col">Country</th>
                         <th scope="col">Region</th>
                         <th scope="col">Created</th>
+                        <th scope="col">Owner</th>
+                        {globalRootStore.uiStore.isLoggedIn ?
+                        <th scope="col">Action</th> : <th/> }
                     </tr>
                     </thead>
                     <tbody>
@@ -38,6 +42,10 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             <td>{it.country}</td>
                             <td>{it.region}</td>
                             <td>{moment(it.created).format("Y-MM-DD HH:mm:ss")}</td>
+                            <td>{it.owner!.username}</td>
+                            {globalRootStore.uiStore.isLoggedIn && globalRootStore.uiStore.userDo!.id === it.owner!.id?
+                            <td><i className="material-icons md-yellow hand-pointer" onClick={() => this.editItem(it.id)}>edit </i>
+                            <i className="material-icons md-grey hand-pointer" onClick={() => this.deleteItem(it.id)}>delete</i></td> : <td/>}
                         </tr>
                     )}
                     </tbody>
@@ -50,6 +58,16 @@ export class TrackList extends React.Component<ITrackListProps, any> {
     private onClick(trackid: number) {
         console.log(`Row ${trackid} clicked`);
         this.props.setCurrentTrackListId(trackid)
+    };
+
+    @action
+    private editItem(trackid: number) {
+        console.log(`Edit Row ${trackid}`);
+    };
+
+    @action
+    private deleteItem(trackid: number) {
+        console.log(`Delete Row ${trackid}`);
     };
 
     private onMouseEnter(trackid: number) {

@@ -55,3 +55,18 @@
     position: absolute;
 }
 
+.md-yellow {
+    color: #ffc107;
+}
+
+.md-grey {
+    color: slategray;
+}
+
+.hand-pointer {
+    cursor: pointer;
+}
+
+.x-pointer {
+    cursor: not-allowed;
+}
