@@ -23,6 +23,53 @@ interface ITracksMain extends RouteComponentProps<any> {
 @observer
 export class TrackMain extends React.Component<ITracksMain, any> {
 
+    @computed
+    private get currentTrack(): TrackTo {
+        return this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]
+    }
+
+    @computed
+    private get trackPtsFromGpx(): TrackPtDo[] {
+        if (this.currentTrack === undefined) {
+            return []
+        }
+        return (TrackMain.trackPtsFromGpxUtil(this.currentTrack.gpx));
+    }
+
+    @computed
+    private get additionalTrackInfo(): AdditionalTrackInfo {
+        return {
+            length: this.trackLengthInKm,
+            trackPtCnt: this.trackPtsFromGpx.length
+        }
+    }
+
+    @computed
+    private get trackLengthInKm(): number {
+        let akku = 0;
+        this.trackPtsFromGpx.forEach(
+            (trackPt, idx, v) => {
+                if (idx === 0) {
+                    return;
+                }
+                const latlng1 = new LatLng(v[idx].lat, v[idx].lng);
+                const latlng2 = new LatLng(v[idx - 1].lat, v[idx - 1].lng);
+                akku += latlng1.distanceTo(latlng2)
+            }
+        );
+
+        return akku / 1000;
+    }
+
+    public static trackPtsFromGpxUtil(gpxdoc: string): TrackPtDo[] {
+        const doc = (new DOMParser()).parseFromString(gpxdoc, 'text/xml');
+        const elements = TrackMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
+        return elements.map((element) =>
+            new TrackPtDo(+(element.getAttribute("lat") || 0),
+                +(element.getAttribute("lon") || 0),
+                0));
+    }
+
     private static nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
         const elements: Element[] = [];
         let i: number;
@@ -145,47 +192,6 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @action
     private setCurrentTrack(id: number) {
         this.currentTrackListId = id;
-    }
-
-    @computed
-    private get currentTrack(): TrackTo {
-        return this.trackListData[this.findIndexForTrackListid(this.currentTrackListId)]
-    }
-
-    @computed
-    private get trackPtsFromGpx(): TrackPtDo[] {
-        if (this.currentTrack === undefined) {
-            return []
-        }
-        const doc = (new DOMParser()).parseFromString(this.currentTrack.gpx, 'text/xml');
-        const elements = TrackMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
-        return elements.map((element) =>
-            new TrackPtDo(+(element.getAttribute("lat") || 0),
-                +(element.getAttribute("lon") || 0),
-                0));
-    }
-
-    @computed
-    private get additionalTrackInfo(): AdditionalTrackInfo {
-        return {
-            length: this.trackLengthInKm,
-            trackPtCnt: this.trackPtsFromGpx.length
-        }
-    }
-
-    @computed
-    private get trackLengthInKm(): number {
-        let akku = 0;
-        this.trackPtsFromGpx.forEach(
-            (trackPt, idx, v) => {
-                if (idx === 0) { return; }
-                const latlng1 = new LatLng(v[idx].lat, v[idx].lng);
-                const latlng2 = new LatLng(v[idx-1].lat, v[idx-1].lng);
-                akku += latlng1.distanceTo(latlng2)
-            }
-        );
-
-        return akku / 1000;
     }
 
 }

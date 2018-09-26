@@ -6,6 +6,7 @@ import * as moment from "moment";
 import * as React from 'react';
 import {globalRootStore} from "../App";
 import {ITrackCreateProps} from "./TrackCreateController";
+import {EditOrCreate} from "./TrackCreateMain";
 
 @observer
 export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
@@ -19,6 +20,12 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         this.onChangeHandlerSelect = this.onChangeHandlerSelect.bind(this);
         this.onBlurHandler = this.onBlurHandler.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    }
+
+    public componentDidMount() {
+        if (this.props.mode === EditOrCreate.edit) {
+            this.centerMap(this.props.trackData.region);
+        }
     }
 
     public render() {
@@ -72,7 +79,8 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             <select id="tracktype" className="form-control" multiple={true}
                                                     onChange={this.onChangeHandlerSelect}>
                                                 {this.props.tracktypes.map(value => {
-                                                    return (<option key={value.id}>{value.tracktypename}</option>)
+                                                    const isSelected = this.props.trackData.tracktypes.some( tt => tt === value.tracktypename);
+                                                    return (<option key={value.id} selected={isSelected}>{value.tracktypename}</option>)
                                                 })}
                                             </select>
                                             {/*<input type="text" className="form-control" id="country"*/}
@@ -192,10 +200,15 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
 
     private onBlurHandler(event: React.FormEvent) {
         console.log(`Geosearch for  ${this.props.trackData.region}`);
+        this.centerMap(this.props.trackData.region);
+    }
+
+
+    private centerMap(region: string) {
         const provider = new OpenStreetMapProvider();
-        provider.search({query: this.props.trackData.region}).then((value) => {
+        provider.search({query: region}).then((value) => {
             if (value.length <= 0) {
-                return
+                return;
             }
             console.log(value[0]);
             const topHitLocation = value[0];

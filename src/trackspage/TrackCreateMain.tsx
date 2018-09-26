@@ -15,6 +15,7 @@ import {TrackTo} from "../transport/TrackTo";
 import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateController} from "./TrackCreateController";
+import {TrackMain} from "./TrackMain";
 import {TrackPtDo} from "./TrackPtDo";
 
 export interface IMapCenter {
@@ -38,17 +39,6 @@ interface IJson2GpxResponse {
 
 @observer
 export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
-
-    private static nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
-        const elements: Element[] = [];
-        let i: number;
-        for (i = 0; i < nodeList.length; i++) {
-            console.log(`${i}. (${nodeList.item(i).getAttribute("lat")}, ${nodeList.item(i).getAttribute("lon")}`)
-            elements.push(nodeList.item(i))
-        }
-        return elements
-    }
-
     private static emptyTrack(): TrackTo {
         return {
             country: "",
@@ -156,7 +146,8 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     private getTrack(trackId: number) {
         fetchJson(`/api/tracks/${trackId}`)
             .then( (resp) => {
-                this.newTrack = resp
+                this.newTrack = resp;
+                this.trackPts = TrackMain.trackPtsFromGpxUtil(this.newTrack.gpx);
             })
     }
 
@@ -209,24 +200,24 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         this.mapCenter = mapCenter;
     }
 
-    private get trackPtsFromGpx(): TrackPtDo[] {
-        if (this.newTrack === undefined) {
-            return []
-        }
-        const doc = (new DOMParser()).parseFromString(this.newTrack.gpx, 'text/xml');
-        const elements = TrackCreateMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
-        return elements.map((element) =>
-            new TrackPtDo(+(element.getAttribute("lat") || 0),
-                +(element.getAttribute("lon") || 0),
-                0));
-
-    }
+    // private get trackPtsFromGpx(): TrackPtDo[] {
+    //     if (this.newTrack === undefined) {
+    //         return []
+    //     }
+    //     const doc = (new DOMParser()).parseFromString(this.newTrack.gpx, 'text/xml');
+    //     const elements = TrackCreateMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
+    //     return elements.map((element) =>
+    //         new TrackPtDo(+(element.getAttribute("lat") || 0),
+    //             +(element.getAttribute("lon") || 0),
+    //             0));
+    //
+    // }
 
     @computed
     private get additionalTrackInfo(): AdditionalTrackInfo {
         return {
             length: this.trackLengthInKm,
-            trackPtCnt: this.trackPtsFromGpx.length
+            trackPtCnt: TrackMain.trackPtsFromGpxUtil(this.newTrack.gpx).length
         }
     }
 
