@@ -84,10 +84,17 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     public componentWillMount() {
         this.getCountries();
         this.getTracktypes();
+        if (this.props.mode === EditOrCreate.edit) {
+            globalRootStore.uiStore.currentMenuItem = MenuItem.tracks;
+            this.getTrack(this.props.match.params.trackId)
+        } else {
+            globalRootStore.uiStore.currentMenuItem = MenuItem.create;
+            this.newTrack = TrackCreateMain.emptyTrack();
+        }
     }
 
     public componentDidMount() {
-        globalRootStore.uiStore.currentMenuItem = MenuItem.create;
+        console.log(`TrackCreateMain Called for track : ${this.props.match.params.trackId}`);
     }
 
     public render() {
@@ -144,6 +151,13 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private deleteTrackPt(idx: number) {
         this.trackPts.filter((element, index, array) => index !== idx)
+    }
+
+    private getTrack(trackId: number) {
+        fetchJson(`/api/tracks/${trackId}`)
+            .then( (resp) => {
+                this.newTrack = resp
+            })
     }
 
     private saveTrack(): string {

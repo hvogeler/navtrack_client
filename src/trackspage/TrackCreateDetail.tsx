@@ -42,18 +42,18 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                         <div className="form-group text-left col-2">
                                             <label htmlFor="trackname">Trackname</label>
                                             <input type="text" className="form-control" id="trackname"
-                                                   onChange={this.onChangeHandler}/>
+                                                   onChange={this.onChangeHandler} value={this.props.trackData.trackname}/>
                                         </div>
                                         <div className="form-group col-3 text-left">
                                             <label htmlFor="description">Description</label>
                                             <input type="text" className="form-control" id="description"
-                                                   onChange={this.onChangeHandler}/>
+                                                   onChange={this.onChangeHandler} value={this.props.trackData.description}/>
                                         </div>
                                         <div className="form-group col-2 text-left">
                                             <label htmlFor="country">Country</label>
                                             <select id="country" className="form-control"
                                                     onChange={this.onChangeHandlerSelect}>
-                                                <option selected={true}>Choose...</option>
+                                                <option selected={true}>{this.props.trackData.country}</option>
                                                 {this.props.countries.map(value => {
                                                     return (<option key={value.id}>{value.name}</option>)
                                                 })}
@@ -65,7 +65,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             <label htmlFor="region">Region</label>
                                             <input type="text" className="form-control" id="region"
                                                    onChange={this.onChangeHandler}
-                                                   onBlur={this.onBlurHandler}/>
+                                                   onBlur={this.onBlurHandler} value={this.props.trackData.region}/>
                                         </div>
                                         <div className="form-group col-2 text-left">
                                             <label htmlFor="tracktype">Tracktype</label>

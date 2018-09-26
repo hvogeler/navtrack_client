@@ -1,6 +1,7 @@
 import {action} from "mobx";
 import * as moment from "moment";
 import * as React from 'react';
+import {Link} from "react-router-dom";
 import {globalRootStore} from "../App";
 import {TrackTo} from "../transport/TrackTo";
 
@@ -44,7 +45,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             <td>{moment(it.created).format("Y-MM-DD HH:mm")}</td>
                             <td>{it.owner!.username}</td>
                             {globalRootStore.uiStore.isLoggedIn && globalRootStore.uiStore.userDo!.id === it.owner!.id?
-                            <td><i className="material-icons md-yellow hand-pointer" onClick={() => this.editItem(it.id)}>edit </i>
+                                <td><Link to={`/edit/${it.id}`}> <i className="material-icons md-yellow hand-pointer">edit </i></Link>
                             <i className="material-icons md-grey hand-pointer" onClick={() => this.deleteItem(it.id)}>delete</i></td> : <td/>}
                         </tr>
                     )}
@@ -60,10 +61,10 @@ export class TrackList extends React.Component<ITrackListProps, any> {
         this.props.setCurrentTrackListId(trackid)
     };
 
-    @action
-    private editItem(trackid: number) {
-        console.log(`Edit Row ${trackid}`);
-    };
+    // @action
+    // private editItem(trackid: number) {
+    //     console.log(`Edit Row ${trackid}`);
+    // };
 
     @action
     private deleteItem(trackid: number) {
