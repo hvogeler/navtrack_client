@@ -7,8 +7,8 @@ import {IntroMain} from "./intro/IntroMain";
 import {LoginDlgMain} from "./login/LoginDlgMain";
 import {RootStore} from "./RootStore";
 import './styles/mainstyles.css'
-import {TracksCreateMain} from "./trackspage/TracksCreateMain";
-import {TracksMain} from "./trackspage/TracksMain"
+import {EditOrCreate, TrackCreateMain} from "./trackspage/TrackCreateMain";
+import {TrackMain} from "./trackspage/TrackMain"
 
 export let globalRootStore: RootStore;
 
@@ -29,11 +29,13 @@ export class App extends React.Component<any, any> {
                 <Router basename={"/navtrack"}>
                     <Switch>
                         <Route exact={true} path="/"
-                               render={(props) => <TracksMain {...props} rootStore={this.rootStore}/>}/>
+                               render={(props) => <TrackMain {...props} rootStore={this.rootStore}/>}/>
                         <Route exact={true} path="/tracks"
-                               render={(props) => <TracksMain {...props} rootStore={this.rootStore}/>}/>
+                               render={(props) => <TrackMain {...props} rootStore={this.rootStore}/>}/>
                         <Route exact={true} path="/create"
-                               render={(props) => <TracksCreateMain {...props} rootStore={this.rootStore}/>}/>
+                               render={(props) => <TrackCreateMain {...props} rootStore={this.rootStore} mode={EditOrCreate.create}/>}/>
+                        <Route exact={true} path="/edit"
+                               render={(props) => <TrackCreateMain {...props} rootStore={this.rootStore} mode={EditOrCreate.edit}/>}/>
                         <Route exact={true} path="/docs"
                                render={(props) => <DocsMain {...props} rootStore={this.rootStore}/>}/>
                         <Route exact={true} path="/intro"

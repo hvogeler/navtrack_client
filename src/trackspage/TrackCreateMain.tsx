@@ -22,8 +22,14 @@ export interface IMapCenter {
     label: string;
 }
 
+export enum EditOrCreate {
+    edit,
+    create
+}
+
 interface ITracksCreateMain extends RouteComponentProps<any> {
     rootStore: RootStore;
+    mode: EditOrCreate;
 }
 
 interface IJson2GpxResponse {
@@ -31,7 +37,7 @@ interface IJson2GpxResponse {
 }
 
 @observer
-export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
+export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private static nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
         const elements: Element[] = [];
@@ -67,7 +73,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
 
     constructor(props: ITracksCreateMain) {
         super(props);
-        this.newTrack = TracksCreateMain.emptyTrack();
+        this.newTrack = TrackCreateMain.emptyTrack();
         this.changeTrackData = this.changeTrackData.bind(this);
         this.setMapCenter = this.setMapCenter.bind(this);
         this.addTrackPt = this.addTrackPt.bind(this);
@@ -103,6 +109,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
                     tracktypes={globalRootStore.uiStore.tracktypes}
                     saveTrack={this.saveTrack}
                     errorMsg={this.errorMsg}
+                    mode={this.props.mode}
                 />
             </div>
         );
@@ -193,7 +200,7 @@ export class TracksCreateMain extends React.Component<ITracksCreateMain, any> {
             return []
         }
         const doc = (new DOMParser()).parseFromString(this.newTrack.gpx, 'text/xml');
-        const elements = TracksCreateMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
+        const elements = TrackCreateMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
         return elements.map((element) =>
             new TrackPtDo(+(element.getAttribute("lat") || 0),
                 +(element.getAttribute("lon") || 0),

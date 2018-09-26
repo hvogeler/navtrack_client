@@ -5,8 +5,8 @@ import {observer} from "mobx-react";
 import * as React from 'react';
 import {LayerGroup, Map, Marker, Polyline, Popup, Rectangle, TileLayer} from "react-leaflet";
 import {fetchJson} from "../backend/Backend";
+import {IMapCenter} from "./TrackCreateMain";
 import {TrackPtDo} from "./TrackPtDo";
-import {IMapCenter} from "./TracksCreateMain";
 
 // const tileserverOSMStandard = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 // const tileserverThunderforestLandscape = "http://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
@@ -99,8 +99,8 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
             locationWithElevation = new LatLng(resp.lat, resp.lng, resp.ele);
             console.log(`Elevation of: ${locationWithElevation.lat} / ${locationWithElevation.lng} = ${locationWithElevation.alt}`);
             this.props.addTrackPt(new TrackPtDo(resp.lat, resp.lng, resp.ele));
-        })
-            .catch(ex => console.log(`Error on Elevation api ${ex}`));
+        });
+//            .catch(ex => console.log(`Error on Elevation api ${ex}`));
 
     }
 }

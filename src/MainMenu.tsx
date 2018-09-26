@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import {globalRootStore} from "./App";
 import {RootStore} from "./RootStore";
+import {Roles} from "./transport/RoleTo";
 
 interface IMainMenu {
     rootStore: RootStore;
@@ -42,7 +43,7 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                                 <Link className="nav-link" to={"/tracks"}>Tracks <span
                                     className="sr-only">(current)</span></Link>
                             </li>
-                            {this.props.rootStore.uiStore.isLoggedIn ?
+                            {globalRootStore.uiStore.isLoggedInWithRole(Roles.ROLE_USER) ?
                                 <li className={`nav-item ${this.isActiveMenuItem(MenuItem.create)}`}>
                                     <Link className="nav-link" to="/create">Create</Link>
                                 </li> : ""

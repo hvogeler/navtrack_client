@@ -21,7 +21,7 @@ interface ITracksMain extends RouteComponentProps<any> {
 }
 
 @observer
-export class TracksMain extends React.Component<ITracksMain, any> {
+export class TrackMain extends React.Component<ITracksMain, any> {
 
     private static nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {
         const elements: Element[] = [];
@@ -158,7 +158,7 @@ export class TracksMain extends React.Component<ITracksMain, any> {
             return []
         }
         const doc = (new DOMParser()).parseFromString(this.currentTrack.gpx, 'text/xml');
-        const elements = TracksMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
+        const elements = TrackMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
         return elements.map((element) =>
             new TrackPtDo(+(element.getAttribute("lat") || 0),
                 +(element.getAttribute("lon") || 0),

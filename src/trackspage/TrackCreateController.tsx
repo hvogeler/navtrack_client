@@ -6,10 +6,10 @@ import {TrackTo} from "../transport/TrackTo";
 import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateDetail} from "./TrackCreateDetail";
+import {EditOrCreate, IMapCenter} from "./TrackCreateMain";
 import {TrackCreateMap} from "./TrackCreateMap";
 import {TrackPointList} from "./TrackPointList";
 import {TrackPtDo} from "./TrackPtDo";
-import {IMapCenter} from "./TracksCreateMain";
 
 export interface ITrackCreateProps {
     trackData: TrackTo;
@@ -25,6 +25,7 @@ export interface ITrackCreateProps {
     countries: CountryTo[];
     tracktypes: TrackTypeTo[];
     errorMsg: string | null;
+    mode: EditOrCreate;
 }
 
 @observer
@@ -52,6 +53,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             tracktypes={this.props.tracktypes}
                             saveTrack={this.props.saveTrack}
                             errorMsg={this.props.errorMsg}
+                            mode={this.props.mode}
                         />
                     </div>
                 </div>
