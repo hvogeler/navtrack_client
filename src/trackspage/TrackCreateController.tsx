@@ -62,7 +62,6 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                         <div className="col-md-10">
                             <TrackCreateMap
                                 mapCenter={this.props.mapCenter}
-                                zoom={13}
                                 addTrackPt={this.props.addTrackPt}
                                 trackPts={this.props.trackPts}
                                 trackLengthInKm={this.props.trackLengthInKm}

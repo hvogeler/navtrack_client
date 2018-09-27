@@ -20,7 +20,7 @@ import {TrackPtDo} from "./TrackPtDo";
 
 export interface IMapCenter {
     location: LatLng;
-    label: string;
+    label: string | null;
 }
 
 export enum EditOrCreate {
@@ -165,7 +165,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                 console.log(`gpx: ${json2GpxResponse.gpx}`);
 
                 // here save the track
-                fetchJsonPost(`/api/createtrack`,
+                fetchJsonPost(this.newTrack.id === 0 ? "/api/createtrack" : "/api/updatetrack",
                     JSON.stringify(this.newTrack))
                     .then((saveResp) => {
                         if (saveResp !== undefined) {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {LayerGroup, Map, Rectangle} from "react-leaflet";
 import {TileLayer} from "react-leaflet";
 import {Polyline} from "react-leaflet";
+import {Constants} from "../Constants";
 import {ITrackDetailProps} from "./TrackDetailController";
 
 const markerRectSize = 0.0001;
@@ -23,7 +24,7 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
         const lastTrackPt = trackPts[trackPts.length - 1];
         return (
             <div className="border border-light rounded">
-                <Map id="viewMap" center={[trackPts[0].lat, trackPts[0].lng]} zoom={14}>
+                <Map id="viewMap" center={[trackPts[0].lat, trackPts[0].lng]} zoom={Constants.INITIAL_ZOOM_LEVEL}>
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                         url={TILESERVER === undefined ? "" : TILESERVER}

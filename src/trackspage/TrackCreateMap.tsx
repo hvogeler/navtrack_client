@@ -1,10 +1,11 @@
 import {LatLng, LeafletMouseEvent} from "leaflet";
-import {action} from "mobx";
+import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 // import * as L from "leaflet";
 import * as React from 'react';
-import {LayerGroup, Map, Marker, Polyline, Popup, Rectangle, TileLayer} from "react-leaflet";
+import {Circle, LayerGroup, Map, Marker, Polyline, Popup, Rectangle, TileLayer} from "react-leaflet";
 import {fetchJson} from "../backend/Backend";
+import {Constants} from "../Constants";
 import {IMapCenter} from "./TrackCreateMain";
 import {TrackPtDo} from "./TrackPtDo";
 
@@ -14,24 +15,27 @@ import {TrackPtDo} from "./TrackPtDo";
 
 const TILESERVER = process.env.REACT_APP_TILESERVER;
 const markerRectSize = 0.0001;
+const markerCircleSize = 40;
 
 interface ITrackCreateMap {
     mapCenter: IMapCenter;
-    zoom: number;
     addTrackPt: (trackPt: TrackPtDo) => void;
     trackPts: TrackPtDo[];
     trackLengthInKm: number;
 }
 
 interface IGetElevationResponse {
-    lat : number,
-    lng : number,
-    ele : number
+    lat: number,
+    lng: number,
+    ele: number
 }
 
 @observer
 export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
+    private static clickedOnCircle: boolean = false;
     private map: any;
+
+    @observable private selectedTrackPtIdx: number = -1;
 
     constructor(props: ITrackCreateMap) {
         super(props);
@@ -42,9 +46,20 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
     public render() {
         const trackPts = this.props.trackPts;
         const lastTrackPt = trackPts[trackPts.length - 1];
-        console.log(`Tracklength = ${this.props.trackLengthInKm}`)
+        const {...mapCenter} = this.props.mapCenter;
+
         let trackLayer: any;
+        let trackPtCircles: any;
         if (trackPts.length > 0) {
+            mapCenter.location = trackPts[0].toLatLng();
+            mapCenter.label = null;
+
+            trackPtCircles = (
+                trackPts.map( (pt, idx) => {
+                    return (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} color={this.selectedTrackPtIdx === idx ? "#c82333" : "#00ff7f"} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                })
+            );
+
             trackLayer = (
                 <LayerGroup>
                     <Polyline positions={
@@ -67,24 +82,32 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                         fillcolor={"#ffff00"}
                         fillopacity={0.9}
                     />
+                    {trackPtCircles}
                 </LayerGroup>
 
             )
+
         }
 
+        let marker: any;
+        if (mapCenter.label !== null) {
+            marker = (
+                <Marker position={mapCenter.location}
+                        color="yellow" radius={12}>
+                    <Popup>{this.props.mapCenter.label}</Popup>
+                </Marker>
+            )
+        }
 
         return (
             <div>
-                <Map id="viewMap" center={this.props.mapCenter.location} zoom={this.props.zoom}
+                <Map id="viewMap" center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
                      onClick={this.onClickHandler} ref={(ref => this.map = ref)}>
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                         url={TILESERVER === undefined ? "" : TILESERVER}
                     />
-                    <Marker position={[this.props.mapCenter.location.lat, this.props.mapCenter.location.lng]}
-                            color="yellow" radius={12}>
-                        <Popup>{this.props.mapCenter.label}</Popup>
-                    </Marker>
+                    {marker}
                     {trackLayer}
                 </Map>
             </div>
@@ -93,15 +116,34 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
 
     @action
     private onClickHandler(event: LeafletMouseEvent) {
-        console.log(event.latlng);
+        if (TrackCreateMap.clickedOnCircle) {
+            TrackCreateMap.clickedOnCircle = false;
+            return;
+        }
+
         let locationWithElevation: LatLng;
-        fetchJson(`/api/trackutil/elevation?lat=${event.latlng.lat}&lon=${event.latlng.lng}`).then((resp : IGetElevationResponse) => {
+        fetchJson(`/api/trackutil/elevation?lat=${event.latlng.lat}&lon=${event.latlng.lng}`).then((resp: IGetElevationResponse) => {
             locationWithElevation = new LatLng(resp.lat, resp.lng, resp.ele);
             console.log(`Elevation of: ${locationWithElevation.lat} / ${locationWithElevation.lng} = ${locationWithElevation.alt}`);
-            this.props.addTrackPt(new TrackPtDo(resp.lat, resp.lng, resp.ele));
+            this.actOnClick(resp);
         });
-//            .catch(ex => console.log(`Error on Elevation api ${ex}`));
+    }
+
+    @action
+    private clickOnTrackPtCircle(event: LeafletMouseEvent) {
+        TrackCreateMap.clickedOnCircle = true;
+        console.log(`Circle clicked on trackPt: ${event.target.options.idx}`);
+        if (this.selectedTrackPtIdx === event.target.options.idx) {
+            this.selectedTrackPtIdx = -1;
+        } else {
+            this.selectedTrackPtIdx = 2;
+        }
+    }
+
+    private actOnClick(resp: IGetElevationResponse) {
+        this.props.addTrackPt(new TrackPtDo(resp.lat, resp.lng, resp.ele));
 
     }
+
 }
 
