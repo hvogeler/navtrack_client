@@ -37,6 +37,17 @@ interface IJson2GpxResponse {
     gpx: string
 }
 
+export interface InsertMode {
+    position: InsertPosition;
+    idx: number;
+}
+
+export enum InsertPosition {
+    before = "before",
+    after = "after"
+}
+
+
 @observer
 export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     private static emptyTrack(): TrackTo {
@@ -61,6 +72,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     @observable private trackPts: TrackPtDo[] = [];
     @observable private selectedTrackPtIdx = -1;
     @observable private errorMsg: string | null = null;
+    @observable private insertMode: InsertMode | null = null;
 
     constructor(props: ITracksCreateMain) {
         super(props);
@@ -71,6 +83,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         this.deleteTrackPt = this.deleteTrackPt.bind(this);
         this.saveTrack = this.saveTrack.bind(this);
         this.setSelectedTrackPt = this.setSelectedTrackPt.bind(this);
+        this.setInsertMode = this.setInsertMode.bind(this);
     }
 
     public componentWillMount() {
@@ -111,6 +124,8 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                     mode={this.props.mode}
                     setSelectedTrackPt={this.setSelectedTrackPt}
                     selectedTrackPtIdx={this.selectedTrackPtIdx}
+                    insertMode={this.insertMode}
+                    setInsertMode={this.setInsertMode}
                 />
             </div>
         );
@@ -206,6 +221,10 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private setSelectedTrackPt(idx: number = -1) {
         this.selectedTrackPtIdx = idx;
+    }
+
+    private setInsertMode(mode: InsertMode | null = null) {
+        this.insertMode = mode;
     }
 
     @computed

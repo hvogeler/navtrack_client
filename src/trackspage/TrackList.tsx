@@ -45,8 +45,8 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             <td>{moment(it.created).format("Y-MM-DD HH:mm")}</td>
                             <td>{it.owner!.username}</td>
                             {globalRootStore.uiStore.isLoggedIn && globalRootStore.uiStore.userDo!.id === it.owner!.id?
-                                <td><Link to={`/edit/${it.id}`}> <i className="material-icons md-yellow hand-pointer">edit </i></Link>
-                            <i className="material-icons md-grey hand-pointer" onClick={() => this.deleteItem(it.id)}>delete</i></td> : <td/>}
+                                <td><Link to={`/edit/${it.id}`}> <i className="material-icons md-yellow hand-pointer" data-md-tooltip="Edit Track">edit </i></Link>
+                            <i className="material-icons md-grey hand-pointer" onClick={() => this.deleteItem(it.id)} data-md-tooltip="Delete Track">delete</i></td> : <td/>}
                         </tr>
                     )}
                     </tbody>

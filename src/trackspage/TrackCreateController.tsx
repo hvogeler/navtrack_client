@@ -7,6 +7,7 @@ import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateDetail} from "./TrackCreateDetail";
 import {EditOrCreate, IMapCenter} from "./TrackCreateMain";
+import {InsertMode} from "./TrackCreateMain";
 import {TrackCreateMap} from "./TrackCreateMap";
 import {TrackPointList} from "./TrackPointList";
 import {TrackPtDo} from "./TrackPtDo";
@@ -28,6 +29,8 @@ export interface ITrackCreateProps {
     mode: EditOrCreate;
     selectedTrackPtIdx: number;
     setSelectedTrackPt: (idx: number) => void;
+    insertMode: InsertMode | null;
+    setInsertMode: (position: InsertMode | null) => void;
 }
 
 @observer
@@ -58,6 +61,8 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             mode={this.props.mode}
                             setSelectedTrackPt={this.props.setSelectedTrackPt}
                             selectedTrackPtIdx={this.props.selectedTrackPtIdx}
+                            insertMode={this.props.insertMode}
+                            setInsertMode={this.props.setInsertMode}
                         />
                     </div>
                 </div>
@@ -78,6 +83,8 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                                             setSelectedTrackPt={this.props.setSelectedTrackPt}
                                             selectedTrackPtIdx={this.props.selectedTrackPtIdx}
                                             deleteTrackPt={this.props.deleteTrackPt}
+                                            insertMode={this.props.insertMode}
+                                            setInsertMode={this.props.setInsertMode}
                             />
                         </div>
                     </div>
