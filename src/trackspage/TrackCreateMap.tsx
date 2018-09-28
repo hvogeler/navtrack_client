@@ -33,9 +33,8 @@ interface IGetElevationResponse {
 @observer
 export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
     private static clickedOnCircle: boolean = false;
+    @observable private static selectedTrackPtIdx: number = -1;
     private map: any;
-
-    @observable private selectedTrackPtIdx: number = -1;
 
     constructor(props: ITrackCreateMap) {
         super(props);
@@ -56,7 +55,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
 
             trackPtCircles = (
                 trackPts.map( (pt, idx) => {
-                    return (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} color={this.selectedTrackPtIdx === idx ? "#c82333" : "#00ff7f"} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                    return (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} color={TrackCreateMap.selectedTrackPtIdx === idx ? "#c82333" : "#00ff7f"} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
                 })
             );
 
@@ -132,11 +131,12 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
     @action
     private clickOnTrackPtCircle(event: LeafletMouseEvent) {
         TrackCreateMap.clickedOnCircle = true;
-        console.log(`Circle clicked on trackPt: ${event.target.options.idx}`);
-        if (this.selectedTrackPtIdx === event.target.options.idx) {
-            this.selectedTrackPtIdx = -1;
+        const circleClickedidx = event.target.options.idx;
+        console.log(`Circle clicked on trackPt: ${circleClickedidx}`);
+        if (TrackCreateMap.selectedTrackPtIdx === circleClickedidx) {
+            TrackCreateMap.selectedTrackPtIdx = -1;
         } else {
-            this.selectedTrackPtIdx = 2;
+            TrackCreateMap.selectedTrackPtIdx = circleClickedidx;
         }
     }
 
