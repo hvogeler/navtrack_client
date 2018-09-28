@@ -91,6 +91,8 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                             return trackPt
                         })}
                               color={"#6b1fde"}
+                              onClick={this.clickedOnPolyline}
+
                     />
                   {trackPtCircles}
                 </LayerGroup>
@@ -122,6 +124,11 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                 </Map>
             </div>
         );
+    }
+
+    @action
+    private clickedOnPolyline(event: LeafletMouseEvent) {
+        console.log("Clicked on Polyline");
     }
 
     @action

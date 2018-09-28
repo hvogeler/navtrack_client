@@ -144,7 +144,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     }
 
     private deleteTrackPt(idx: number) {
-        this.trackPts.filter((element, index, array) => index !== idx)
+        this.trackPts = this.trackPts.filter((element, index, array) => index !== idx)
     }
 
     private getTrack(trackId: number) {

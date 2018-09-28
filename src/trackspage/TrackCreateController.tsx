@@ -77,6 +77,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             <TrackPointList trackPts={this.props.trackPts}
                                             setSelectedTrackPt={this.props.setSelectedTrackPt}
                                             selectedTrackPtIdx={this.props.selectedTrackPtIdx}
+                                            deleteTrackPt={this.props.deleteTrackPt}
                             />
                         </div>
                     </div>
