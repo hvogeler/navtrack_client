@@ -26,6 +26,8 @@ export interface ITrackCreateProps {
     tracktypes: TrackTypeTo[];
     errorMsg: string | null;
     mode: EditOrCreate;
+    selectedTrackPtIdx: number;
+    setSelectedTrackPt: (idx: number) => void;
 }
 
 @observer
@@ -54,6 +56,8 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             saveTrack={this.props.saveTrack}
                             errorMsg={this.props.errorMsg}
                             mode={this.props.mode}
+                            setSelectedTrackPt={this.props.setSelectedTrackPt}
+                            selectedTrackPtIdx={this.props.selectedTrackPtIdx}
                         />
                     </div>
                 </div>
@@ -65,10 +69,15 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                                 addTrackPt={this.props.addTrackPt}
                                 trackPts={this.props.trackPts}
                                 trackLengthInKm={this.props.trackLengthInKm}
+                                setSelectedTrackPt={this.props.setSelectedTrackPt}
+                                selectedTrackPtIdx={this.props.selectedTrackPtIdx}
                             />
                         </div>
                         <div className="col-md-2">
-                            <TrackPointList trackPts={this.props.trackPts}/>
+                            <TrackPointList trackPts={this.props.trackPts}
+                                            setSelectedTrackPt={this.props.setSelectedTrackPt}
+                                            selectedTrackPtIdx={this.props.selectedTrackPtIdx}
+                            />
                         </div>
                     </div>
                 </div>

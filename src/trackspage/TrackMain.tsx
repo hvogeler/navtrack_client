@@ -64,10 +64,16 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     public static trackPtsFromGpxUtil(gpxdoc: string): TrackPtDo[] {
         const doc = (new DOMParser()).parseFromString(gpxdoc, 'text/xml');
         const elements = TrackMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
-        return elements.map((element) =>
-            new TrackPtDo(+(element.getAttribute("lat") || 0),
-                +(element.getAttribute("lon") || 0),
-                0));
+        return elements.map((element) => {
+                const children = TrackMain.nodeListtoArray(element.querySelectorAll("ele"));
+                const ele: number = children.length === 1 ? +children[0].innerHTML : 0;
+                const trackpt = new TrackPtDo(+(element.getAttribute("lat") || 0),
+                    +(element.getAttribute("lon") || 0),
+                    ele);
+
+                return trackpt;
+            }
+        );
     }
 
     private static nodeListtoArray(nodeList: NodeListOf<Element>): Element[] {

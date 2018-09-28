@@ -1,9 +1,9 @@
 import {LatLng, LeafletMouseEvent} from "leaflet";
-import {action, observable} from "mobx";
+import {action} from "mobx";
 import {observer} from "mobx-react";
 // import * as L from "leaflet";
 import * as React from 'react';
-import {Circle, LayerGroup, Map, Marker, Polyline, Popup, Rectangle, TileLayer} from "react-leaflet";
+import {Circle, LayerGroup, Map, Marker, Polyline, Popup, TileLayer} from "react-leaflet";
 import {fetchJson} from "../backend/Backend";
 import {Constants} from "../Constants";
 import {IMapCenter} from "./TrackCreateMain";
@@ -14,7 +14,6 @@ import {TrackPtDo} from "./TrackPtDo";
 // const tileserverThunderforestOutdoors = "http://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
 
 const TILESERVER = process.env.REACT_APP_TILESERVER;
-const markerRectSize = 0.0001;
 const markerCircleSize = 40;
 
 interface ITrackCreateMap {
@@ -22,6 +21,8 @@ interface ITrackCreateMap {
     addTrackPt: (trackPt: TrackPtDo) => void;
     trackPts: TrackPtDo[];
     trackLengthInKm: number;
+    selectedTrackPtIdx: number;
+    setSelectedTrackPt: (idx: number) => void;
 }
 
 interface IGetElevationResponse {
@@ -33,18 +34,21 @@ interface IGetElevationResponse {
 @observer
 export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
     private static clickedOnCircle: boolean = false;
-    @observable private static selectedTrackPtIdx: number = -1;
+    private static colorGreen = "#00ff7f";
+    private static colorYellow = "#ffff01";
+    private static colorRed = "#ff2d41";
+    private static colorBlue = "#00f8ff";
     private map: any;
 
     constructor(props: ITrackCreateMap) {
         super(props);
         this.onClickHandler = this.onClickHandler.bind(this);
+        this.clickOnTrackPtCircle = this.clickOnTrackPtCircle.bind(this);
     }
 
 
     public render() {
         const trackPts = this.props.trackPts;
-        const lastTrackPt = trackPts[trackPts.length - 1];
         const {...mapCenter} = this.props.mapCenter;
 
         let trackLayer: any;
@@ -52,10 +56,31 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         if (trackPts.length > 0) {
             mapCenter.location = trackPts[0].toLatLng();
             mapCenter.label = null;
-
             trackPtCircles = (
-                trackPts.map( (pt, idx) => {
-                    return (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} color={TrackCreateMap.selectedTrackPtIdx === idx ? "#c82333" : "#00ff7f"} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                trackPts.map((pt, idx) => {
+                    const isFirstTrackPt = idx === 0;
+                    const isLastTrackPt = idx === (trackPts.length - 1);
+                    const isSelectedTrackPt = this.props.selectedTrackPtIdx === idx;
+                    let circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
+                                          fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorBlue}
+                                          color={TrackCreateMap.colorBlue} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                    if (isFirstTrackPt) {
+                        circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
+                                          fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorGreen}
+                                          color={TrackCreateMap.colorGreen} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                    }
+                    if (isLastTrackPt) {
+                        circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
+                                          fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorYellow}
+                                          color={TrackCreateMap.colorYellow} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                    }
+                    if (isSelectedTrackPt) {
+                        circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
+                                          fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorRed}
+                                          color={TrackCreateMap.colorRed} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                    }
+                    return circle;
+
                 })
             );
 
@@ -67,21 +92,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                         })}
                               color={"#6b1fde"}
                     />
-                    <Rectangle
-                        bounds={[[trackPts[0].lat - markerRectSize, trackPts[0].lng - markerRectSize], [trackPts[0].lat + markerRectSize, trackPts[0].lng + markerRectSize]]}
-                        color={"#00cc00"}
-                        fill={true}
-                        fillcolor={"#00cc00"}
-                        fillopacity={0.9}
-                    />
-                    <Rectangle
-                        bounds={[[lastTrackPt.lat - markerRectSize, lastTrackPt.lng - markerRectSize], [lastTrackPt.lat + markerRectSize, lastTrackPt.lng + markerRectSize]]}
-                        color={"#ffff00"}
-                        fill={true}
-                        fillcolor={"#ffff00"}
-                        fillopacity={0.9}
-                    />
-                    {trackPtCircles}
+                  {trackPtCircles}
                 </LayerGroup>
 
             )
@@ -133,10 +144,10 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         TrackCreateMap.clickedOnCircle = true;
         const circleClickedidx = event.target.options.idx;
         console.log(`Circle clicked on trackPt: ${circleClickedidx}`);
-        if (TrackCreateMap.selectedTrackPtIdx === circleClickedidx) {
-            TrackCreateMap.selectedTrackPtIdx = -1;
+        if (this.props.selectedTrackPtIdx === circleClickedidx) {
+            this.props.setSelectedTrackPt(-1);
         } else {
-            TrackCreateMap.selectedTrackPtIdx = circleClickedidx;
+            this.props.setSelectedTrackPt(circleClickedidx);
         }
     }
 

@@ -59,6 +59,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         location: new LatLng(50.0, 6.98, 49),
     };
     @observable private trackPts: TrackPtDo[] = [];
+    @observable private selectedTrackPtIdx = -1;
     @observable private errorMsg: string | null = null;
 
     constructor(props: ITracksCreateMain) {
@@ -69,6 +70,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         this.addTrackPt = this.addTrackPt.bind(this);
         this.deleteTrackPt = this.deleteTrackPt.bind(this);
         this.saveTrack = this.saveTrack.bind(this);
+        this.setSelectedTrackPt = this.setSelectedTrackPt.bind(this);
     }
 
     public componentWillMount() {
@@ -107,6 +109,8 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                     saveTrack={this.saveTrack}
                     errorMsg={this.errorMsg}
                     mode={this.props.mode}
+                    setSelectedTrackPt={this.setSelectedTrackPt}
+                    selectedTrackPtIdx={this.selectedTrackPtIdx}
                 />
             </div>
         );
@@ -200,18 +204,9 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         this.mapCenter = mapCenter;
     }
 
-    // private get trackPtsFromGpx(): TrackPtDo[] {
-    //     if (this.newTrack === undefined) {
-    //         return []
-    //     }
-    //     const doc = (new DOMParser()).parseFromString(this.newTrack.gpx, 'text/xml');
-    //     const elements = TrackCreateMain.nodeListtoArray(doc.querySelectorAll("trkpt"));
-    //     return elements.map((element) =>
-    //         new TrackPtDo(+(element.getAttribute("lat") || 0),
-    //             +(element.getAttribute("lon") || 0),
-    //             0));
-    //
-    // }
+    private setSelectedTrackPt(idx: number = -1) {
+        this.selectedTrackPtIdx = idx;
+    }
 
     @computed
     private get additionalTrackInfo(): AdditionalTrackInfo {
