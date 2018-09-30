@@ -69,6 +69,10 @@
     cursor: pointer;
 }
 
+.crosshair-pointer {
+    cursor: crosshair;
+}
+
 .x-pointer {
     cursor: not-allowed;
 }

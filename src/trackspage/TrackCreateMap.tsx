@@ -114,7 +114,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         return (
             <div>
                 <Map id="viewMap" center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
-                     onClick={this.onClickHandler} ref={(ref => this.map = ref)}>
+                     onClick={this.onClickHandler} ref={(ref => this.map = ref)} className="leaflet-crosshair">
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                         url={TILESERVER === undefined ? "" : TILESERVER}

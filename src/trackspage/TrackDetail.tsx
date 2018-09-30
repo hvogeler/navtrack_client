@@ -42,7 +42,7 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                         <td className="text-left">{this.props.additionalTrackInfo.length.toFixed(2)}</td>
                     </tr>
                     <tr>
-                        <th scope="row" className="text-right"># TrackPoints</th>
+                        <th scope="row" className="text-right">TrackPoints</th>
                         <td className="text-left">{this.props.additionalTrackInfo.trackPtCnt}</td>
                     </tr>
                     <tr>

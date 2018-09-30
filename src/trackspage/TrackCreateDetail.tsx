@@ -4,6 +4,7 @@ import {observable} from "mobx";
 import {observer} from "mobx-react";
 import * as moment from "moment";
 import * as React from 'react';
+import {ChangeEvent} from "react";
 import {globalRootStore} from "../App";
 import {ITrackCreateProps} from "./TrackCreateController";
 import {EditOrCreate} from "./TrackCreateMain";
@@ -53,7 +54,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                         </div>
                                         <div className="form-group col-3 text-left">
                                             <label htmlFor="description">Description</label>
-                                            <input type="text" className="form-control" id="description"
+                                            <textarea rows={3} className="form-control" id="description"
                                                    onChange={this.onChangeHandler} value={this.props.trackData.description}/>
                                         </div>
                                         <div className="form-group col-2 text-left">
@@ -155,7 +156,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         }
     }
 
-    private onChangeHandler(event: React.FormEvent<HTMLInputElement>) {
+    private onChangeHandler(event: React.FormEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) {
         const inputField = event.currentTarget.id;
         this.props.changeTrack(
             {
