@@ -154,7 +154,13 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     }
 
     private addTrackPt(trackPt: TrackPtDo) {
-        this.trackPts.push(trackPt);
+        if (this.insertMode == null) {
+            this.trackPts.push(trackPt);
+        } else {
+            const at = this.insertMode.position === InsertPosition.before ? this.insertMode.idx : this.insertMode.idx + 1;
+            this.trackPts.splice(at, 0, trackPt);
+            this.setInsertMode(null);
+        }
         console.log(this.trackPts.length)
     }
 

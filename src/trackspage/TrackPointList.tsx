@@ -42,7 +42,6 @@ export class TrackPointList extends React.Component<ITrackPointListProps, any> {
                             onClick={() => {
                                 this.props.setSelectedTrackPt(idx);
                                 console.log(this.props.insertMode)
-                                this.props.setInsertMode(null);
                             }}
                         >
                             <td>{it.lat.toFixed(4)}</td>
