@@ -1,5 +1,6 @@
 import {observer} from "mobx-react";
 import * as React from 'react'
+import {FormEvent} from "react";
 import {Link} from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import {globalRootStore} from "./App";
@@ -8,6 +9,7 @@ import {Roles} from "./transport/RoleTo";
 
 interface IMainMenu {
     rootStore: RootStore;
+    refreshTrackList?: () => void;
 }
 
 export enum MenuItem {
@@ -21,8 +23,12 @@ export enum MenuItem {
 @observer
 export class MainMenu extends React.Component<IMainMenu, any> {
 
+    private searchField: string;
+
     constructor(props: IMainMenu) {
         super(props);
+        this.onChangeHandler = this.onChangeHandler.bind(this);
+        this.onClickSearchButton = this.onClickSearchButton.bind(this);
     }
 
     public render() {
@@ -57,13 +63,13 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                             </li>
                         </ul>
 
-                        {this.props.rootStore.uiStore.isLoggedIn ?
-                            <form className="form-inline my-2 my-lg-0">
-                                <input className="form-control mr-sm-2" type="search" placeholder="Search"
-                                       aria-label="Search"/>
-                                <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                            </form> : ""
-                        }
+                        {/*{this.props.rootStore.uiStore.isLoggedIn ?*/}
+                            <form className="form-inline my-3 my-lg-0">
+                                <input className="form-control mr-lg-3" type="search" placeholder="Search"
+                                       aria-label="Search" onChange={this.onChangeHandler} />
+                                <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={ (event) => this.onClickSearchButton(event)}>Search</button>
+                            </form>
+                        {/*}*/}
                     </div>
                 </nav>
             </div>
@@ -75,5 +81,19 @@ export class MainMenu extends React.Component<IMainMenu, any> {
             return "active";
         }
         return "";
+    }
+
+    private onChangeHandler(event: React.FormEvent<HTMLInputElement>) {
+//        const inputField = event.currentTarget.id;
+          this.searchField = event.currentTarget.value;
+    }
+
+    private onClickSearchButton(event: FormEvent) {
+        globalRootStore.uiStore.searchText = this.searchField;
+        if (this.props.refreshTrackList) {
+            this.props.refreshTrackList();
+        }
+        console.log(`searchtext = ${this.searchField}`);
+        event.preventDefault();
     }
 }

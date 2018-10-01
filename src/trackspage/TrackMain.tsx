@@ -1,3 +1,4 @@
+import * as elasticsearch from 'elasticsearch';
 import {LatLng} from "leaflet";
 import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
@@ -18,6 +19,13 @@ import {TrackPtDo} from "./TrackPtDo";
 
 interface ITracksMain extends RouteComponentProps<any> {
     rootStore: RootStore;
+}
+
+interface IElasticTrackHit {
+    trackid: number;
+    trackname: string;
+    owner: string;
+    description: string;
 }
 
 @observer
@@ -94,6 +102,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     constructor(props: ITracksMain) {
         super(props);
         this.setCurrentTrack = this.setCurrentTrack.bind(this);
+        this.refreshTrackListData = this.refreshTrackListData.bind(this);
     }
 
     public componentWillMount() {
@@ -122,7 +131,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         if (this.trackListData.length <= 0) {
             return (
                 <div>
-                    <MainMenu rootStore={this.props.rootStore!}/>
+                    <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
                     <Teaser image={teaserimg} title={"Tracks"}/>
                 </div>
             )
@@ -131,7 +140,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
             const trackPts = this.trackPtsFromGpx;
             return (
                 <div>
-                    <MainMenu rootStore={this.props.rootStore!}/>
+                    <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
                     <Teaser image={teaserimg} title={"Tracks"}/>
                     <TrackList currentTrackListId={this.currentTrackListId}
                                setCurrentTrackListId={this.setCurrentTrack}
@@ -148,11 +157,58 @@ export class TrackMain extends React.Component<ITracksMain, any> {
 
     @action
     private refreshTrackListData() {
-        fetchJson("/api/tracks")
-            .then((tracks: TrackTo[]) => {
-                this.trackListData = tracks;
-                this.currentTrackListId = tracks[0].id
+        // if logged in prefer users own tracks
+        // if search text is given, use it for a fulltext elastic search
+        if (globalRootStore.uiStore.searchText !== null) {
+            this.trackListData = [];
+            const query = {
+                "_source": {
+                    "includes": ["trackid", "trackname", "owner", "description"]
+                },
+                "query": {
+                    "bool": {
+                        "must": [
+                        ],
+                        "should": [
+                            {"match": {"description": globalRootStore.uiStore.searchText}},
+                            {"match": {"region": globalRootStore.uiStore.searchText}},
+                            {"match": {"owner": globalRootStore.uiStore.searchText}},
+                            {"match": {"country": globalRootStore.uiStore.searchText}}
+                        ],
+                    }
+                },
+            };
+            const ELASTIC_URL = process.env.REACT_APP_ELASTIC_URL;
+            const es = new elasticsearch.Client({
+                host: ELASTIC_URL,
+                log: 'trace'
             });
+            es.search({
+                body: query,
+                index: 'tracks'
+            }).then( (resp) => {
+                const hits = resp.hits.hits;
+                hits.forEach((hit) => {
+                    const trackHit: IElasticTrackHit = hit._source as IElasticTrackHit;
+                    console.log(`Elastic found id: ${trackHit.trackid}, trackname: ${trackHit.trackname}`);
+                    fetchJson(`/api/tracks/${trackHit.trackid}`)
+                        .then((track: TrackTo) => {
+                            this.trackListData.push(track);
+                            this.currentTrackListId = this.trackListData.length > 0 ? this.trackListData[0].id : 0;
+                        });
+
+                });
+            },  (err) => {
+                console.trace(err.message);
+            });
+            globalRootStore.uiStore.searchText = null;
+        } else {
+            fetchJson("/api/tracks")
+                .then((tracks: TrackTo[]) => {
+                    this.trackListData = tracks;
+                    this.currentTrackListId = tracks[0].id
+                });
+        }
 
 
         // const client = new ApolloClient({

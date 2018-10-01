@@ -5,9 +5,11 @@
   "homepage": "http://www.hvo.de/navtrack",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.1.1",
+    "@types/elasticsearch": "^5.0.26",
     "apollo-boost": "^0.1.15",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.1.2",
+    "elasticsearch": "^15.1.1",
     "graphql": "^0.13.2",
     "isomorphic-fetch": "^2.2.1",
     "leaflet": "^1.3.3",

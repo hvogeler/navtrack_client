@@ -41,7 +41,6 @@ export function fetchJson(path: string): Promise<any> {
 }
 
 export function fetchJsonPost(path: string, body: string): Promise<any> {
-    console.log(`REST Server URL: ${BACKEND_URL}`);
     const url = `${BACKEND_URL}${path}`;
     const headers = {
         "Accept": "application/json",

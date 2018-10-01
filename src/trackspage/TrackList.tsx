@@ -38,7 +38,8 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             id="{it.id}"
                             className={this.props.currentTrackListId === it.id ? "bg-info text-white" : "bg-white text-dark"}
                             onClick={() => this.onClick(it.id)}
-                            onMouseEnter={() => this.onMouseEnter(it.id)}>
+//                            onMouseEnter={() => this.onMouseEnter(it.id)}
+                            >
                             <td className="text-left">{it.trackname}</td>
                             <td>{it.country}</td>
                             <td>{it.region}</td>
@@ -71,9 +72,9 @@ export class TrackList extends React.Component<ITrackListProps, any> {
         console.log(`Delete Row ${trackid}`);
     };
 
-    private onMouseEnter(trackid: number) {
-        console.log(`Row ${trackid} entered`)
-    };
+    // private onMouseEnter(trackid: number) {
+    //     console.log(`Row ${trackid} entered`)
+    // };
 
 
 }

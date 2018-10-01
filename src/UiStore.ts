@@ -14,6 +14,7 @@ export class UiStore {
     @observable public countries: CountryTo[] = [];
     @observable public tracktypes: TrackTypeTo[] = [];
     @observable public currentMenuItem: MenuItem = MenuItem.tracks;
+    @observable public searchText: string | null = null;
 
     public isLoggedInWithRole(role: Roles) : boolean {
             if (this.isLoggedIn) {
