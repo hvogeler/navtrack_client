@@ -63,13 +63,13 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                             </li>
                         </ul>
 
-                        {/*{this.props.rootStore.uiStore.isLoggedIn ?*/}
+                        {this.props.rootStore.uiStore.isLoggedIn ?
                             <form className="form-inline my-3 my-lg-0">
                                 <input className="form-control mr-lg-3" type="search" placeholder="Search"
                                        aria-label="Search" onChange={this.onChangeHandler} />
                                 <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={ (event) => this.onClickSearchButton(event)}>Search</button>
-                            </form>
-                        {/*}*/}
+                            </form> : ""
+                        }
                     </div>
                 </nav>
             </div>

@@ -172,7 +172,9 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                         "should": [
                             {"match": {"description": globalRootStore.uiStore.searchText}},
                             {"match": {"region": globalRootStore.uiStore.searchText}},
-                            {"match": {"owner": globalRootStore.uiStore.searchText}},
+                            {"match": {"owner": (globalRootStore.uiStore.userDo !== null ? globalRootStore.uiStore.userDo.username + " ": "") + globalRootStore.uiStore.searchText}},
+                            {"match": {"owneremail": globalRootStore.uiStore.searchText}},
+                            {"match": {"tracktypes": globalRootStore.uiStore.searchText}},
                             {"match": {"country": globalRootStore.uiStore.searchText}}
                         ],
                     }
