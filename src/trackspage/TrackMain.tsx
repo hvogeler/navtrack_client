@@ -187,10 +187,11 @@ export class TrackMain extends React.Component<ITracksMain, any> {
             });
             es.search({
                 body: query,
-                index: 'tracks'
+                index: 'tracks',
+                size: 200,
             }).then( (resp) => {
                 const hits = resp.hits.hits;
-                hits.forEach((hit) => {
+                hits.filter((hit) => hit._score > 0.5).forEach((hit) => {
                     const trackHit: IElasticTrackHit = hit._source as IElasticTrackHit;
                     console.log(`Elastic found id: ${trackHit.trackid}, trackname: ${trackHit.trackname}`);
                     fetchJson(`/api/tracks/${trackHit.trackid}`)
