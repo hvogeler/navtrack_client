@@ -1,8 +1,8 @@
-import * as React from 'react';
-
+import * as elasticsearch from "elasticsearch";
 import {LatLng} from "leaflet";
 import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
+import * as React from 'react';
 import {RouteComponentProps} from "react-router";
 import {globalRootStore} from "../App";
 import {fetchJson, fetchJsonPost} from "../backend/Backend";
@@ -200,7 +200,8 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                             if (createdTrack.trackname !== undefined) {
                                 console.log(`new track is: ${createdTrack.trackname}, id: ${createdTrack.id}`);
                                 this.newTrack = createdTrack;
-                                this.errorMsg = null
+                                this.errorMsg = null;
+                                this.indexTrackForSearch(this.newTrack);
                             } else {
                                 this.errorMsg = `Error on createTrack api : ${saveResp.message}`;
                                 console.log(this.errorMsg)
@@ -217,6 +218,55 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                 console.log(this.errorMsg)
             });
         return "OK";
+    }
+
+    private async indexTrackForSearch(track: TrackTo) {
+        const ELASTIC_URL = process.env.REACT_APP_ELASTIC_URL;
+        const es = new elasticsearch.Client({
+            host: ELASTIC_URL,
+            log: 'trace'
+        });
+
+        if (this.props.mode === EditOrCreate.edit) {
+            const response = await es.update({
+                body: { "doc" : {
+                        "country": track.country,
+                        "created": track.created,
+                        "description": track.description,
+                        "owner": track.owner!.username,
+                        "owneremail": track.owner!.email,
+                        "region": track.region,
+                        "trackid": track.id,
+                        "trackname": track.trackname,
+                        "tracktypes": track.tracktypes.join(" ")
+                    }},
+                id: track.id.toString(),
+                index: 'tracks',
+                refresh: "true",
+                type: 'track',
+            });
+            console.log(`Elastic create response ${response}`);
+        } else {
+            const response = await es.create({
+                body: {
+                        "country" : track.country,
+                        "created" : track.created,
+                        "description" : track.description,
+                        "owner" : track.owner!.username,
+                        "owneremail" : track.owner!.email,
+                        "region" : track.region,
+                        "trackid" : track.id,
+                        "trackname" : track.trackname,
+                        "tracktypes" : track.tracktypes.join(" ")
+                    },
+                id: track.id.toString(),
+                index: 'tracks',
+                refresh: "true",
+                type: 'track',
+            });
+            console.log(`Elastic create response ${response}`);
+        }
+
     }
 
     private changeTrackData(track: TrackTo) {
