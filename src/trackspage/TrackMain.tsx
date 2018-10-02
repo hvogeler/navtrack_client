@@ -96,13 +96,14 @@ export class TrackMain extends React.Component<ITracksMain, any> {
 
     @observable public currentTrackListId: number = 1;
     @observable private trackListData: TrackTo[] = [];
-    private trackListPageSize = 6;
+    @observable private trackListPageSize = +(process.env.REACT_APP_ELASTIC_PAGESIZE || "10");
 
     constructor(props: ITracksMain) {
         super(props);
         this.setCurrentTrack = this.setCurrentTrack.bind(this);
         this.refreshTrackListData = this.refreshTrackListData.bind(this);
         this.prepareTrackListPage = this.prepareTrackListPage.bind(this);
+        this.setTrackListPageSize = this.setTrackListPageSize.bind(this);
     }
 
     public componentWillMount() {
@@ -135,6 +136,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                                getPage={this.prepareTrackListPage}
                                pageSizeInLines={this.trackListPageSize}
                                numberOfPages={this.trackListNumberOfPages}
+                               setPageSize={this.setTrackListPageSize}
                     />
                     <TrackDetailController
                         trackData={this.currentTrack}
@@ -185,7 +187,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
             es.search({
                 body: query,
                 index: 'tracks',
-                size: 200,
+                size: +(process.env.REACT_APP_ELASTIC_MAX_RESULT_SIZE || "200"),
             }).then((resp) => {
                 const hits = resp.hits.hits;
                 hits.filter((hit) => hit._score > 0.0).forEach((hit) => {
@@ -252,13 +254,18 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     }
 
     @action
+    private setTrackListPageSize(lines: number) {
+        this.trackListPageSize = lines;
+    }
+
+    @action
     private setCurrentTrack(id: number) {
         this.currentTrackListId = id;
     }
 
     @computed
     private get trackListNumberOfPages(): number {
-        return Math.ceil(this.trackListData.length / 6);
+        return Math.ceil(this.trackListData.length / this.trackListPageSize);
     }
 
 }

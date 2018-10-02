@@ -2,6 +2,7 @@ import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 import * as moment from "moment";
 import * as React from 'react';
+import {ChangeEvent} from "react";
 import {Link} from "react-router-dom";
 import {globalRootStore} from "../App";
 import {TrackTo} from "../transport/TrackTo";
@@ -9,6 +10,7 @@ import {TrackTo} from "../transport/TrackTo";
 
 interface ITrackListProps {
     pageSizeInLines: number;
+    setPageSize: (lines: number) => void;
     numberOfPages: number;
     getPage: (pageNumber: number) => TrackTo[];
     currentTrackListId: number;
@@ -18,10 +20,17 @@ interface ITrackListProps {
 
 @observer
 export class TrackList extends React.Component<ITrackListProps, any> {
-     @observable private currentPageNumber: number = 0;
+    @observable private currentPageNumber: number = 0;
+    private pageSizeInLines: number;
 
     constructor(props: ITrackListProps) {
-        super(props)
+        super(props);
+        this.pageSizeInLines = this.props.pageSizeInLines;
+        this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    }
+
+    public componentWillMount() {
+        this.pageSizeInLines = this.props.pageSizeInLines;
     }
 
     public render() {
@@ -67,19 +76,46 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                     </table>
                 </div>
                 <div className="row pl-1 align-text-bottom">
-                    <div className="col">
+                    <div className="col-auto">
                         <nav aria-label="Pagination">
                             <ul className="pagination">
                                 <li className="page-item page-link text-dark">Page: {this.currentPageNumber + 1}</li>
-                                <li className="page-item page-link" onClick={() => this.onClickPreviousPage()}>Previous</li>
-                                {this.props.numberOfPages >= 1 ? <li className="page-item page-link" onClick={() => this.currentPageNumber = 0}>1</li> : ""}
-                                {this.props.numberOfPages >= 2 ? <li className="page-item page-link" onClick={() => this.currentPageNumber = 1}>2</li> : ""}
-                                {this.props.numberOfPages >= 3 ? <li className="page-item page-link" onClick={() => this.currentPageNumber = 2}>3</li> : ""}
+                                <li className="page-item page-link"
+                                    onClick={() => this.onClickPreviousPage()}>Previous
+                                </li>
+                                {this.props.numberOfPages >= 1 ? <li className="page-item page-link"
+                                                                     onClick={() => this.currentPageNumber = 0}>1</li> : ""}
+                                {this.props.numberOfPages >= 2 ? <li className="page-item page-link"
+                                                                     onClick={() => this.currentPageNumber = 1}>2</li> : ""}
+                                {this.props.numberOfPages >= 3 ? <li className="page-item page-link"
+                                                                     onClick={() => this.currentPageNumber = 2}>3</li> : ""}
                                 <li className="page-item page-link">...</li>
-                                <li className="page-item page-link" onClick={() => this.currentPageNumber = this.props.numberOfPages - 1}>{this.props.numberOfPages}</li>
+                                <li className="page-item page-link"
+                                    onClick={() => this.currentPageNumber = this.props.numberOfPages - 1}>{this.props.numberOfPages}</li>
                                 <li className="page-item page-link" onClick={() => this.onClickNextPage()}>Next</li>
                             </ul>
                         </nav>
+                    </div>
+                    <div className="col-2 mr-3">
+                        <form onSubmit={this.onSubmitHandler}>
+                            <div className="form-group row">
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text">Lines per Page</span>
+                                    </div>
+                                    <input type="number"
+                                           readOnly={false}
+                                           className="form-control"
+                                           id="pagesize"
+                                           placeholder={this.props.pageSizeInLines.toString()}
+                                           onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                               this.pageSizeInLines = +event.currentTarget.value;
+                                           }}
+                                           onBlur={(event: React.FormEvent) => this.props.setPageSize(this.pageSizeInLines)}
+                                    />
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -106,10 +142,10 @@ export class TrackList extends React.Component<ITrackListProps, any> {
         this.props.setCurrentTrackListId(trackid)
     };
 
-    // @action
-    // private editItem(trackid: number) {
-    //     console.log(`Edit Row ${trackid}`);
-    // };
+    private onSubmitHandler(event: React.FormEvent) {
+        event.preventDefault();
+        this.props.setPageSize(this.pageSizeInLines)
+    }
 
     @action
     private deleteItem(trackid: number) {
