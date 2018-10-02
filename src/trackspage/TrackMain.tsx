@@ -94,32 +94,19 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         return elements
     }
 
-    @observable
-    public currentTrackListId: number = 1;
-
+    @observable public currentTrackListId: number = 1;
     @observable private trackListData: TrackTo[] = [];
+    private trackListPageSize = 6;
 
     constructor(props: ITracksMain) {
         super(props);
         this.setCurrentTrack = this.setCurrentTrack.bind(this);
         this.refreshTrackListData = this.refreshTrackListData.bind(this);
+        this.prepareTrackListPage = this.prepareTrackListPage.bind(this);
     }
 
     public componentWillMount() {
         this.refreshTrackListData();
-
-//        const doc = document.implementation.createDocument("", "", null);
-//         const gpxEl = doc.createElementNS("http://www.topografix.com/GPX/1/1", "gpx");
-//         gpxEl.setAttribute("creator", "NavTrack (c) Heiko Vogeler");
-//         const metadataEl = doc.createElement("metadata");
-//         const name = doc.createElement("name");
-//         name.innerHTML = "hvogeler";
-//         metadataEl.appendChild(name);
-//         gpxEl.appendChild(metadataEl);
-//         doc.appendChild(gpxEl);
-//         const xmlstring = new XMLSerializer().serializeToString(doc);
-//         console.log(xmlstring);
-
     }
 
     public componentDidMount() {
@@ -144,7 +131,11 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                     <Teaser image={teaserimg} title={"Tracks"}/>
                     <TrackList currentTrackListId={this.currentTrackListId}
                                setCurrentTrackListId={this.setCurrentTrack}
-                               trackList={this.trackListData}/>
+                               tracks={this.trackListData}
+                               getPage={this.prepareTrackListPage}
+                               pageSizeInLines={this.trackListPageSize}
+                               numberOfPages={this.trackListNumberOfPages}
+                    />
                     <TrackDetailController
                         trackData={this.currentTrack}
                         trackPts={trackPts}
@@ -153,6 +144,12 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                 </div>
             );
         }
+    }
+
+    private prepareTrackListPage(pageNumber: number): TrackTo[] {
+        const pageStart = pageNumber * this.trackListPageSize;
+        const pageEnd = pageStart + this.trackListPageSize;
+        return this.trackListData.slice(pageStart, pageEnd);
     }
 
     @action
@@ -167,12 +164,12 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                 },
                 "query": {
                     "bool": {
-                        "must": [
-                        ],
+                        "must": [],
                         "should": [
+                            {"match": {"trackname": globalRootStore.uiStore.searchText}},
                             {"match": {"description": globalRootStore.uiStore.searchText}},
                             {"match": {"region": globalRootStore.uiStore.searchText}},
-                            {"match": {"owner": (globalRootStore.uiStore.userDo !== null ? globalRootStore.uiStore.userDo.username + " ": "") + globalRootStore.uiStore.searchText}},
+                            {"match": {"owner": (globalRootStore.uiStore.userDo !== null ? globalRootStore.uiStore.userDo.username + " " : "") + globalRootStore.uiStore.searchText}},
                             {"match": {"owneremail": globalRootStore.uiStore.searchText}},
                             {"match": {"tracktypes": globalRootStore.uiStore.searchText}},
                             {"match": {"country": globalRootStore.uiStore.searchText}}
@@ -189,9 +186,9 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                 body: query,
                 index: 'tracks',
                 size: 200,
-            }).then( (resp) => {
+            }).then((resp) => {
                 const hits = resp.hits.hits;
-                hits.filter((hit) => hit._score > 0.5).forEach((hit) => {
+                hits.filter((hit) => hit._score > 0.0).forEach((hit) => {
                     const trackHit: IElasticTrackHit = hit._source as IElasticTrackHit;
                     console.log(`Elastic found id: ${trackHit.trackid}, trackname: ${trackHit.trackname}`);
                     fetchJson(`/api/tracks/${trackHit.trackid}`)
@@ -201,7 +198,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                         });
 
                 });
-            },  (err) => {
+            }, (err) => {
                 console.trace(err.message);
             });
             globalRootStore.uiStore.searchText = null;
@@ -257,6 +254,11 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @action
     private setCurrentTrack(id: number) {
         this.currentTrackListId = id;
+    }
+
+    @computed
+    private get trackListNumberOfPages(): number {
+        return Math.ceil(this.trackListData.length / 6);
     }
 
 }

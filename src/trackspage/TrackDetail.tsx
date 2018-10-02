@@ -8,7 +8,7 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
 
     public render() {
         return (
-            <div id="detailList" className="border border-light rounded bg-info text-white">
+            <div id="detailList" className="border border-light rounded bg-info text-white pr-1">
                 <table className="table table">
                     <thead className="thead-light">
                     <tr>

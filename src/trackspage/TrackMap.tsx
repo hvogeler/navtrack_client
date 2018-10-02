@@ -23,7 +23,7 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
 
         const lastTrackPt = trackPts[trackPts.length - 1];
         return (
-            <div className="border border-light rounded">
+            <div className="border border-light rounded pl-1">
                 <Map id="viewMap" center={[trackPts[0].lat, trackPts[0].lng]} zoom={Constants.INITIAL_ZOOM_LEVEL}>
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"

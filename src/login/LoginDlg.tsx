@@ -31,7 +31,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
                             <label htmlFor="username" className="sr-only">Username</label>
                             <div className="col-sm-12">
                                 <i className="material-icons">perm_identity</i>
-                                <input type="text" name="user" placeholder="Username" id="username"
+                                <input type="text" name="user" placeholder="Username" id="username" autoFocus={true}
                                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                            this.user = event.currentTarget.value;
                                        }}/>

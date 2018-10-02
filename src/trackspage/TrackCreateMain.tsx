@@ -100,13 +100,15 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
 
     public componentDidMount() {
         console.log(`TrackCreateMain Called for track : ${this.props.match.params.trackId}`);
+        globalRootStore.uiStore.currentMenuItem = MenuItem.create;
+
     }
 
     public render() {
         return (
             <div>
                 <MainMenu rootStore={this.props.rootStore}/>
-                <Teaser image={teaserimg} title={"New Track"}/>
+                <Teaser image={teaserimg} title={this.props.mode === EditOrCreate.create ? "New Track" : "Edit Track"}/>
                 <TrackCreateController
                     trackData={this.newTrack}
                     trackPts={this.trackPts}

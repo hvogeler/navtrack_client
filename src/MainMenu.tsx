@@ -63,7 +63,7 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                             </li>
                         </ul>
 
-                        {this.props.rootStore.uiStore.isLoggedIn ?
+                        {this.props.rootStore.uiStore.isLoggedIn && this.props.rootStore.uiStore.currentMenuItem === MenuItem.tracks ?
                             <form className="form-inline my-3 my-lg-0">
                                 <input className="form-control mr-lg-3" type="search" placeholder="Search"
                                        aria-label="Search" onChange={this.onChangeHandler} />
