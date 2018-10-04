@@ -111,7 +111,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             </div> : ""
                                         }
                                         {(this.errorMsg != null || this.props.errorMsg != null) ?
-                                            <div className="form-group col-8 border-danger rounded"
+                                            <div className="form-group col-6 border-danger rounded"
                                                  style={{backgroundColor: 'red'}}>
                                                 <div className="text-light text-center justify-content-center align-self-center">
                                                     {this.props.errorMsg || this.errorMsg}
@@ -120,7 +120,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             : ""
                                         }
                                         {(this.okMsg != null && this.props.errorMsg == null) ?
-                                            <div className="form-group col-8">
+                                            <div className="form-group col-6">
                                                 <div className="text-light text-center">
                                                     {this.okMsg}
                                                 </div>
@@ -270,7 +270,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             this.errorMsg = ret;
             return
         }
-        this.okMsg = `Track ${this.props.trackData.trackname} saved with id ${this.props.trackData.id}`;
+        this.okMsg = `Track ${this.props.trackData.trackname} saved`;
         Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`));
         console.log(`Country = ${this.props.trackData.country}`);
         console.log(`Tracktypes = ${this.props.trackData.tracktypes.join(", ")}`);

@@ -222,6 +222,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     }
 
     private readGpxFile(gpxfile: File) {
+        this.resetTrackData();
         const reader = new FileReader();
         reader.onload = () => {
             console.log(`reading file`);
@@ -230,13 +231,25 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
             const gpxdoc = reader.result.toString()
             console.log(`finished reading file `)
             console.log(gpxdoc);
-            this.newTrack = TrackCreateMain.emptyTrack();
-            this.newTrack.description = gpxdoc;
+            let tracknameFromGpx: string | null = null;
+            try {
+                tracknameFromGpx = TrackMain.trackMetadataFromGpxUtil(gpxdoc).trackname;
+            } catch (e) {
+                this.errorMsg = e.toString();
+                return;
+            }
+            this.newTrack.trackname = tracknameFromGpx || "";
+            this.trackPts = TrackMain.trackPtsFromGpxUtil(gpxdoc);
         };
         reader.readAsText(gpxfile);
         this.errorMsg = null;
     }
 
+    private resetTrackData() {
+        this.newTrack = TrackCreateMain.emptyTrack();
+        this.trackPts = [];
+        this.selectedTrackPtIdx = -1;
+    }
 
     private async indexTrackForSearch(track: TrackTo) {
         const ELASTIC_URL = process.env.REACT_APP_ELASTIC_URL;

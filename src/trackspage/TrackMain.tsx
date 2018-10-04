@@ -15,6 +15,7 @@ import {TrackTo} from "../transport/TrackTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackDetailController} from "./TrackDetailController";
 import {TrackList} from "./TrackList";
+import {TrackMetadata} from "./TrackMetadata";
 import {TrackPtDo} from "./TrackPtDo";
 
 interface ITracksMain extends RouteComponentProps<any> {
@@ -67,6 +68,23 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         );
 
         return akku / 1000;
+    }
+
+    public static trackMetadataFromGpxUtil(gpxdoc: string): TrackMetadata {
+        const trackMetadata = new TrackMetadata();
+        const doc = (new DOMParser()).parseFromString(gpxdoc, 'text/xml');
+        const metadataElement = doc.querySelector("metadata");
+        if (metadataElement === null) {
+            throw new Error("Track Metadata missing. Is this really a gpx file?");
+        } else {
+            const trackname = metadataElement.querySelector("name");
+            if (trackname !== null) {
+                trackMetadata.trackname = trackname.innerHTML;
+            } else {
+                trackMetadata.trackname = null;
+            }
+        }
+        return trackMetadata;
     }
 
     public static trackPtsFromGpxUtil(gpxdoc: string): TrackPtDo[] {

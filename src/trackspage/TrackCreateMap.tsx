@@ -14,7 +14,7 @@ import {TrackPtDo} from "./TrackPtDo";
 // const tileserverThunderforestOutdoors = "http://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
 
 const TILESERVER = process.env.REACT_APP_TILESERVER;
-const markerCircleSize = 40;
+const markerCircleSize = 20;
 
 interface ITrackCreateMap {
     mapCenter: IMapCenter;
