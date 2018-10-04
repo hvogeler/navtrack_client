@@ -84,6 +84,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         this.saveTrack = this.saveTrack.bind(this);
         this.setSelectedTrackPt = this.setSelectedTrackPt.bind(this);
         this.setInsertMode = this.setInsertMode.bind(this);
+        this.readGpxFile = this.readGpxFile.bind(this);
     }
 
     public componentWillMount() {
@@ -95,13 +96,12 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         } else {
             globalRootStore.uiStore.currentMenuItem = MenuItem.create;
             this.newTrack = TrackCreateMain.emptyTrack();
+            this.trackPts = [];
         }
     }
 
     public componentDidMount() {
         console.log(`TrackCreateMain Called for track : ${this.props.match.params.trackId}`);
-        globalRootStore.uiStore.currentMenuItem = MenuItem.create;
-
     }
 
     public render() {
@@ -128,6 +128,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                     selectedTrackPtIdx={this.selectedTrackPtIdx}
                     insertMode={this.insertMode}
                     setInsertMode={this.setInsertMode}
+                    readGpxFile={this.readGpxFile}
                 />
             </div>
         );
@@ -172,7 +173,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private getTrack(trackId: number) {
         fetchJson(`/api/tracks/${trackId}`)
-            .then( (resp) => {
+            .then((resp) => {
                 this.newTrack = resp;
                 this.trackPts = TrackMain.trackPtsFromGpxUtil(this.newTrack.gpx);
             })
@@ -220,6 +221,23 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         return "OK";
     }
 
+    private readGpxFile(gpxfile: File) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            console.log(`reading file`);
+        };
+        reader.onloadend = () => {
+            const gpxdoc = reader.result.toString()
+            console.log(`finished reading file `)
+            console.log(gpxdoc);
+            this.newTrack = TrackCreateMain.emptyTrack();
+            this.newTrack.description = gpxdoc;
+        };
+        reader.readAsText(gpxfile);
+        this.errorMsg = null;
+    }
+
+
     private async indexTrackForSearch(track: TrackTo) {
         const ELASTIC_URL = process.env.REACT_APP_ELASTIC_URL;
         const es = new elasticsearch.Client({
@@ -229,7 +247,8 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
 
         if (this.props.mode === EditOrCreate.edit) {
             const response = await es.update({
-                body: { "doc" : {
+                body: {
+                    "doc": {
                         "country": track.country,
                         "created": track.created,
                         "description": track.description,
@@ -239,7 +258,8 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                         "trackid": track.id,
                         "trackname": track.trackname,
                         "tracktypes": track.tracktypes.join(" ")
-                    }},
+                    }
+                },
                 id: track.id.toString(),
                 index: 'tracks',
                 refresh: "true",
@@ -249,16 +269,16 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         } else {
             const response = await es.create({
                 body: {
-                        "country" : track.country,
-                        "created" : track.created,
-                        "description" : track.description,
-                        "owner" : track.owner!.username,
-                        "owneremail" : track.owner!.email,
-                        "region" : track.region,
-                        "trackid" : track.id,
-                        "trackname" : track.trackname,
-                        "tracktypes" : track.tracktypes.join(" ")
-                    },
+                    "country": track.country,
+                    "created": track.created,
+                    "description": track.description,
+                    "owner": track.owner!.username,
+                    "owneremail": track.owner!.email,
+                    "region": track.region,
+                    "trackid": track.id,
+                    "trackname": track.trackname,
+                    "tracktypes": track.tracktypes.join(" ")
+                },
                 id: track.id.toString(),
                 index: 'tracks',
                 refresh: "true",

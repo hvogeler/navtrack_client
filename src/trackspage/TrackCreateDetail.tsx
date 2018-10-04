@@ -4,7 +4,7 @@ import {observable} from "mobx";
 import {observer} from "mobx-react";
 import * as moment from "moment";
 import * as React from 'react';
-import {ChangeEvent} from "react";
+import {ChangeEvent} from 'react';
 import {globalRootStore} from "../App";
 import {ITrackCreateProps} from "./TrackCreateController";
 import {EditOrCreate} from "./TrackCreateMain";
@@ -14,6 +14,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
 
     @observable private errorMsg: string | null = null;
     @observable private okMsg: string | null = null;
+    private uploadInput: HTMLInputElement | null;
 
     constructor(props: ITrackCreateProps) {
         super(props);
@@ -21,6 +22,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         this.onChangeHandlerSelect = this.onChangeHandlerSelect.bind(this);
         this.onBlurHandler = this.onBlurHandler.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.onChangeFileUPload = this.onChangeFileUPload.bind(this);
     }
 
     public componentDidMount() {
@@ -94,6 +96,20 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                                     hidden={false}>Save Track
                                             </button>
                                         </div>
+
+                                        {(this.props.mode === EditOrCreate.create) ?
+                                            <div className="form-group col-2 text-left">
+                                                <label className="btn btn-info btn-outline-light"
+                                                        hidden={false}>Upload Gpx Track
+                                                    <input type={"file"}
+                                                           hidden={true}
+                                                           ref={(ref) => this.uploadInput = ref}
+                                                           onChange={this.onChangeFileUPload}
+                                                           accept={".gpx"}
+                                                    />
+                                                </label>
+                                            </div> : ""
+                                        }
                                         {(this.errorMsg != null || this.props.errorMsg != null) ?
                                             <div className="form-group col-8 border-danger rounded"
                                                  style={{backgroundColor: 'red'}}>
@@ -106,7 +122,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                         {(this.okMsg != null && this.props.errorMsg == null) ?
                                             <div className="form-group col-8">
                                                 <div className="text-light text-center">
-                                                    {`Track ${this.props.trackData.trackname} saved with id ${this.props.trackData.id}`}
+                                                    {this.okMsg}
                                                 </div>
                                             </div>
                                             : ""
@@ -164,6 +180,17 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                 [inputField]: event.currentTarget.value
             }
         )
+    }
+
+    private onChangeFileUPload(event: React.FormEvent<HTMLInputElement>) {
+        const inputField = event.currentTarget.id;
+        if (event.currentTarget.files !== null && event.currentTarget.files.length > 0) {
+            const gpxfile : File = event.currentTarget.files[0];
+            this.props.readGpxFile(gpxfile);
+            this.okMsg = (`Track loaded from file ${gpxfile.name}. Filesize: ${(gpxfile.size / 1024).toFixed(1)} KB`);
+            this.errorMsg = null;
+        }
+        console.log(inputField);
     }
 
     // private isShowSaveButton() : boolean {

@@ -31,6 +31,7 @@ export interface ITrackCreateProps {
     setSelectedTrackPt: (idx: number) => void;
     insertMode: InsertMode | null;
     setInsertMode: (position: InsertMode | null) => void;
+    readGpxFile: (file: File) => void;
 }
 
 @observer
@@ -63,6 +64,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             selectedTrackPtIdx={this.props.selectedTrackPtIdx}
                             insertMode={this.props.insertMode}
                             setInsertMode={this.props.setInsertMode}
+                            readGpxFile={this.props.readGpxFile}
                         />
                     </div>
                 </div>

@@ -33,9 +33,9 @@ export class App extends React.Component<any, any> {
                         <Route exact={true} path="/tracks"
                                render={(props) => <TrackMain {...props} rootStore={this.rootStore}/>}/>
                         <Route exact={true} path="/create"
-                               render={(props) => <TrackCreateMain {...props} rootStore={this.rootStore} mode={EditOrCreate.create}/>}/>
+                               render={(props) => <TrackCreateMain {...props} key={1} rootStore={this.rootStore} mode={EditOrCreate.create}/>}/>
                         <Route exact={true} path="/edit/:trackId"
-                               render={(props) => <TrackCreateMain {...props} rootStore={this.rootStore} mode={EditOrCreate.edit}/>}/>
+                               render={(props) => <TrackCreateMain {...props} key={2} rootStore={this.rootStore} mode={EditOrCreate.edit}/>}/>
                         <Route exact={true} path="/docs"
                                render={(props) => <DocsMain {...props} rootStore={this.rootStore}/>}/>
                         <Route exact={true} path="/intro"
