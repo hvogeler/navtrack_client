@@ -65,6 +65,11 @@
     font-size: 18px;
 }
 
+.md-orange {
+    color: orange;
+    font-size: 18px;
+}
+
 .hand-pointer {
     cursor: pointer;
 }

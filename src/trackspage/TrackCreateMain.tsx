@@ -312,6 +312,10 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
 
     private setSelectedTrackPt(idx: number = -1) {
         this.selectedTrackPtIdx = idx;
+        // kill insert mode if another trackpoint iss selected
+        if (this.insertMode !== null && this.insertMode.idx !== idx) {
+            this.insertMode = null;
+        }
     }
 
     private setInsertMode(mode: InsertMode | null = null) {

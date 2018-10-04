@@ -49,15 +49,20 @@ export class TrackPointList extends React.Component<ITrackPointListProps, any> {
                             <td>{it.ele.toFixed(0)}</td>
                             {globalRootStore.uiStore.isLoggedIn ?
                                 <td>
-                                    <i className="material-icons md-grey hand-pointer" data-md-tooltip="Insert Before" onClick={() => this.insertItem({
+                                    <i className={`material-icons hand-pointer ${this.props.selectedTrackPtIdx === idx && this.props.insertMode !== null && this.props.insertMode.position === InsertPosition.before ? 'md-orange' : "md-grey"}`}
+                                       data-md-tooltip="Insert Before"
+                                       onClick={() => this.insertItem({
                                         "idx": idx,
                                         "position": InsertPosition.before
-                                    })}>skip_next</i>
+                                    })}>skip_next
+                                    </i>
                                     <i className="material-icons md-grey hand-pointer" data-md-tooltip="Delete" onClick={() => this.deleteItem(idx)}>delete</i>
-                                    <i className="material-icons md-grey hand-pointer" data-md-tooltip="Insert After" onClick={() => this.insertItem({
+                                    <i className={`material-icons hand-pointer ${this.props.selectedTrackPtIdx === idx && this.props.insertMode !== null && this.props.insertMode.position === InsertPosition.after ? 'md-orange' : "md-grey"}`}
+                                       data-md-tooltip="Insert After"
+                                       onClick={() => this.insertItem({
                                         "idx": idx,
                                         "position": InsertPosition.after
-                                    })}>skip_previous</i>
+                                    })}>skip_previous</i>`
                                 </td> : <td/>
                             }
 
