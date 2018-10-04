@@ -124,7 +124,6 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         this.refreshTrackListData = this.refreshTrackListData.bind(this);
         this.prepareTrackListPage = this.prepareTrackListPage.bind(this);
         this.setTrackListPageSize = this.setTrackListPageSize.bind(this);
-        this.downloadItem = this.downloadItem.bind(this);
     }
 
     public componentWillMount() {
@@ -158,7 +157,6 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                                pageSizeInLines={this.trackListPageSize}
                                numberOfPages={this.trackListNumberOfPages}
                                setPageSize={this.setTrackListPageSize}
-                               downloadTrack={this.downloadItem}
                     />
                     <TrackDetailController
                         trackData={this.currentTrack}
@@ -288,18 +286,6 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @computed
     private get trackListNumberOfPages(): number {
         return Math.ceil(this.trackListData.length / this.trackListPageSize);
-    }
-
-    @action
-    private downloadItem(trackid: number) {
-        console.log(`Download Item ${trackid}`);
-        const track = this.trackListData.find((value => value.id === trackid));
-        if (track) {
-            const mimeType = "application/gpx+xml";
-            const blob = new Blob([track.gpx], {type: mimeType});
-            window.location.pathname = track.trackname;
-            window.location.href = window.URL.createObjectURL(blob);
-        }
     }
 
 }

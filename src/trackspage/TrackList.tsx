@@ -16,7 +16,6 @@ interface ITrackListProps {
     currentTrackListId: number;
     setCurrentTrackListId: (id: number) => void;
     tracks: TrackTo[];
-    downloadTrack: (id: number) => void;
 }
 
 @observer
