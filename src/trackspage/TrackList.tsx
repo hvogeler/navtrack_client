@@ -16,6 +16,7 @@ interface ITrackListProps {
     currentTrackListId: number;
     setCurrentTrackListId: (id: number) => void;
     tracks: TrackTo[];
+    downloadTrack: (id: number) => void;
 }
 
 @observer
@@ -51,8 +52,11 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.props.getPage(this.currentPageNumber).map(it =>
-                            <tr key={it.id}
+                        {this.props.getPage(this.currentPageNumber).map(it => {
+                            const mimeType = "application/gpx+xml";
+                            const blob = new Blob([it.gpx], {type: mimeType});
+                            const url = window.URL.createObjectURL(blob);
+                            return (<tr key={it.id}
                                 id="{it.id}"
                                 className={this.props.currentTrackListId === it.id ? "bg-info text-white" : "bg-white text-dark"}
                                 onClick={() => this.onClick(it.id)}
@@ -69,9 +73,12 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                                         data-md-tooltip="Edit Track">edit </i></Link>
                                         <i className="material-icons md-grey hand-pointer"
                                            onClick={() => this.deleteItem(it.id)}
-                                           data-md-tooltip="Delete Track">delete</i></td> : <td/>}
-                            </tr>
-                        )}
+                                           data-md-tooltip="Delete Track">delete</i>
+                                        <a href={url} download={`${it.trackname}.${"gpx"}`}>
+                                            <i className="material-icons md-grey hand-pointer"
+                                               data-md-tooltip="Download">cloud_download</i></a></td> : <td/>}
+                            </tr>)
+                        })}
                         </tbody>
                     </table>
                 </div>
@@ -151,6 +158,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
     private deleteItem(trackid: number) {
         console.log(`Delete Row ${trackid}`);
     };
+
 
     // private onMouseEnter(trackid: number) {
     //     console.log(`Row ${trackid} entered`)
