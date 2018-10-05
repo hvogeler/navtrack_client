@@ -4,9 +4,9 @@ import {FormEvent} from "react";
 import {Link} from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import {globalRootStore} from "./App";
+import navureLogo from './images/Navure58-1.png'
 import {RootStore} from "./RootStore";
 import {Roles} from "./transport/RoleTo";
-
 interface IMainMenu {
     rootStore: RootStore;
     refreshTrackList?: () => void;
@@ -35,8 +35,8 @@ export class MainMenu extends React.Component<IMainMenu, any> {
         console.log(`MainMenu: SecToken = ${this.props.rootStore.uiStore.secToken}, user = ${this.props.rootStore.uiStore.user}`);
         return (
             <div className="container-fluid">
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <Link className="navbar-brand" to="/intro">Navure</Link>
+                <nav className="navbar sticky-top navbar-expand-sm navbar-light bg-light">
+                    <Link className="navbar-brand" to="/intro"><img src={navureLogo} className="img-thumbnail" width="32px" height="32px"/></Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">

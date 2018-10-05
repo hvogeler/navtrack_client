@@ -1,3 +1,4 @@
+import * as FileSaver from "file-saver";
 import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 import * as moment from "moment";
@@ -55,6 +56,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             const mimeType = "application/gpx+xml";
                             const blob = new Blob([it.gpx], {type: mimeType});
                             const url = window.URL.createObjectURL(blob);
+                            url.anchor("xxx.gpx");
                             return (<tr key={it.id}
                                 id="{it.id}"
                                 className={this.props.currentTrackListId === it.id ? "bg-info text-white" : "bg-white text-dark"}
@@ -73,9 +75,8 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                                         <i className="material-icons md-grey hand-pointer"
                                            onClick={() => this.deleteItem(it.id)}
                                            data-md-tooltip="Delete Track">delete</i>
-                                        <a href={url} download={`${it.trackname}.${"gpx"}`}>
                                             <i className="material-icons md-grey hand-pointer"
-                                               data-md-tooltip="Download">cloud_download</i></a></td> : <td/>}
+                                               data-md-tooltip="Download" onClick={() => FileSaver.saveAs(blob, `${it.trackname}.${"gpx"}`)}>cloud_download</i></td> : <td/>}
                             </tr>)
                         })}
                         </tbody>
