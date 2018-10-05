@@ -19,14 +19,14 @@ export class TrackDetailController extends React.Component<ITrackDetailProps, an
 
     public render() {
         return (
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-8">
-                        <TrackMap trackData={this.props.trackData} trackPts={this.props.trackPts} additionalTrackInfo={this.props.additionalTrackInfo}/>
-                    </div>
-                    <div className="col-4">
-                        <TrackDetail trackData={this.props.trackData} trackPts={this.props.trackPts} additionalTrackInfo={this.props.additionalTrackInfo}/>
-                    </div>
+            <div className="row no-gutters">
+                <div className="col-lg-auto ml-3">
+                    <TrackMap trackData={this.props.trackData} trackPts={this.props.trackPts}
+                              additionalTrackInfo={this.props.additionalTrackInfo}/>
+                </div>
+                <div className="col-lg-auto ml-3">
+                    <TrackDetail trackData={this.props.trackData} trackPts={this.props.trackPts}
+                                 additionalTrackInfo={this.props.additionalTrackInfo}/>
                 </div>
             </div>
         )

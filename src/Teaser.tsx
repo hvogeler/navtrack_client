@@ -18,7 +18,6 @@ export class Teaser extends React.Component<ITeaserProps, any> {
 
     public render() {
         return (
-            <div className="container-fluid">
                 <div className="img-thumbnail">
                     <img src={this.props.image} className="img-fluid"/>
                     <div className="text-secondary h-25 post-content small">
@@ -27,7 +26,6 @@ export class Teaser extends React.Component<ITeaserProps, any> {
                         </h1>
                     </div>
                 </div>
-            </div>
         )
     }
 }

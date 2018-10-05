@@ -34,7 +34,6 @@ export class MainMenu extends React.Component<IMainMenu, any> {
     public render() {
         console.log(`MainMenu: SecToken = ${this.props.rootStore.uiStore.secToken}, user = ${this.props.rootStore.uiStore.user}`);
         return (
-            <div className="container-fluid">
                 <nav className="navbar sticky-top navbar-expand-sm navbar-light bg-light">
                     <Link className="navbar-brand" to="/intro"><img src={navureLogo} className="img-thumbnail" width="32px" height="32px"/></Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse"
@@ -72,7 +71,6 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                         }
                     </div>
                 </nav>
-            </div>
         )
     }
 

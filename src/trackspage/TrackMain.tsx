@@ -148,22 +148,32 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         else {
             const trackPts = this.trackPtsFromGpx;
             return (
-                <div>
-                    <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
-                    <Teaser image={teaserimg} title={"Tracks"}/>
-                    <TrackList currentTrackListId={this.currentTrackListId}
-                               setCurrentTrackListId={this.setCurrentTrack}
-                               tracks={this.trackListData}
-                               getPage={this.prepareTrackListPage}
-                               pageSizeInLines={this.trackListPageSize}
-                               numberOfPages={this.trackListNumberOfPages}
-                               setPageSize={this.setTrackListPageSize}
-                    />
-                    <TrackDetailController
-                        trackData={this.currentTrack}
-                        trackPts={trackPts}
-                        additionalTrackInfo={this.additionalTrackInfo}
-                    />
+                <div className="container-fluid">
+                    <div className="row">
+                        <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
+                    </div>
+                    <div className="row">
+                        <Teaser image={teaserimg} title={"Tracks"}/>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <TrackList currentTrackListId={this.currentTrackListId}
+                                       setCurrentTrackListId={this.setCurrentTrack}
+                                       tracks={this.trackListData}
+                                       getPage={this.prepareTrackListPage}
+                                       pageSizeInLines={this.trackListPageSize}
+                                       numberOfPages={this.trackListNumberOfPages}
+                                       setPageSize={this.setTrackListPageSize}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <TrackDetailController
+                            trackData={this.currentTrack}
+                            trackPts={trackPts}
+                            additionalTrackInfo={this.additionalTrackInfo}
+                        />
+                    </div>
                 </div>
             );
         }

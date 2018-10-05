@@ -37,9 +37,9 @@ export class TrackList extends React.Component<ITrackListProps, any> {
     public render() {
         console.log(this.props.tracks.length);
         return (
-            <div className="container-fluid border-bottom border-secondary mb-1">
+            <div className="border-bottom border-secondary mb-1">
                 <div className="px-1">
-                    <table id="TrackList" className="table table-hover">
+                    <table id="TrackList" className="table table-hover table-responsive-sm">
                         <thead className="thead-light">
                         <tr>
                             <th scope="col" className="text-left">Name</th>
@@ -103,7 +103,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             </ul>
                         </nav>
                     </div>
-                    <div className="col-2 mr-3">
+                    <div className="col-sm-1 col-lg-2 mr-3">
                         <form onSubmit={this.onSubmitHandler}>
                             <div className="form-group row">
                                 <div className="input-group mb-3">
