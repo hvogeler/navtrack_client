@@ -103,7 +103,7 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                             </ul>
                         </nav>
                     </div>
-                    <div className="col-sm-1 col-lg-2 mr-3">
+                    <div className="col-auto mr-3">
                         <form onSubmit={this.onSubmitHandler}>
                             <div className="form-group row">
                                 <div className="input-group mb-3">

@@ -43,7 +43,7 @@ export class MainMenu extends React.Component<IMainMenu, any> {
         console.log(`MainMenu: SecToken = ${this.props.rootStore.uiStore.secToken}, user = ${this.props.rootStore.uiStore.user}`);
         const isSearchBoxHidden = !(this.props.rootStore.uiStore.isLoggedIn && this.props.rootStore.uiStore.currentMenuItem === MenuItem.tracks);
         return (
-            <nav className="navbar navbar-expand-sm navbar-light bg-light">
+            <nav className="navbar navbar-expand-sm navbar-light bg-light sticky-top">
                 <Link className="navbar-brand" to="/intro"><img src={navureLogo} className="img-thumbnail" width="32px"
                                                                 height="32px"/></Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
