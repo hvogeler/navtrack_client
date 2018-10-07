@@ -146,10 +146,8 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         else {
             const trackPts = this.trackPtsFromGpx;
             return (
-                <div className="container-fluid">
-                    <div className="row">
-                        <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
-                    </div>
+                <div>
+                    <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
                     <div className="row">
                         <Teaser image={teaserimg} title={"Tracks"}/>
                     </div>
@@ -164,13 +162,13 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                                        setPageSize={this.setTrackListPageSize}
                             />
                         </div>
-                    </div>
-                    <div className="row">
-                        <TrackDetailController
-                            trackData={this.currentTrack}
-                            trackPts={trackPts}
-                            additionalTrackInfo={this.additionalTrackInfo}
-                        />
+                        <div className="row">
+                            <TrackDetailController
+                                trackData={this.currentTrack}
+                                trackPts={trackPts}
+                                additionalTrackInfo={this.additionalTrackInfo}
+                            />
+                        </div>
                     </div>
                 </div>
             );
@@ -277,7 +275,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     }
 
     private findIndexForTrackListid(id: number): number {
-        const idx = this.trackListData.findIndex((value, index) =>
+        const idx = this.trackListData.findIndex((value) =>
             value.id === id
         );
         return idx >= 0 ? idx : 0

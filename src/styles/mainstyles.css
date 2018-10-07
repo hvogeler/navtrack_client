@@ -1,3 +1,14 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300; /* Corresponds to the Bold 400 style */
+}
+
+th {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600; /* Corresponds to the Bold 400 style */
+}
+
+
 .container-fluid {
     padding: 0px;
 }

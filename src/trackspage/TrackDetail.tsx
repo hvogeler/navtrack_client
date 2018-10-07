@@ -7,52 +7,63 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
     }
 
     public render() {
+        const tableRows = [
+            {
+                "label": "Trackname",
+                "value": this.props.trackData.trackname
+            },
+            {
+                "label": "Description",
+                "value": this.props.trackData.description
+            },
+            {
+                "label": "Country",
+                "value": this.props.trackData.country
+            },
+            {
+                "label": "Region",
+                "value": this.props.trackData.region
+            },
+            {
+                "label": "Owner",
+                "value": this.props.trackData.owner!.username
+            },
+            {
+                "label": "Length(Km)",
+                "value": this.props.additionalTrackInfo.length.toFixed(2)
+            },
+            {
+                "label": "TrackPoints",
+                "value": this.props.additionalTrackInfo.trackPtCnt
+            },
+            {
+                "label": "Types",
+                "value": this.props.trackData.tracktypes.join(", ")
+            },
+            {
+                "label": "Created",
+                "value": this.props.trackData.created
+            }
+        ];
+
         return (
             <div id="detailList" className="border border-light rounded bg-info text-white pr-1">
-                <table className="table table">
+                <table className="table">
                     <thead className="thead-light">
-                    <tr>
-                        <th scope="col" className="text-right">Property</th>
-                        <th scope="col" className="text-left">Value</th>
+                    <tr className="d-flex">
+                        <th scope="col" className="text-right col-4">Property</th>
+                        <th scope="col" className="text-left col-8">Value</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row" className="text-right">Trackname</th>
-                        <td className="text-left">{this.props.trackData.trackname}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">Description</th>
-                        <td className="text-left">{this.props.trackData.description}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">Country</th>
-                        <td className="text-left">{this.props.trackData.country}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">Region</th>
-                        <td className="text-left">{this.props.trackData.region}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">Owner</th>
-                        <td className="text-left">{this.props.trackData.owner!.username}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">Length(Km)</th>
-                        <td className="text-left">{this.props.additionalTrackInfo.length.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">TrackPoints</th>
-                        <td className="text-left">{this.props.additionalTrackInfo.trackPtCnt}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">Types</th>
-                        <td className="text-left">{this.props.trackData.tracktypes.join(", ")}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" className="text-right">Touched</th>
-                        <td className="text-left">{this.props.trackData.created}</td>
-                    </tr>
+                    {tableRows.map((row, idx) => {
+                        return (
+                            <tr key={idx} className="d-flex">
+                                <th scope="row" className="text-right col-4">{row.label}</th>
+                                <td className="text-left col-8">{row.value}</td>
+                            </tr>
+                        )
+                    })}
                     </tbody>
                 </table>
 

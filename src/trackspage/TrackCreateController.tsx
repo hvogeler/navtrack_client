@@ -68,9 +68,9 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                         />
                     </div>
                 </div>
-                <div className="contrainer-fluid">
+                <div className="contrainer-fluid mt-2">
                     <div className="row no-gutters">
-                        <div className="col-md-10">
+                        <div className="col-auto">
                             <TrackCreateMap
                                 mapCenter={this.props.mapCenter}
                                 addTrackPt={this.props.addTrackPt}
@@ -80,7 +80,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                                 selectedTrackPtIdx={this.props.selectedTrackPtIdx}
                             />
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-auto">
                             <TrackPointList trackPts={this.props.trackPts}
                                             setSelectedTrackPt={this.props.setSelectedTrackPt}
                                             selectedTrackPtIdx={this.props.selectedTrackPtIdx}

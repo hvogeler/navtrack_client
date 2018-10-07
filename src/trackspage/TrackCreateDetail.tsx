@@ -144,7 +144,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                 </div>
                             </form>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-auto">
                             <table id="AdditionalDetail" className="table table-borderless">
                                 <thead className="thead-light">
                                 <tr>
@@ -204,8 +204,8 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     private saveButtonOutline() : string {
         let outline = "btn-outline-light";
 
-        if (this.errorMsg != null) {outline = "btn-outline-danger"};
-        if (this.okMsg != null) {outline = "btn-outline-light"};
+        if (this.errorMsg != null) {outline = "btn-outline-danger"}
+        if (this.okMsg != null) {outline = "btn-outline-light"}
 
         return outline;
     }
@@ -271,9 +271,6 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             return
         }
         this.okMsg = `Track ${this.props.trackData.trackname} saved`;
-        Object.keys(this.props.trackData).forEach((v, i, a) => console.log(`${v} ${this.props.trackData[v]}`));
-        console.log(`Country = ${this.props.trackData.country}`);
-        console.log(`Tracktypes = ${this.props.trackData.tracktypes.join(", ")}`);
     }
 
 }
