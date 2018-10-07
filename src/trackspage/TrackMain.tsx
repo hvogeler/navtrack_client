@@ -18,8 +18,6 @@ import {TrackList} from "./TrackList";
 import {TrackMetadata} from "./TrackMetadata";
 import {TrackPtDo} from "./TrackPtDo";
 
-// ToDo: Delete Track
-// ToDo: Keep Track creation date on upload track
 
 interface ITracksMain extends RouteComponentProps<any> {
     rootStore: RootStore;
