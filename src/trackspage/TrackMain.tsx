@@ -162,7 +162,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                                        setPageSize={this.setTrackListPageSize}
                             />
                         </div>
-                        <div className="row">
+                        <div className="row col-12 d-inline-block">
                             <TrackDetailController
                                 trackData={this.currentTrack}
                                 trackPts={trackPts}

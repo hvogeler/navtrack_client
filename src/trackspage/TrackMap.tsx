@@ -21,6 +21,13 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
             return ""
         }
 
+/*
+        const mapStyle = {
+            hight: "600px",
+            width: `800px`,
+        };
+*/
+
         const lastTrackPt = trackPts[trackPts.length - 1];
         return (
                 <Map id="viewMap" center={[trackPts[0].lat, trackPts[0].lng]} zoom={Constants.INITIAL_ZOOM_LEVEL}>

@@ -15,9 +15,7 @@ th {
 
 #viewMap {
     height: 540px;
-    width: 800px;
-    max-width: 800px;
-    min-width: 300px;
+    width: 100%;
 }
 
 #TrackList th, #TrackList td {
