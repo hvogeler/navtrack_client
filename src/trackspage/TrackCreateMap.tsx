@@ -63,21 +63,25 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                     const isSelectedTrackPt = this.props.selectedTrackPtIdx === idx;
                     let circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
                                           fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorBlue}
-                                          color={TrackCreateMap.colorBlue} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                                          color={TrackCreateMap.colorBlue} onClick={this.clickOnTrackPtCircle}
+                                          idx={idx}/>);
                     if (isFirstTrackPt) {
                         circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
                                           fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorGreen}
-                                          color={TrackCreateMap.colorGreen} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                                          color={TrackCreateMap.colorGreen} onClick={this.clickOnTrackPtCircle}
+                                          idx={idx}/>);
                     }
                     if (isLastTrackPt) {
                         circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
                                           fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorYellow}
-                                          color={TrackCreateMap.colorYellow} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                                          color={TrackCreateMap.colorYellow} onClick={this.clickOnTrackPtCircle}
+                                          idx={idx}/>);
                     }
                     if (isSelectedTrackPt) {
                         circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
                                           fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorRed}
-                                          color={TrackCreateMap.colorRed} onClick={this.clickOnTrackPtCircle} idx={idx}/>);
+                                          color={TrackCreateMap.colorRed} onClick={this.clickOnTrackPtCircle}
+                                          idx={idx}/>);
                     }
                     return circle;
 
@@ -94,7 +98,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                               onClick={this.clickedOnPolyline}
 
                     />
-                  {trackPtCircles}
+                    {trackPtCircles}
                 </LayerGroup>
 
             )
@@ -112,17 +116,15 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         }
 
         return (
-            <div>
-                <Map id="viewMap" center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
-                     onClick={this.onClickHandler} ref={(ref => this.map = ref)} className="leaflet-crosshair">
-                    <TileLayer
-                        attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                        url={TILESERVER === undefined ? "" : TILESERVER}
-                    />
-                    {marker}
-                    {trackLayer}
-                </Map>
-            </div>
+            <Map id="viewMap" center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
+                 onClick={this.onClickHandler} ref={(ref => this.map = ref)} className="leaflet-crosshair">
+                <TileLayer
+                    attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                    url={TILESERVER === undefined ? "" : TILESERVER}
+                />
+                {marker}
+                {trackLayer}
+            </Map>
         );
     }
 

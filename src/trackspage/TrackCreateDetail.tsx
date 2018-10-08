@@ -44,8 +44,8 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
         else {
             return (
                 <div className="container-fluid">
-                    <div className="row no-gutters">
-                        <div className="col-md-10  bg-info text-white ">
+                    <div className="row no-gutters pl-1">
+                        <div className="col-md-10  bg-info text-white">
                             <form onSubmit={this.onSubmitHandler}>
                                 <div id="detailForm" className="">
                                     <div className="row">
@@ -144,7 +144,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                 </div>
                             </form>
                         </div>
-                        <div className="col-md-auto">
+                        <div className="col-md-auto pl-1">
                             <table id="AdditionalDetail" className="table table-borderless">
                                 <thead className="thead-light">
                                 <tr>
