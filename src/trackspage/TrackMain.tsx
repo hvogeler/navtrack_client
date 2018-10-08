@@ -49,8 +49,9 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @computed
     private get additionalTrackInfo(): AdditionalTrackInfo {
         return {
+            eleDiff: this.maxEleDiff,
             length: this.trackLengthInKm,
-            trackPtCnt: this.trackPtsFromGpx.length
+            trackPtCnt: this.trackPtsFromGpx.length,
         }
     }
 
@@ -69,6 +70,15 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         );
 
         return akku / 1000;
+    }
+
+    @computed
+    private get maxEleDiff(): number {
+        const trackPts = this.trackPtsFromGpx
+        const minEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious < ele ? elePrevious : ele);
+        const maxEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious > ele ? elePrevious : ele);
+        return maxEle - minEle;
+
     }
 
     public static trackMetadataFromGpxUtil(gpxdoc: string): TrackMetadata {

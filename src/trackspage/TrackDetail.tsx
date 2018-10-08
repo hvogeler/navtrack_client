@@ -33,6 +33,10 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                 "value": this.props.additionalTrackInfo.length.toFixed(2)
             },
             {
+                "label": "Elevation Diff",
+                "value": this.props.additionalTrackInfo.eleDiff.toFixed(0)
+            },
+            {
                 "label": "TrackPoints",
                 "value": this.props.additionalTrackInfo.trackPtCnt
             },

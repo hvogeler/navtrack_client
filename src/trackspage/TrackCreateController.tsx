@@ -23,6 +23,7 @@ export interface ITrackCreateProps {
     deleteTrackPt: (idx: number) => void;
     saveTrack: () => string;
     trackLengthInKm: number;
+    elevationDiff: number;
     countries: CountryTo[];
     tracktypes: TrackTypeTo[];
     errorMsg: string | null;
@@ -55,6 +56,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             addTrackPt={this.props.addTrackPt}
                             deleteTrackPt={this.props.deleteTrackPt}
                             trackLengthInKm={this.props.trackLengthInKm}
+                            elevationDiff={this.props.elevationDiff}
                             countries={this.props.countries}
                             tracktypes={this.props.tracktypes}
                             saveTrack={this.props.saveTrack}

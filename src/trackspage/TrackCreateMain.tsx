@@ -119,6 +119,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                     addTrackPt={this.addTrackPt}
                     deleteTrackPt={this.deleteTrackPt}
                     trackLengthInKm={this.trackLengthInKm}
+                    elevationDiff={this.maxEleDiff}
                     countries={globalRootStore.uiStore.countries}
                     tracktypes={globalRootStore.uiStore.tracktypes}
                     saveTrack={this.saveTrack}
@@ -325,8 +326,9 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     @computed
     private get additionalTrackInfo(): AdditionalTrackInfo {
         return {
+            eleDiff: this.maxEleDiff,
             length: this.trackLengthInKm,
-            trackPtCnt: TrackMain.trackPtsFromGpxUtil(this.newTrack.gpx).length
+            trackPtCnt: TrackMain.trackPtsFromGpxUtil(this.newTrack.gpx).length,
         }
     }
 
@@ -345,6 +347,18 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         );
 
         return akku / 1000;
+    }
+
+    @computed
+    private get maxEleDiff(): number {
+        const trackPts = this.trackPts;
+        if (trackPts.length <= 0) {
+            return 0;
+        }
+        const minEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious < ele ? elePrevious : ele);
+        const maxEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious > ele ? elePrevious : ele);
+        return maxEle - minEle;
+
     }
 
 }

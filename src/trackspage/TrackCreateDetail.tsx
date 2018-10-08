@@ -154,12 +154,16 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td className="text-right">Length (Km)</td>
+                                    <th className="text-right font-weight-bold">Length (Km)</th>
                                     <td className="text-left">{this.props.trackLengthInKm.toFixed(2)}</td>
                                 </tr>
                                 <tr>
-                                    <td className="text-right">Trackpoints</td>
+                                    <th className="text-right">Trackpoints</th>
                                     <td className="text-left">{this.props.trackPts.length}</td>
+                                </tr>
+                                <tr>
+                                    <th className="text-right">Elevation Diff</th>
+                                    <td className="text-left">{this.props.elevationDiff.toFixed(0)}</td>
                                 </tr>
                                 </tbody>
                             </table>
