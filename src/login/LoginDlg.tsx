@@ -103,9 +103,9 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
             this.errmsg = "Please enter username and password!";
         } else {
             this.errmsg = null;
-            this.props.setCredentials(this.user, this.password).then(x => {
+            this.props.setCredentials(this.user, this.password).then(value => {
                 if (!this.props.isLoggedIn) {
-                    this.errmsg = "Login failed, please try again"
+                    this.errmsg = value;
                 }
             });
         }

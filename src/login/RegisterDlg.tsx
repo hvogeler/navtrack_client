@@ -6,6 +6,7 @@ import {ChangeEvent, FormEvent} from "react";
 export interface IRegisterDlg {
     registerUser: (email: string | null, user: string | null, password: string | null) => Promise<any>;
     isLoggedIn: boolean;
+    errMsg: string | null;
 }
 
 @observer
@@ -20,6 +21,10 @@ export class RegisterDlg extends React.Component<IRegisterDlg, any> {
     constructor(props: IRegisterDlg) {
         super(props);
         this.registerButtonClicked = this.registerButtonClicked.bind(this);
+    }
+
+    public componentDidMount() {
+        this.errmsg = this.props.errMsg;
     }
 
     public render() {
@@ -98,11 +103,9 @@ export class RegisterDlg extends React.Component<IRegisterDlg, any> {
             this.errmsg = "Please enter username, password and email address!";
         } else {
             this.errmsg = null;
-            this.props.registerUser(this.email, this.user, this.password).then(x => {
-                if (!this.props.isLoggedIn) {
-                    this.errmsg = "Registration failed, please try again"
-                }
-            });
+            this.props.registerUser(this.email, this.user, this.password).then( (value => {
+                this.errmsg = value;
+            }));
         }
     }
 }

@@ -24,9 +24,12 @@ interface IJwtResponse {
 @observer
 export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
 
+    private errMsg: string | null = null;
+
     constructor(props: ILoginDlgMain) {
         super(props);
         this.setCredentials = this.setCredentials.bind(this);
+        this.registerUser = this.registerUser.bind(this);
         this.logOut = this.logOut.bind(this);
         this.setState = this.setState.bind(this);
     }
@@ -44,27 +47,20 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
                           logout={this.logOut}/>
                 <RegisterDlg isLoggedIn={this.props.rootStore.uiStore.isLoggedIn}
                              registerUser={this.registerUser}
+                             errMsg={this.errMsg}
                 />
             </div>
         );
     }
 
     private registerUser(email: string | null, user: string | null, password: string | null): Promise<any> {
-        return fetchJsonPost("/auth/requestJwt", JSON.stringify({"user": user, "password": password}))
+        return fetchJsonPost("/auth/registerUser", JSON.stringify({"email" : email, "user": user, "password": password}))
             .then((response: any) => {
                 const {status} = response;
                 if (status === undefined) {
-                    const jwtResponse = response as IJwtResponse;
-                    this.props.rootStore.uiStore.user = user;
-                    this.props.rootStore.uiStore.password = password;
-                    this.props.rootStore.uiStore.isLoggedIn = true;
-                    this.props.rootStore.uiStore.secToken = jwtResponse.jwt;
-                    this.props.rootStore.uiStore.userDo = jwtResponse.user;
-                    console.log(`LoginDlgMain: Received token ${jwtResponse.jwt}`);
-                    console.log(`LoginDlgMain: Received user ${jwtResponse.user.username}`);
+                    return "Please check your Email and confirm your registration"
                 } else {
-                    console.log(`LoginDlgMain: Received error response ${status}`);
-
+                    return response.message;
                 }
             });
 
@@ -85,7 +81,7 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
                     console.log(`LoginDlgMain: Received token ${jwtResponse.jwt}`);
                     console.log(`LoginDlgMain: Received user ${jwtResponse.user.username}`);
                 } else {
-                    console.log(`LoginDlgMain: Received error response ${status}`);
+                    return response.message;
 
                 }
             });
