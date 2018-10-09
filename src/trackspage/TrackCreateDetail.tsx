@@ -32,6 +32,29 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     }
 
     public render() {
+        const tableRows = [
+            {
+                "label": "Length (Km)",
+                "value": this.props.trackLengthInKm.toFixed(2)
+            },
+            {
+                "label": "Trackpoints",
+                "value": this.props.trackPts.length
+            },
+            {
+                "label": "Elevation Diff",
+                "value": this.props.elevationInfo.maxEleDiff.toFixed(0)
+            },
+            {
+                "label": "Cum Ascend",
+                "value": this.props.elevationInfo.cumAscend.toFixed(0)
+            },
+            {
+                "label": "Cum Descend",
+                "value": this.props.elevationInfo.cumDescend.toFixed(0)
+            },
+        ];
+
         if (!globalRootStore.uiStore.isLoggedIn) {
             return (<div className="container-fluid">
                 <div className="row no-gutters">
@@ -52,12 +75,15 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                         <div className="form-group text-left col-2">
                                             <label htmlFor="trackname">Trackname</label>
                                             <input type="text" className="form-control" id="trackname"
-                                                   onChange={this.onChangeHandler} value={this.props.trackData.trackname}/>
+                                                   onChange={this.onChangeHandler}
+                                                   value={this.props.trackData.trackname}/>
                                         </div>
                                         <div className="form-group col-3 text-left">
                                             <label htmlFor="description">Description</label>
                                             <textarea rows={3} className="form-control" id="description"
-                                                   onChange={this.onChangeHandler} value={this.props.trackData.description}/>
+                                                      onChange={this.onChangeHandler}
+                                                      value={this.props.trackData.description}
+                                                      maxLength={250}/>
                                         </div>
                                         <div className="form-group col-2 text-left">
                                             <label htmlFor="country">Country</label>
@@ -82,8 +108,9 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                             <select id="tracktype" className="form-control" multiple={true}
                                                     onChange={this.onChangeHandlerSelect}>
                                                 {this.props.tracktypes.map(value => {
-                                                    const isSelected = this.props.trackData.tracktypes.some( tt => tt === value.tracktypename);
-                                                    return (<option key={value.id} selected={isSelected}>{value.tracktypename}</option>)
+                                                    const isSelected = this.props.trackData.tracktypes.some(tt => tt === value.tracktypename);
+                                                    return (<option key={value.id}
+                                                                    selected={isSelected}>{value.tracktypename}</option>)
                                                 })}
                                             </select>
                                             {/*<input type="text" className="form-control" id="country"*/}
@@ -100,7 +127,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                         {(this.props.mode === EditOrCreate.create) ?
                                             <div className="form-group col-2 text-left">
                                                 <label className="btn btn-info btn-outline-light"
-                                                        hidden={false}>Upload Gpx Track
+                                                       hidden={false}>Upload Gpx Track
                                                     <input type={"file"}
                                                            hidden={true}
                                                            ref={(ref) => this.uploadInput = ref}
@@ -113,7 +140,8 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                         {(this.errorMsg != null || this.props.errorMsg != null) ?
                                             <div className="form-group col-6 border-danger rounded"
                                                  style={{backgroundColor: 'red'}}>
-                                                <div className="text-light text-center justify-content-center align-self-center">
+                                                <div
+                                                    className="text-light text-center justify-content-center align-self-center">
                                                     {this.props.errorMsg || this.errorMsg}
                                                 </div>
                                             </div>
@@ -153,18 +181,15 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th className="text-right font-weight-bold">Length (Km)</th>
-                                    <td className="text-left">{this.props.trackLengthInKm.toFixed(2)}</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-right">Trackpoints</th>
-                                    <td className="text-left">{this.props.trackPts.length}</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-right">Elevation Diff</th>
-                                    <td className="text-left">{this.props.elevationDiff.toFixed(0)}</td>
-                                </tr>
+                                {tableRows.map((infoRow, idx) => {
+                                    return (
+                                        <tr key={idx}>
+                                            <th className="text-right font-weight-bold">{infoRow.label}</th>
+                                            <td className="text-left">{infoRow.value}</td>
+                                        </tr>
+                                    )
+                                })
+                                }
                                 </tbody>
                             </table>
 
@@ -189,7 +214,7 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     private onChangeFileUPload(event: React.FormEvent<HTMLInputElement>) {
         const inputField = event.currentTarget.id;
         if (event.currentTarget.files !== null && event.currentTarget.files.length > 0) {
-            const gpxfile : File = event.currentTarget.files[0];
+            const gpxfile: File = event.currentTarget.files[0];
             this.props.readGpxFile(gpxfile);
             this.okMsg = (`Track loaded from file ${gpxfile.name}. Filesize: ${(gpxfile.size / 1024).toFixed(1)} KB`);
             this.errorMsg = null;
@@ -205,11 +230,15 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     //     }
     // }
 
-    private saveButtonOutline() : string {
+    private saveButtonOutline(): string {
         let outline = "btn-outline-light";
 
-        if (this.errorMsg != null) {outline = "btn-outline-danger"}
-        if (this.okMsg != null) {outline = "btn-outline-light"}
+        if (this.errorMsg != null) {
+            outline = "btn-outline-danger"
+        }
+        if (this.okMsg != null) {
+            outline = "btn-outline-light"
+        }
 
         return outline;
     }

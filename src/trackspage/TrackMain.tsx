@@ -30,6 +30,12 @@ interface IElasticTrackHit {
     description: string;
 }
 
+export interface IElevationInfo {
+    maxEleDiff: number;
+    cumAscend: number;
+    cumDescend: number;
+}
+
 @observer
 export class TrackMain extends React.Component<ITracksMain, any> {
 
@@ -49,7 +55,9 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @computed
     private get additionalTrackInfo(): AdditionalTrackInfo {
         return {
-            eleDiff: this.maxEleDiff,
+            cumAscend: this.elevationInfo.cumAscend,
+            cumDescend: this.elevationInfo.cumDescend,
+            eleDiff: this.elevationInfo.maxEleDiff,
             length: this.trackLengthInKm,
             trackPtCnt: this.trackPtsFromGpx.length,
         }
@@ -73,12 +81,32 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     }
 
     @computed
-    private get maxEleDiff(): number {
-        const trackPts = this.trackPtsFromGpx
-        const minEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious < ele ? elePrevious : ele);
-        const maxEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious > ele ? elePrevious : ele);
-        return maxEle - minEle;
-
+    private get elevationInfo(): IElevationInfo {
+        const trackPts = this.trackPtsFromGpx;
+        const eleInfo = trackPts.map( (trackPt) => {
+            return {
+                cumAscend: trackPt.ele,
+                cumDescend: trackPt.ele,
+                maxEle: trackPt.ele,
+                minEle: trackPt.ele,
+            }
+        }).reduce((elePrevious, ele, idx, arr) => {
+            const elePrev = arr[idx - 1].cumAscend;
+            const eleCurr = arr[idx].cumAscend;
+            return {
+                cumAscend: (elePrev < eleCurr ? eleCurr - elePrev : 0) + elePrevious.cumAscend,
+                cumDescend: (elePrev > eleCurr ? elePrev - eleCurr : 0) + elePrevious.cumDescend,
+                maxEle: elePrevious.maxEle > ele.maxEle ? elePrevious.maxEle : ele.maxEle,
+                minEle: elePrevious.minEle < ele.minEle ? elePrevious.minEle : ele.minEle,
+            }
+        });
+        // const minEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious < ele ? elePrevious : ele);
+        // const maxEle = trackPts.map(trackPt => trackPt.ele).reduce((elePrevious, ele) => elePrevious > ele ? elePrevious : ele);
+        return {
+            cumAscend: eleInfo.cumAscend - trackPts[0].ele,
+            cumDescend: eleInfo.cumDescend - trackPts[0].ele,
+            maxEleDiff: eleInfo.maxEle - eleInfo.minEle,
+        };
     }
 
     public static trackMetadataFromGpxUtil(gpxdoc: string): TrackMetadata {

@@ -9,6 +9,7 @@ import {TrackCreateDetail} from "./TrackCreateDetail";
 import {EditOrCreate, IMapCenter} from "./TrackCreateMain";
 import {InsertMode} from "./TrackCreateMain";
 import {TrackCreateMap} from "./TrackCreateMap";
+import {IElevationInfo} from "./TrackMain";
 import {TrackPointList} from "./TrackPointList";
 import {TrackPtDo} from "./TrackPtDo";
 
@@ -23,7 +24,7 @@ export interface ITrackCreateProps {
     deleteTrackPt: (idx: number) => void;
     saveTrack: () => string;
     trackLengthInKm: number;
-    elevationDiff: number;
+    elevationInfo: IElevationInfo;
     countries: CountryTo[];
     tracktypes: TrackTypeTo[];
     errorMsg: string | null;
@@ -56,7 +57,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             addTrackPt={this.props.addTrackPt}
                             deleteTrackPt={this.props.deleteTrackPt}
                             trackLengthInKm={this.props.trackLengthInKm}
-                            elevationDiff={this.props.elevationDiff}
+                            elevationInfo={this.props.elevationInfo}
                             countries={this.props.countries}
                             tracktypes={this.props.tracktypes}
                             saveTrack={this.props.saveTrack}

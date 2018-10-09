@@ -29,6 +29,14 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                 "value": this.props.trackData.owner!.username
             },
             {
+                "label": "Types",
+                "value": this.props.trackData.tracktypes.join(", ")
+            },
+            {
+                "label": "Created",
+                "value": this.props.trackData.created
+            },
+            {
                 "label": "Length(Km)",
                 "value": this.props.additionalTrackInfo.length.toFixed(2)
             },
@@ -37,21 +45,21 @@ export class TrackDetail extends React.Component<ITrackDetailProps, any> {
                 "value": this.props.additionalTrackInfo.eleDiff.toFixed(0)
             },
             {
+                "label": "Cum Ascend",
+                "value": this.props.additionalTrackInfo.cumAscend.toFixed(0)
+            },
+            {
+                "label": "Cum Descend",
+                "value": this.props.additionalTrackInfo.cumDescend.toFixed(0)
+            },
+            {
                 "label": "TrackPoints",
                 "value": this.props.additionalTrackInfo.trackPtCnt
             },
-            {
-                "label": "Types",
-                "value": this.props.trackData.tracktypes.join(", ")
-            },
-            {
-                "label": "Created",
-                "value": this.props.trackData.created
-            }
         ];
 
         return (
-            <div id="detailList" className="border border-light rounded bg-info text-white pl-1">
+            <div id="detailList" className="border border-light rounded  pl-1">
                 <table className="table">
                     <thead className="thead-light">
                     <tr className="d-flex">
