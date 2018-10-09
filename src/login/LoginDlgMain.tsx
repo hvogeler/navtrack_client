@@ -9,6 +9,7 @@ import {RootStore} from "../RootStore";
 import {Teaser} from "../Teaser";
 import {UserTo} from "../transport/UserTo";
 import {LoginDlg} from "./LoginDlg";
+import {RegisterDlg} from "./RegisterDlg";
 
 
 interface ILoginDlgMain extends RouteComponentProps<any> {
@@ -41,8 +42,32 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
                 <Teaser image={teaserimg} title={"Login"}/>
                 <LoginDlg setCredentials={this.setCredentials} isLoggedIn={this.props.rootStore.uiStore.isLoggedIn}
                           logout={this.logOut}/>
+                <RegisterDlg isLoggedIn={this.props.rootStore.uiStore.isLoggedIn}
+                             registerUser={this.registerUser}
+                />
             </div>
         );
+    }
+
+    private registerUser(email: string | null, user: string | null, password: string | null): Promise<any> {
+        return fetchJsonPost("/auth/requestJwt", JSON.stringify({"user": user, "password": password}))
+            .then((response: any) => {
+                const {status} = response;
+                if (status === undefined) {
+                    const jwtResponse = response as IJwtResponse;
+                    this.props.rootStore.uiStore.user = user;
+                    this.props.rootStore.uiStore.password = password;
+                    this.props.rootStore.uiStore.isLoggedIn = true;
+                    this.props.rootStore.uiStore.secToken = jwtResponse.jwt;
+                    this.props.rootStore.uiStore.userDo = jwtResponse.user;
+                    console.log(`LoginDlgMain: Received token ${jwtResponse.jwt}`);
+                    console.log(`LoginDlgMain: Received user ${jwtResponse.user.username}`);
+                } else {
+                    console.log(`LoginDlgMain: Received error response ${status}`);
+
+                }
+            });
+
     }
 
     private setCredentials(user: string | null, password: string | null): Promise<any> {

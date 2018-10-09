@@ -3,23 +3,23 @@ import {observer} from "mobx-react";
 import * as React from "react";
 import {ChangeEvent, FormEvent} from "react";
 
-export interface ILoginDlg {
-    setCredentials: (user: string | null, password: string | null) => Promise<any>;
-    logout: () => void;
+export interface IRegisterDlg {
+    registerUser: (email: string | null, user: string | null, password: string | null) => Promise<any>;
     isLoggedIn: boolean;
 }
 
 @observer
-export class LoginDlg extends React.Component<ILoginDlg, any> {
+export class RegisterDlg extends React.Component<IRegisterDlg, any> {
 
+    private email: string | null = null;
     private user: string | null = null;
     private password: string | null = null;
 
     @observable private errmsg: string | null = null;
 
-    constructor(props: ILoginDlg) {
+    constructor(props: IRegisterDlg) {
         super(props);
-        this.loginButtonClicked = this.loginButtonClicked.bind(this);
+        this.registerButtonClicked = this.registerButtonClicked.bind(this);
     }
 
     public render() {
@@ -29,17 +29,26 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
                     <div className="card bg-light border-0">
                         <div className="card-body">
                             <div className="card-title font-weight-bold">
-                                <h1>Login</h1>
+                                <h1>Register</h1>
                             </div>
                             <div className="card-text">
-
-                                <form onSubmit={(event: FormEvent<HTMLFormElement>) => this.loginButtonClicked(event)}>
+                                <form
+                                    onSubmit={(event: FormEvent<HTMLFormElement>) => this.registerButtonClicked(event)}>
+                                    <div className="form-group row">
+                                        <label htmlFor="email" className="sr-only">Email</label>
+                                        <div className="col-sm-12">
+                                            <i className="material-icons">email</i>
+                                            <input type="email" name="email" placeholder="Email Address" id="email"
+                                                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                                       this.email = event.currentTarget.value;
+                                                   }}/>
+                                        </div>
+                                    </div>
                                     <div className="form-group row">
                                         <label htmlFor="username" className="sr-only">Username</label>
                                         <div className="col-sm-12">
                                             <i className="material-icons">perm_identity</i>
                                             <input type="text" name="user" placeholder="Username" id="username"
-                                                   autoFocus={true}
                                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                                        this.user = event.currentTarget.value;
                                                    }}/>
@@ -58,19 +67,11 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
 
                                     <div className="form-group row">
                                         <div className="col-sm-12">
-                                            <button type="submit" className="btn btn-outline-secondary">Login
+                                            <button type="submit" className="btn btn-outline-secondary">Register
                                             </button>
                                         </div>
                                     </div>
                                 </form>
-
-                                <div className="form-group row">
-                                    <div className="col-sm-12">
-                                        <div className="login-help">
-                                            <a href="#">Forgot Password</a>
-                                        </div>
-                                    </div>
-                                </div>
                                 {
                                     (this.errmsg != null) ?
                                         <div className="text-danger text-center">
@@ -78,6 +79,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
                                         </div>
                                         : <div/>
                                 }
+
                             </div>
                         </div>
                     </div>
@@ -85,25 +87,18 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
             );
         } else {
             return (
-                <div className="container col-sm-5 bg-light mt-4 pt-4 pb-4 border rounded">
-                    <button onClick={() => {
-                        this.user = null;
-                        this.password = null;
-                        this.props.logout()
-                    }}>Log Out
-                    </button>
-                </div>
+                <div/>
             );
         }
     }
 
-    private loginButtonClicked(event: FormEvent<HTMLFormElement>) {
+    private registerButtonClicked(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (this.user === null || this.password === null) {
             this.errmsg = "Please enter username and password!";
         } else {
             this.errmsg = null;
-            this.props.setCredentials(this.user, this.password).then(x => {
+            this.props.registerUser(this.email, this.user, this.password).then(x => {
                 if (!this.props.isLoggedIn) {
                     this.errmsg = "Login failed, please try again"
                 }
