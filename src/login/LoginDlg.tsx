@@ -28,7 +28,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
                 <div className="container col-sm-5 mt-4 bg-light border rounded ">
                     <div className="card bg-light border-0">
                         <div className="card-body">
-                            <div className="card-title font-weight-bold">
+                            <div className="card-title font-weight-bold text-secondary">
                                 <h1>Login</h1>
                             </div>
                             <div className="card-text">

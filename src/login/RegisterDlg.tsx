@@ -25,10 +25,10 @@ export class RegisterDlg extends React.Component<IRegisterDlg, any> {
     public render() {
         if (!this.props.isLoggedIn) {
             return (
-                <div className="container col-sm-5 mt-4 bg-light border rounded ">
+                <div className="container col-md-5 mt-4 bg-light border rounded ">
                     <div className="card bg-light border-0">
                         <div className="card-body">
-                            <div className="card-title font-weight-bold">
+                            <div className="card-title font-weight-bold text-secondary">
                                 <h1>Register</h1>
                             </div>
                             <div className="card-text">
@@ -36,9 +36,9 @@ export class RegisterDlg extends React.Component<IRegisterDlg, any> {
                                     onSubmit={(event: FormEvent<HTMLFormElement>) => this.registerButtonClicked(event)}>
                                     <div className="form-group row">
                                         <label htmlFor="email" className="sr-only">Email</label>
-                                        <div className="col-sm-12">
-                                            <i className="material-icons">email</i>
-                                            <input type="email" name="email" placeholder="Email Address" id="email"
+                                        <div className="col-md-12">
+                                            <i className="material-icons">mail</i>
+                                            <input type="email" name="email" placeholder="Email Address" id="email" size={40}
                                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                                        this.email = event.currentTarget.value;
                                                    }}/>
@@ -94,13 +94,13 @@ export class RegisterDlg extends React.Component<IRegisterDlg, any> {
 
     private registerButtonClicked(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        if (this.user === null || this.password === null) {
-            this.errmsg = "Please enter username and password!";
+        if (this.user === null || this.password === null || this.email === null) {
+            this.errmsg = "Please enter username, password and email address!";
         } else {
             this.errmsg = null;
             this.props.registerUser(this.email, this.user, this.password).then(x => {
                 if (!this.props.isLoggedIn) {
-                    this.errmsg = "Login failed, please try again"
+                    this.errmsg = "Registration failed, please try again"
                 }
             });
         }
