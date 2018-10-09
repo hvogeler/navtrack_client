@@ -83,6 +83,13 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @computed
     private get elevationInfo(): IElevationInfo {
         const trackPts = this.trackPtsFromGpx;
+        if (trackPts.length <= 0) {
+            return {
+                cumAscend: 0,
+                cumDescend: 0,
+                maxEleDiff: 0,
+            };
+        }
         const eleInfo = trackPts.map( (trackPt) => {
             return {
                 cumAscend: trackPt.ele,
