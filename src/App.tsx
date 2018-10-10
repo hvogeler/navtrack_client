@@ -42,6 +42,8 @@ export class App extends React.Component<any, any> {
                                render={(props) => <IntroMain {...props} rootStore={this.rootStore}/>}/>
                         <Route exact={true} path="/login"
                                render={(props) => <LoginDlgMain {...props} rootStore={this.rootStore!}/>}/>
+                        <Route exact={true} path="/pwreset/:confirmationkey"
+                               render={(props) => <LoginDlgMain {...props} rootStore={this.rootStore!}/>}/>
                     </Switch>
                 </Router>
             </div>

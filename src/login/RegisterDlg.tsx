@@ -50,20 +50,20 @@ export class RegisterDlg extends React.Component<IRegisterDlg, any> {
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label htmlFor="username" className="sr-only">Username</label>
+                                        <label htmlFor="usernameR" className="sr-only">Username</label>
                                         <div className="col-sm-12">
                                             <i className="material-icons">perm_identity</i>
-                                            <input type="text" name="user" placeholder="Username" id="username"
+                                            <input type="text" name="user" placeholder="Username" id="usernameR"
                                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                                        this.user = event.currentTarget.value;
                                                    }}/>
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label htmlFor="password" className="sr-only">Password</label>
+                                        <label htmlFor="passwordR" className="sr-only">Password</label>
                                         <div className="col-sm-12">
                                             <i className="material-icons">lock_open</i>
-                                            <input type="password" name="pass" placeholder="Password" id="password"
+                                            <input type="password" name="pass" placeholder="Password" id="passwordR"
                                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                                        this.password = event.currentTarget.value;
                                                    }}/>

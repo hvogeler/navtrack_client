@@ -1,12 +1,13 @@
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import * as React from "react";
-import {ChangeEvent, FormEvent} from "react";
+import {ChangeEvent, FormEvent, MouseEvent} from "react";
 
 export interface ILoginDlg {
     setCredentials: (user: string | null, password: string | null) => Promise<any>;
     logout: () => void;
     isLoggedIn: boolean;
+    forgotPassword: (user: string) => Promise<any>;
 }
 
 @observer
@@ -20,6 +21,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
     constructor(props: ILoginDlg) {
         super(props);
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
+        this.forgotPasswordClicked = this.forgotPasswordClicked.bind(this);
     }
 
     public render() {
@@ -67,7 +69,7 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
                                 <div className="form-group row">
                                     <div className="col-sm-12">
                                         <div className="login-help">
-                                            <a href="#">Forgot Password</a>
+                                            <a href="#" onClick={this.forgotPasswordClicked}>Forgot Password</a>
                                         </div>
                                     </div>
                                 </div>
@@ -108,6 +110,17 @@ export class LoginDlg extends React.Component<ILoginDlg, any> {
                     this.errmsg = value;
                 }
             });
+        }
+    }
+
+    private forgotPasswordClicked(event: MouseEvent<HTMLAnchorElement>) {
+        if (this.user === null) {
+            this.errmsg = "Please enter username";
+        } else {
+            this.errmsg = null;
+            this.props.forgotPassword(this.user).then( (value => {
+                this.errmsg = value;
+            }));
         }
     }
 }
