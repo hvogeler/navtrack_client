@@ -57,7 +57,8 @@ h1 {
 }
 
 #TrackPointsList th, #TrackPointsList td {
-    padding: 0.3rem;
+    padding: 0.1rem;
+    font-size: 12px;
 }
 
 .post-content {
