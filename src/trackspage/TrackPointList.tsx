@@ -41,7 +41,7 @@ export class TrackPointList extends React.Component<ITrackPointListProps, any> {
                             className={this.props.selectedTrackPtIdx === idx ? "bg-info text-white" : "bg-white text-dark"}
                             onClick={() => {
                                 this.props.setSelectedTrackPt(idx);
-                                console.log(this.props.insertMode)
+                                console.log(this.props.insertMode);
                             }}
                         >
                             <td>{it.lat.toFixed(4)}</td>

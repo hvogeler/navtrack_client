@@ -3,7 +3,16 @@ import {action} from "mobx";
 import {observer} from "mobx-react";
 // import * as L from "leaflet";
 import * as React from 'react';
-import {Circle, LayerGroup, Map, Marker, Polyline, Popup, TileLayer} from "react-leaflet";
+import {
+    Circle,
+    LayerGroup,
+    LayersControl,
+    Map,
+    Marker,
+    Polyline,
+    Popup,
+    TileLayer
+} from "react-leaflet";
 import {fetchJson} from "../backend/Backend";
 import {Constants} from "../Constants";
 import {IMapCenter} from "./TrackCreateMain";
@@ -14,7 +23,6 @@ import {TrackPtDo} from "./TrackPtDo";
 // const tileserverThunderforestOutdoors = "http://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=26282baad33249a2993f500028d75b5b";
 
 const TILESERVER = process.env.REACT_APP_TILESERVER;
-const markerCircleSize = 20;
 
 interface ITrackCreateMap {
     mapCenter: IMapCenter;
@@ -44,6 +52,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         super(props);
         this.onClickHandler = this.onClickHandler.bind(this);
         this.clickOnTrackPtCircle = this.clickOnTrackPtCircle.bind(this);
+        this.makeTrackPtCircles = this.makeTrackPtCircles.bind(this);
     }
 
 
@@ -52,7 +61,66 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         const {...mapCenter} = this.props.mapCenter;
 
         let trackLayer: any;
+
+        if (trackPts.length > 0) {
+            mapCenter.location = trackPts[0].toLatLng();
+            mapCenter.label = null;
+            trackLayer = (
+                <Polyline positions={
+                    trackPts.map((trackPt) => {
+                        return trackPt
+                    })}
+                          color={"#6b1fde"}
+                          onClick={this.clickedOnPolyline}
+
+                />
+            )
+
+        }
+
+        let marker: any;
+        if (mapCenter.label !== null) {
+            marker = (
+                <Marker position={mapCenter.location}
+                        color="yellow" radius={12}>
+                    <Popup>{this.props.mapCenter.label}</Popup>
+                </Marker>
+            )
+        }
+
+        return (
+            <Map id="viewMap" center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
+                 onClick={this.onClickHandler} ref={(ref => this.map = ref)} className="leaflet-crosshair"
+                 >
+                <LayersControl position="topright">
+                    <LayersControl.BaseLayer checked={true} name="Topo Map">
+                        <TileLayer
+                            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                            url={TILESERVER === undefined ? "" : TILESERVER}
+                        />
+                    </LayersControl.BaseLayer>
+                    {marker}
+                    <LayersControl.Overlay checked={true} name="Track">
+                        <LayerGroup>
+                            {trackLayer}
+                        </LayerGroup>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay checked={true} name="Trackpoints">
+                        <LayerGroup>
+                            {this.makeTrackPtCircles(this.map)}
+                        </LayerGroup>
+                    </LayersControl.Overlay>
+                </LayersControl>
+            </Map>
+        );
+    }
+
+    private makeTrackPtCircles(map : any) : any {
+        const trackPts = this.props.trackPts;
+        const {...mapCenter} = this.props.mapCenter;
+
         let trackPtCircles: any;
+
         if (trackPts.length > 0) {
             mapCenter.location = trackPts[0].toLatLng();
             mapCenter.label = null;
@@ -61,6 +129,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
                     const isFirstTrackPt = idx === 0;
                     const isLastTrackPt = idx === (trackPts.length - 1);
                     const isSelectedTrackPt = this.props.selectedTrackPtIdx === idx;
+                    const markerCircleSize = 10;
                     let circle = (<Circle key={idx} center={pt.toLatLng()} radius={markerCircleSize} opacity={0.8}
                                           fill={true} fillOpacity={0.7} fillColor={TrackCreateMap.colorBlue}
                                           color={TrackCreateMap.colorBlue} onClick={this.clickOnTrackPtCircle}
@@ -87,45 +156,9 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
 
                 })
             );
-
-            trackLayer = (
-                <LayerGroup>
-                    <Polyline positions={
-                        trackPts.map((trackPt) => {
-                            return trackPt
-                        })}
-                              color={"#6b1fde"}
-                              onClick={this.clickedOnPolyline}
-
-                    />
-                    {trackPtCircles}
-                </LayerGroup>
-
-            )
-
         }
+        return trackPtCircles;
 
-        let marker: any;
-        if (mapCenter.label !== null) {
-            marker = (
-                <Marker position={mapCenter.location}
-                        color="yellow" radius={12}>
-                    <Popup>{this.props.mapCenter.label}</Popup>
-                </Marker>
-            )
-        }
-
-        return (
-            <Map id="viewMap" center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
-                 onClick={this.onClickHandler} ref={(ref => this.map = ref)} className="leaflet-crosshair">
-                <TileLayer
-                    attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                    url={TILESERVER === undefined ? "" : TILESERVER}
-                />
-                {marker}
-                {trackLayer}
-            </Map>
-        );
     }
 
     @action
