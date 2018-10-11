@@ -43,6 +43,11 @@ export class TrackPointList extends React.Component<ITrackPointListProps, any> {
                                 this.props.setSelectedTrackPt(idx);
                                 console.log(this.props.insertMode);
                             }}
+                            ref={ (ref) => {
+                                if (this.props.selectedTrackPtIdx === idx && ref !== null) {
+                                    ref.scrollIntoView();
+                                }
+                            }}
                         >
                             <td>{it.lat.toFixed(4)}</td>
                             <td>{it.lng.toFixed(4)}</td>
