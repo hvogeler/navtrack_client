@@ -18,7 +18,6 @@ export class App extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        console.log(`Initialize rootStore ${Date.now()}`);
         this.rootStore = new RootStore();
         globalRootStore = this.rootStore
     }

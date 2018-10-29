@@ -40,7 +40,6 @@ export class MainMenu extends React.Component<IMainMenu, any> {
     }
 
     public render() {
-        console.log(`MainMenu: SecToken = ${this.props.rootStore.uiStore.secToken}, user = ${this.props.rootStore.uiStore.user}`);
         const isSearchBoxHidden = !(this.props.rootStore.uiStore.isLoggedIn && this.props.rootStore.uiStore.currentMenuItem === MenuItem.tracks);
         return (
             <nav className="navbar navbar-expand-sm navbar-light bg-light sticky-top">
@@ -85,7 +84,6 @@ export class MainMenu extends React.Component<IMainMenu, any> {
     }
 
     private onChangeHandler(event: React.FormEvent<HTMLInputElement>) {
-//        const inputField = event.currentTarget.id;
         this.searchField = event.currentTarget.value;
     }
 
@@ -94,7 +92,6 @@ export class MainMenu extends React.Component<IMainMenu, any> {
         if (this.props.refreshTrackList) {
             this.props.refreshTrackList();
         }
-        console.log(`searchtext = ${this.searchField}`);
         event.preventDefault();
     }
 }

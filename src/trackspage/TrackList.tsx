@@ -35,7 +35,6 @@ export class TrackList extends React.Component<ITrackListProps, any> {
     }
 
     public render() {
-        console.log(this.props.tracks.length);
         return (
             <div className="border-bottom border-secondary mb-1">
                 <div className="px-1">

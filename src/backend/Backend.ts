@@ -7,27 +7,26 @@ import {TrackTo} from "../transport/TrackTo";
 const BACKEND_URL = process.env.REACT_APP_SERVER_URL;
 
 export function fetchJson(path: string): Promise<any> {
-    console.log(`REST Server URL: ${BACKEND_URL}`);
     const url = `${BACKEND_URL}${path}`;
-    const graphqlurl = `${BACKEND_URL}/graphql`;
+//    const graphqlurl = `${BACKEND_URL}/graphql`;
     const headers = {
         "Accept": "application/json",
         "Authorization": `Bearer ${globalRootStore.uiStore.secToken}`,
         'Content-Type': "application/json"
     };
 
-    console.log(headers);
-
-    fetch(graphqlurl, {
-        "body": JSON.stringify({"query": "{ allTracks { trackname }}"}),
-        "headers": headers,
-        "method": "POST",
-        "mode": "no-cors"
-    },)
-        .then(response => response.json())
-        .catch(ex => {
-            console.error('parsing failed', ex);
-        }).then(txtbody => console.log(txtbody));
+    // console.log(headers);
+    //
+    // fetch(graphqlurl, {
+    //     "body": JSON.stringify({"query": "{ allTracks { trackname }}"}),
+    //     "headers": headers,
+    //     "method": "POST",
+    //     "mode": "no-cors"
+    // },)
+    //     .then(response => response.json())
+    //     .catch(ex => {
+    //         console.error('parsing failed', ex);
+    //     }).then(txtbody => console.log(txtbody));
 
     return fetch(url, {
         "headers": headers,
@@ -47,8 +46,6 @@ export function fetchJsonPost(path: string, body: string): Promise<any> {
         "Authorization": `Bearer ${globalRootStore.uiStore.secToken}`,
         'Content-Type': "application/json"
     };
-
-    console.log(headers);
 
     return fetch(url, {
         "body" : body,

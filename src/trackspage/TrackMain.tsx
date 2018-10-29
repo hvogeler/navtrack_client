@@ -1,4 +1,3 @@
-import * as elasticsearch from 'elasticsearch';
 import {LatLng} from "leaflet";
 import {action, computed, observable} from "mobx";
 import {observer} from "mobx-react";
@@ -23,12 +22,12 @@ interface ITracksMain extends RouteComponentProps<any> {
     rootStore: RootStore;
 }
 
-interface IElasticTrackHit {
+/*interface IElasticTrackHit {
     trackid: number;
     trackname: string;
     owner: string;
     description: string;
-}
+}*/
 
 export interface IElevationInfo {
     maxEleDiff: number;
@@ -232,49 +231,16 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         // if search text is given, use it for a fulltext elastic search
         if (globalRootStore.uiStore.searchText !== null) {
             this.trackListData = [];
-            const query = {
-                "_source": {
-                    "includes": ["trackid", "trackname", "owner", "description"]
-                },
-                "query": {
-                    "bool": {
-                        "must": [],
-                        "should": [
-                            {"match": {"trackname": globalRootStore.uiStore.searchText}},
-                            {"match": {"description": globalRootStore.uiStore.searchText}},
-                            {"match": {"region": globalRootStore.uiStore.searchText}},
-                            {"match": {"owner": (globalRootStore.uiStore.userDo !== null ? globalRootStore.uiStore.userDo.username + " " : "") + globalRootStore.uiStore.searchText}},
-                            {"match": {"owneremail": globalRootStore.uiStore.searchText}},
-                            {"match": {"tracktypes": globalRootStore.uiStore.searchText}},
-                            {"match": {"country": globalRootStore.uiStore.searchText}}
-                        ],
-                    }
-                },
-            };
-            const ELASTIC_URL = process.env.REACT_APP_ELASTIC_URL;
-            const es = new elasticsearch.Client({
-                host: ELASTIC_URL,
-                log: 'trace'
-            });
-            es.search({
-                body: query,
-                index: 'tracks',
-                size: +(process.env.REACT_APP_ELASTIC_MAX_RESULT_SIZE || "200"),
-            }).then((resp) => {
-                const hits = resp.hits.hits;
-                hits.filter((hit) => hit._score > 0.0).forEach((hit) => {
-                    const trackHit: IElasticTrackHit = hit._source as IElasticTrackHit;
-                    console.log(`Elastic found id: ${trackHit.trackid}, trackname: ${trackHit.trackname}`);
-                    fetchJson(`/api/tracks/${trackHit.trackid}`)
+            fetchJson(`/api/trackutil/search?search=${globalRootStore.uiStore.searchText}`)
+                .then((tracks: TrackTo[]) => {
+                tracks.forEach((hit: TrackTo) => {
+                    fetchJson(`/api/tracks/${hit.id}`)
                         .then((track: TrackTo) => {
                             this.trackListData.push(track);
                             this.currentTrackListId = this.trackListData.length > 0 ? this.trackListData[0].id : 0;
                         });
 
                 });
-            }, (err) => {
-                console.trace(err.message);
-                throw new Error(err.message);
             });
             globalRootStore.uiStore.searchText = null;
         } else {

@@ -92,8 +92,6 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
                     this.props.rootStore.uiStore.isLoggedIn = true;
                     this.props.rootStore.uiStore.secToken = jwtResponse.jwt;
                     this.props.rootStore.uiStore.userDo = jwtResponse.user;
-                    console.log(`LoginDlgMain: Received token ${jwtResponse.jwt}`);
-                    console.log(`LoginDlgMain: Received user ${jwtResponse.user.username}`);
                 } else {
                     return response.message;
 
@@ -137,7 +135,6 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
     }
 
     private logOut() {
-        console.log(`Logging out ${this.props.rootStore.uiStore.user}/${this.props.rootStore.uiStore.password}`);
         this.clearUserStore()
 
     }
