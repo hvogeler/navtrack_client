@@ -1,3 +1,23 @@
+# Navtrack Web App
+This is the web front end to Navtrack. It allows to upload, create, maintain and search GPS Tracks. Mainly to provide them 
+for download for [Navure](https://github.com/hvogeler/navure).
+
+## Run the web app
+### Development
+This is run under webpack during development. Eiter `cd /Users/hvo/IdeaProjects/navtrack/client/navtrack`and `npm start`or just run it from IntelliJ's run button (top right).
+### Production
+#### Deployment
+run `npm run build`. This will create the packed js files in `/Users/hvo/IdeaProjects/navtrack/client/navtrack/build`. 
+Copy the build to the server using the Intellij deployment feature. Upload to the server.
+This will copy it to /home/hvo/navtrack/client.
+From there copy it to the NGINX public directory '/var/www/hvo.de/public/navtrack/'. To do so run
+'sudo cp -r /home/hvo/navtrack/client/* /var/www/hvo.de/public/navtrack`.
+
+# NGINX and SSL and letsencrypt
+NGINX forces all connections to https. It uses letsencrypt certificates stored on /etc/letsencrypt. They are managed using certbot.
+
+
+# Create React App standard docs
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
