@@ -160,6 +160,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @observable public currentTrackListId: number = 1;
     @observable private trackListData: TrackTo[] = [];
     @observable private trackListPageSize = +(process.env.REACT_APP_ELASTIC_PAGESIZE || "10");
+    @observable private errorMsg: string | null = null;
 
     constructor(props: ITracksMain) {
         super(props);
@@ -170,7 +171,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     }
 
     public componentWillMount() {
-        this.refreshTrackListData();
+//        this.refreshTrackListData();
     }
 
     public componentDidMount() {
@@ -184,6 +185,16 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                 <div>
                     <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
                     <Teaser image={teaserimg} title={"Tracks"}/>
+                    <div className="row" hidden={this.errorMsg === null}>
+                        <div className="alert alert-warning col-sm-12" role="alert">
+                            {this.errorMsg}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="alert alert-info col-sm-12" role="alert">
+                        No Track found
+                        </div>
+                    </div>
                 </div>
             )
         }
@@ -194,6 +205,11 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                     <MainMenu rootStore={this.props.rootStore!} refreshTrackList={this.refreshTrackListData}/>
                     <div className="row">
                         <Teaser image={teaserimg} title={"Tracks"}/>
+                    </div>
+                    <div className="row" hidden={this.errorMsg === null}>
+                        <div className="alert alert-warning col-sm-12" role="alert">
+                            {this.errorMsg}
+                        </div>
                     </div>
                     <div className="row">
                         <div className="col-lg-12">
@@ -232,24 +248,55 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         if (globalRootStore.uiStore.searchText !== null) {
             this.trackListData = [];
             fetchJson(`/api/trackutil/search?search=${globalRootStore.uiStore.searchText}`)
-                .then((tracks: TrackTo[]) => {
-                tracks.forEach((hit: TrackTo) => {
-                    fetchJson(`/api/tracks/${hit.id}`)
-                        .then((track: TrackTo) => {
-                            this.trackListData.push(track);
-                            this.currentTrackListId = this.trackListData.length > 0 ? this.trackListData[0].id : 0;
-                        });
+                .then((tracks) => {
+                    if (tracks instanceof Array) {
+                        tracks.forEach((hit: TrackTo) => {
+                            fetchJson(`/api/tracks/${hit.id}`)
+                                .then((track: TrackTo) => {
+                                    this.trackListData.push(track);
+                                    this.currentTrackListId = this.trackListData.length > 0 ? this.trackListData[0].id : 0;
+                                });
 
-                });
+                        });
+                    } else {
+                        if (tracks !== undefined) {
+                            let msg = "Unknown Error";
+                            if (typeof tracks === "string") {
+                                msg = tracks;
+                            }
+                            if (tracks.hasOwnProperty("message")) {
+                                msg = tracks.message
+                            }
+                            throw Error(msg)
+                        }
+                    }
+            }).catch((error) => {
+                this.errorMsg = `${error}`
             });
             globalRootStore.uiStore.searchText = null;
         } else {
             fetchJson("/api/tracks")
-                .then((tracks: TrackTo[]) => {
-                    this.trackListData = tracks;
-                    this.currentTrackListId = tracks[0].id
-                });
+                .then((tracks) => {
+                    if (tracks instanceof Array) {
+                        this.trackListData = tracks;
+                        this.currentTrackListId = tracks[0].id
+                    } else {
+                        if (tracks !== undefined) {
+                            let msg = "Unknown Error";
+                            if (typeof tracks === "string") {
+                                msg = tracks;
+                            }
+                            if (tracks.hasOwnProperty("message")) {
+                                msg = tracks.message
+                            }
+                            throw Error(msg)
+                        }
+                    }
+                }).catch((error) => {
+                this.errorMsg = `${error}`
+            });
         }
+
 
 
         // const client = new ApolloClient({

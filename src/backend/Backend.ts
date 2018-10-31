@@ -33,9 +33,16 @@ export function fetchJson(path: string): Promise<any> {
         "method": "GET",
         "mode": "cors"
     },)
-        .then(response => response.json())
+        .then((response) => {
+            if (!response.ok) {
+                return response.text()
+//                throw Error(`Problem connecting to Navtrack server: ${response.status} ${response.statusText}`)
+            }
+            return response.json()
+        })
         .catch(ex => {
-            console.error('parsing failed', ex);
+            console.error(ex);
+            throw ex;
         });
 }
 
