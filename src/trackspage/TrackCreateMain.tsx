@@ -5,6 +5,7 @@ import * as React from 'react';
 import {RouteComponentProps} from "react-router";
 import {globalRootStore} from "../App";
 import {fetchJson, fetchJsonPost} from "../backend/Backend";
+import {Footer} from "../Footer";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu, MenuItem} from "../MainMenu";
 import {RootStore} from "../RootStore";
@@ -130,6 +131,9 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                     setInsertMode={this.setInsertMode}
                     readGpxFile={this.readGpxFile}
                 />
+                <div className="row col-12 d-inline-block">
+                    <Footer/>
+                </div>
             </div>
         );
     }

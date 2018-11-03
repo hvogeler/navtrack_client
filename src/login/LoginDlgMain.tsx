@@ -3,6 +3,7 @@ import * as React from "react";
 import {RouteComponentProps} from "react-router";
 import {globalRootStore} from "../App";
 import {fetchJson, fetchJsonPost} from "../backend/Backend";
+import {Footer} from "../Footer";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu, MenuItem} from "../MainMenu";
 import {RootStore} from "../RootStore";
@@ -46,23 +47,42 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
             return (
                 <div>
                     <MainMenu rootStore={this.props.rootStore!}/>
-                    <Teaser image={teaserimg} title={"Set Password"}/>
-                    <SetPasswordDlg confirmationkey={this.props.match.params.confirmationkey as string}
-                                    setPassword={this.setPassword}/>
+                    <div className="row">
+                        <Teaser image={teaserimg} title={"Set Password"}/>
+                    </div>
+                    <div className="row">
+                        <SetPasswordDlg confirmationkey={this.props.match.params.confirmationkey as string}
+                                        setPassword={this.setPassword}/>
+                    </div>
+                    <div className="row">
+                        <div className="row col-12 d-inline-block">
+                            <Footer/>
+                        </div>
+                    </div>
                 </div>
             );
         } else {
             return (
                 <div>
                     <MainMenu rootStore={this.props.rootStore!}/>
-                    <Teaser image={teaserimg} title={"Login"}/>
-                    <LoginDlg setCredentials={this.setCredentials} isLoggedIn={this.props.rootStore.uiStore.isLoggedIn}
-                              logout={this.logOut}
-                              forgotPassword={this.forgotPassword}/>
-                    <RegisterDlg isLoggedIn={this.props.rootStore.uiStore.isLoggedIn}
-                                 registerUser={this.registerUser}
-                                 errMsg={this.errMsg}
-                    />
+                    <div className="row">
+                        <Teaser image={teaserimg} title={"Login"}/>
+                    </div>
+                    <div className="row">
+                        <LoginDlg setCredentials={this.setCredentials}
+                                  isLoggedIn={this.props.rootStore.uiStore.isLoggedIn}
+                                  logout={this.logOut}
+                                  forgotPassword={this.forgotPassword}/>
+                    </div>
+                    <div className="row">
+                        <RegisterDlg isLoggedIn={this.props.rootStore.uiStore.isLoggedIn}
+                                     registerUser={this.registerUser}
+                                     errMsg={this.errMsg}
+                        />
+                    </div>
+                    <div className="row col-12 d-inline-block">
+                        <Footer/>
+                    </div>
                 </div>
             );
         }

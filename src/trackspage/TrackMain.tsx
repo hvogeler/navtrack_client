@@ -5,6 +5,7 @@ import * as React from 'react';
 import {RouteComponentProps} from "react-router";
 import {globalRootStore} from "../App";
 import {fetchJson} from "../backend/Backend";
+import {Footer} from "../Footer";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu, MenuItem} from "../MainMenu";
 import {RootStore} from "../RootStore";
@@ -228,6 +229,9 @@ export class TrackMain extends React.Component<ITracksMain, any> {
                                 trackPts={trackPts}
                                 additionalTrackInfo={this.additionalTrackInfo}
                             />
+                        </div>
+                        <div className="row col-12 d-inline-block">
+                            <Footer/>
                         </div>
                     </div>
                 </div>

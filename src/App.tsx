@@ -2,6 +2,7 @@ import * as React from 'react';
 import './App.css';
 
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {DisclaimerAndImpressum} from "./DisclaimerAndImpressum";
 import {DocsMain} from "./docspage/DocsMain";
 import {IntroMain} from "./intro/IntroMain";
 import {LoginDlgMain} from "./login/LoginDlgMain";
@@ -43,6 +44,8 @@ export class App extends React.Component<any, any> {
                                render={(props) => <LoginDlgMain {...props} rootStore={this.rootStore!}/>}/>
                         <Route exact={true} path="/pwreset/:confirmationkey"
                                render={(props) => <LoginDlgMain {...props} rootStore={this.rootStore!}/>}/>
+                        <Route exact={true} path="/disclaimerAndImpressum"
+                               render={(props) => <DisclaimerAndImpressum {...props} rootStore={this.rootStore!}/>}/>
                     </Switch>
                 </Router>
             </div>
