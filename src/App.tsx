@@ -26,7 +26,7 @@ export class App extends React.Component<any, any> {
     public render() {
         return (
             <div className="App">
-                <Router basename={"/navtrack"}>
+                <Router basename={"/"}>
                     <Switch>
                         <Route exact={true} path="/"
                                render={(props) => <TrackMain {...props} rootStore={this.rootStore}/>}/>
