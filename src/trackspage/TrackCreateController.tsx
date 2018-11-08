@@ -44,6 +44,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
     }
 
     public render() {
+        window.dispatchEvent(new Event('resize'));
         return (
             <div>
                 <div className="container-fluid">
@@ -84,7 +85,8 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                                 selectedTrackPtIdx={this.props.selectedTrackPtIdx}
                             />
                         </div>
-                        <div className="col-md-2 border border-light pl-1" hidden={globalRootStore.uiStore.isMapViewMaximized}>
+                        {!globalRootStore.uiStore.isMapViewMaximized ?
+                        <div className="col-md-2 border border-light pl-1">
                             <TrackPointList trackPts={this.props.trackPts}
                                             setSelectedTrackPt={this.props.setSelectedTrackPt}
                                             selectedTrackPtIdx={this.props.selectedTrackPtIdx}
@@ -92,7 +94,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                                             insertMode={this.props.insertMode}
                                             setInsertMode={this.props.setInsertMode}
                             />
-                        </div>
+                        </div> : <span/>}
                     </div>
                 </div>
             </div>
