@@ -15,6 +15,7 @@ export class UiStore {
     @observable public tracktypes: TrackTypeTo[] = [];
     @observable public currentMenuItem: MenuItem = MenuItem.tracks;
     @observable public searchText: string | null = null;
+    @observable public isMapViewMaximized: boolean = false;
 
     public isLoggedInWithRole(role: Roles) : boolean {
             if (this.isLoggedIn) {

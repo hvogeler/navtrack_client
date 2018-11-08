@@ -65,139 +65,144 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
             </div>)
         }
         else {
-            return (
-                <div className="container-fluid">
-                    <div className="row no-gutters pl-1">
-                        <div className="col-md-10  bg-info text-white">
-                            <form onSubmit={this.onSubmitHandler}>
-                                <div id="detailForm" className="">
-                                    <div className="row">
-                                        <div className="form-group text-left col-2">
-                                            <label htmlFor="trackname">Trackname</label>
-                                            <input type="text" className="form-control" id="trackname"
-                                                   onChange={this.onChangeHandler}
-                                                   value={this.props.trackData.trackname}/>
-                                        </div>
-                                        <div className="form-group col-3 text-left">
-                                            <label htmlFor="description">Description</label>
-                                            <textarea rows={3} className="form-control" id="description"
-                                                      onChange={this.onChangeHandler}
-                                                      value={this.props.trackData.description}
-                                                      maxLength={250}/>
-                                        </div>
-                                        <div className="form-group col-2 text-left">
-                                            <label htmlFor="country">Country</label>
-                                            <select id="country" className="form-control"
-                                                    onChange={this.onChangeHandlerSelect}>
-                                                <option selected={true}>{this.props.trackData.country}</option>
-                                                {this.props.countries.map(value => {
-                                                    return (<option key={value.id}>{value.name}</option>)
-                                                })}
-                                            </select>
-                                            {/*<input type="text" className="form-control" id="country"*/}
-                                            {/*onChange={this.onChangeHandler}/>*/}
-                                        </div>
-                                        <div className="form-group col-2 text-left">
-                                            <label htmlFor="region">Region</label>
-                                            <input type="text" className="form-control" id="region"
-                                                   onChange={this.onChangeHandler}
-                                                   onBlur={this.onBlurHandler} value={this.props.trackData.region}/>
-                                        </div>
-                                        <div className="form-group col-2 text-left">
-                                            <label htmlFor="tracktype">Tracktype</label>
-                                            <select id="tracktype" className="form-control" multiple={true}
-                                                    onChange={this.onChangeHandlerSelect}>
-                                                {this.props.tracktypes.map(value => {
-                                                    const isSelected = this.props.trackData.tracktypes.some(tt => tt === value.tracktypename);
-                                                    return (<option key={value.id}
-                                                                    selected={isSelected}>{value.tracktypename}</option>)
-                                                })}
-                                            </select>
-                                            {/*<input type="text" className="form-control" id="country"*/}
-                                            {/*onChange={this.onChangeHandler}/>*/}
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="form-group col-2 text-left">
-                                            <button type="submit" className={`btn btn-info ${this.saveButtonOutline()}`}
-                                                    hidden={false}>Save Track
-                                            </button>
-                                        </div>
-
-                                        {(this.props.mode === EditOrCreate.create) ?
+            if (!globalRootStore.uiStore.isMapViewMaximized) {
+                return (
+                    <div className="container-fluid">
+                        <div className="row no-gutters pl-1">
+                            <div className="col-md-10  bg-info text-white">
+                                <form onSubmit={this.onSubmitHandler}>
+                                    <div id="detailForm" className="">
+                                        <div className="row">
+                                            <div className="form-group text-left col-2">
+                                                <label htmlFor="trackname">Trackname</label>
+                                                <input type="text" className="form-control" id="trackname"
+                                                       onChange={this.onChangeHandler}
+                                                       value={this.props.trackData.trackname}/>
+                                            </div>
+                                            <div className="form-group col-3 text-left">
+                                                <label htmlFor="description">Description</label>
+                                                <textarea rows={3} className="form-control" id="description"
+                                                          onChange={this.onChangeHandler}
+                                                          value={this.props.trackData.description}
+                                                          maxLength={250}/>
+                                            </div>
                                             <div className="form-group col-2 text-left">
-                                                <label className="btn btn-info btn-outline-light"
-                                                       hidden={false}>Upload Gpx Track
-                                                    <input type={"file"}
-                                                           hidden={true}
-                                                           ref={(ref) => this.uploadInput = ref}
-                                                           onChange={this.onChangeFileUPload}
-                                                           accept={".gpx"}
-                                                    />
-                                                </label>
-                                            </div> : ""
-                                        }
-                                        {(this.errorMsg != null || this.props.errorMsg != null) ?
-                                            <div className="form-group col-6 border-danger rounded"
-                                                 style={{backgroundColor: 'red'}}>
-                                                <div
-                                                    className="text-light text-center justify-content-center align-self-center">
-                                                    {this.props.errorMsg || this.errorMsg}
-                                                </div>
+                                                <label htmlFor="country">Country</label>
+                                                <select id="country" className="form-control"
+                                                        onChange={this.onChangeHandlerSelect}>
+                                                    <option selected={true}>{this.props.trackData.country}</option>
+                                                    {this.props.countries.map(value => {
+                                                        return (<option key={value.id}>{value.name}</option>)
+                                                    })}
+                                                </select>
+                                                {/*<input type="text" className="form-control" id="country"*/}
+                                                {/*onChange={this.onChangeHandler}/>*/}
                                             </div>
-                                            : ""
-                                        }
-                                        {(this.okMsg != null && this.props.errorMsg == null) ?
-                                            <div className="form-group col-6">
-                                                <div className="text-light text-center">
-                                                    {this.okMsg}
-                                                </div>
+                                            <div className="form-group col-2 text-left">
+                                                <label htmlFor="region">Region</label>
+                                                <input type="text" className="form-control" id="region"
+                                                       onChange={this.onChangeHandler}
+                                                       onBlur={this.onBlurHandler} value={this.props.trackData.region}/>
                                             </div>
-                                            : ""
-                                        }
-                                    </div>
-                                    {/*<div className="row">*/}
-                                    {/*<div className="form-group col-2 text-left">*/}
-                                    {/*<label htmlFor="owner">Owner</label>*/}
-                                    {/*<input type="text" className="form-control" id="owner" readOnly={true}*/}
-                                    {/*value={globalRootStore.uiStore.user || "not logged in"}/>*/}
-                                    {/*</div>*/}
-                                    {/*<div className="form-group col-2 text-left">*/}
-                                    {/*<label htmlFor="created">Created</label>*/}
-                                    {/*<input type="text" className="form-control" id="created"*/}
-                                    {/*onChange={this.onChangeHandler}/>*/}
-                                    {/*<button type="submit" className="btn btn-light" hidden={true}>Enter</button>*/}
-                                    {/*</div>*/}
-                                    {/*</div>*/}
-                                </div>
-                            </form>
-                        </div>
-                        <div className="col-md-auto pl-1">
-                            <table id="AdditionalDetail" className="table table-borderless">
-                                <thead className="thead-light">
-                                <tr>
-                                    <th scope="col" className="text-right">Parameter</th>
-                                    <th scope="col" className="text-left">Value</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {tableRows.map((infoRow, idx) => {
-                                    return (
-                                        <tr key={idx}>
-                                            <th className="text-right font-weight-bold">{infoRow.label}</th>
-                                            <td className="text-left">{infoRow.value}</td>
-                                        </tr>
-                                    )
-                                })
-                                }
-                                </tbody>
-                            </table>
+                                            <div className="form-group col-2 text-left">
+                                                <label htmlFor="tracktype">Tracktype</label>
+                                                <select id="tracktype" className="form-control" multiple={true}
+                                                        onChange={this.onChangeHandlerSelect}>
+                                                    {this.props.tracktypes.map(value => {
+                                                        const isSelected = this.props.trackData.tracktypes.some(tt => tt === value.tracktypename);
+                                                        return (<option key={value.id}
+                                                                        selected={isSelected}>{value.tracktypename}</option>)
+                                                    })}
+                                                </select>
+                                                {/*<input type="text" className="form-control" id="country"*/}
+                                                {/*onChange={this.onChangeHandler}/>*/}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="form-group col-2 text-left">
+                                                <button type="submit"
+                                                        className={`btn btn-info ${this.saveButtonOutline()}`}
+                                                        hidden={false}>Save Track
+                                                </button>
+                                            </div>
 
+                                            {(this.props.mode === EditOrCreate.create) ?
+                                                <div className="form-group col-2 text-left">
+                                                    <label className="btn btn-info btn-outline-light"
+                                                           hidden={false}>Upload Gpx Track
+                                                        <input type={"file"}
+                                                               hidden={true}
+                                                               ref={(ref) => this.uploadInput = ref}
+                                                               onChange={this.onChangeFileUPload}
+                                                               accept={".gpx"}
+                                                        />
+                                                    </label>
+                                                </div> : ""
+                                            }
+                                            {(this.errorMsg != null || this.props.errorMsg != null) ?
+                                                <div className="form-group col-6 border-danger rounded"
+                                                     style={{backgroundColor: 'red'}}>
+                                                    <div
+                                                        className="text-light text-center justify-content-center align-self-center">
+                                                        {this.props.errorMsg || this.errorMsg}
+                                                    </div>
+                                                </div>
+                                                : ""
+                                            }
+                                            {(this.okMsg != null && this.props.errorMsg == null) ?
+                                                <div className="form-group col-6">
+                                                    <div className="text-light text-center">
+                                                        {this.okMsg}
+                                                    </div>
+                                                </div>
+                                                : ""
+                                            }
+                                        </div>
+                                        {/*<div className="row">*/}
+                                        {/*<div className="form-group col-2 text-left">*/}
+                                        {/*<label htmlFor="owner">Owner</label>*/}
+                                        {/*<input type="text" className="form-control" id="owner" readOnly={true}*/}
+                                        {/*value={globalRootStore.uiStore.user || "not logged in"}/>*/}
+                                        {/*</div>*/}
+                                        {/*<div className="form-group col-2 text-left">*/}
+                                        {/*<label htmlFor="created">Created</label>*/}
+                                        {/*<input type="text" className="form-control" id="created"*/}
+                                        {/*onChange={this.onChangeHandler}/>*/}
+                                        {/*<button type="submit" className="btn btn-light" hidden={true}>Enter</button>*/}
+                                        {/*</div>*/}
+                                        {/*</div>*/}
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="col-md-auto pl-1">
+                                <table id="AdditionalDetail" className="table table-borderless">
+                                    <thead className="thead-light">
+                                    <tr>
+                                        <th scope="col" className="text-right">Parameter</th>
+                                        <th scope="col" className="text-left">Value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {tableRows.map((infoRow, idx) => {
+                                        return (
+                                            <tr key={idx}>
+                                                <th className="text-right font-weight-bold">{infoRow.label}</th>
+                                                <td className="text-left">{infoRow.value}</td>
+                                            </tr>
+                                        )
+                                    })
+                                    }
+                                    </tbody>
+                                </table>
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            );
+                );
+            } else {
+                return null;
+            }
         }
     }
 

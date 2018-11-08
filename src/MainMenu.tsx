@@ -18,6 +18,7 @@ export enum MenuItem {
     login,
     docs,
     create,
+    editTrack,
     navure
 }
 
@@ -53,7 +54,7 @@ export class MainMenu extends React.Component<IMainMenu, any> {
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
-                        <li className={`nav-item ${MainMenu.isActiveMenuItem(MenuItem.tracks)}`}>
+                        <li className={`nav-item ${MainMenu.isActiveMenuItem(MenuItem.tracks)} ${MainMenu.isActiveMenuItem(MenuItem.editTrack)}`}>
                             <Link className="nav-link" to={"/tracks"}>Tracks <span
                                 className="sr-only">(current)</span></Link>
                         </li>
@@ -68,6 +69,10 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                         <li className={`nav-item ${MainMenu.isActiveMenuItem(MenuItem.login)}`}>
                             <Link className="nav-link"
                                   to="/login">{this.props.rootStore.uiStore.isLoggedIn ? `Logged in as ${this.props.rootStore.uiStore.user}` : "Login"}</Link>
+                        </li>
+                        <li className="nav-item" hidden={globalRootStore.uiStore.currentMenuItem !== MenuItem.create && globalRootStore.uiStore.currentMenuItem !== MenuItem.editTrack}>
+                            <span className="nav-link" onClick={() => globalRootStore.uiStore.isMapViewMaximized = !globalRootStore.uiStore.isMapViewMaximized}>
+                                {globalRootStore.uiStore.isMapViewMaximized ? "Smaller Map" : "Larger Map"}</span>
                         </li>
                     </ul>
 

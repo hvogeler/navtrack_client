@@ -30,7 +30,7 @@ export class TrackMap extends React.Component<ITrackDetailProps, any> {
 
         const lastTrackPt = trackPts[trackPts.length - 1];
         return (
-                <Map id="viewMap" center={[trackPts[0].lat, trackPts[0].lng]} zoom={Constants.INITIAL_ZOOM_LEVEL}>
+                <Map id="viewMapSmall" center={[trackPts[0].lat, trackPts[0].lng]} zoom={Constants.INITIAL_ZOOM_LEVEL}>
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                         url={TILESERVER === undefined ? "" : TILESERVER}

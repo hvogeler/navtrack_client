@@ -91,7 +91,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
         this.getCountries();
         this.getTracktypes();
         if (this.props.mode === EditOrCreate.edit) {
-            globalRootStore.uiStore.currentMenuItem = MenuItem.tracks;
+            globalRootStore.uiStore.currentMenuItem = MenuItem.editTrack;
             this.getTrack(this.props.match.params.trackId)
         } else {
             globalRootStore.uiStore.currentMenuItem = MenuItem.create;

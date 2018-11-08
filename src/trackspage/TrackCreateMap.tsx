@@ -13,6 +13,7 @@ import {
     Popup,
     TileLayer
 } from "react-leaflet";
+import {globalRootStore} from "../App";
 import {fetchJson} from "../backend/Backend";
 import {Constants} from "../Constants";
 import {IMapCenter} from "./TrackCreateMain";
@@ -89,9 +90,10 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         }
 
         return (
-            <Map id="viewMap" center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
+            <Map id={globalRootStore.uiStore.isMapViewMaximized ? "viewMapLarge" : "viewMapSmall"}
+                 center={mapCenter.location} zoom={Constants.INITIAL_ZOOM_LEVEL}
                  onClick={this.onClickHandler} ref={(ref => this.map = ref)} className="leaflet-crosshair"
-                 >
+            >
                 <LayersControl position="topright">
                     <LayersControl.BaseLayer checked={true} name="Topo Map">
                         <TileLayer
@@ -115,7 +117,7 @@ export class TrackCreateMap extends React.Component<ITrackCreateMap, any> {
         );
     }
 
-    private makeTrackPtCircles(map : any) : any {
+    private makeTrackPtCircles(map: any): any {
         const trackPts = this.props.trackPts;
         const {...mapCenter} = this.props.mapCenter;
 

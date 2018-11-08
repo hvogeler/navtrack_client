@@ -1,6 +1,7 @@
 import {observer} from "mobx-react";
 import * as React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
+import {globalRootStore} from "../App";
 import {CountryTo} from "../transport/CountryTo";
 import {TrackTo} from "../transport/TrackTo";
 import {TrackTypeTo} from "../transport/TrackTypeTo";
@@ -73,7 +74,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                 </div>
                 <div className="contrainer-fluid no-gutters pl-1 pt-1">
                     <div className="row no-gutters col-12">
-                        <div className="col-md-10">
+                        <div className={globalRootStore.uiStore.isMapViewMaximized ? "col-md-12" : "col-md-10"}>
                             <TrackCreateMap
                                 mapCenter={this.props.mapCenter}
                                 addTrackPt={this.props.addTrackPt}
@@ -83,7 +84,7 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                                 selectedTrackPtIdx={this.props.selectedTrackPtIdx}
                             />
                         </div>
-                        <div className="col-md-2 border border-light pl-1">
+                        <div className="col-md-2 border border-light pl-1" hidden={globalRootStore.uiStore.isMapViewMaximized}>
                             <TrackPointList trackPts={this.props.trackPts}
                                             setSelectedTrackPt={this.props.setSelectedTrackPt}
                                             selectedTrackPtIdx={this.props.selectedTrackPtIdx}

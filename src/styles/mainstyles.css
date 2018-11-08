@@ -17,8 +17,13 @@ h1 {
     padding: 0px;
 }
 
-#viewMap {
+#viewMapSmall {
     height: 540px;
+    width: 100%;
+}
+
+#viewMapLarge {
+    height: 800px;
     width: 100%;
 }
 
