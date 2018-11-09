@@ -13,6 +13,10 @@ h1 {
     font-weight: 600; /* Corresponds to the Bold 400 style */
 }
 
+.smallfont {
+    font-size: small;
+}
+
 .container-fluid {
     padding: 0px;
 }

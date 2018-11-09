@@ -1,11 +1,11 @@
 import * as React from 'react';
-import './App.css';
-
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import './App.css';
 import {DisclaimerAndImpressum} from "./DisclaimerAndImpressum";
 import {DocsMain} from "./docspage/DocsMain";
 import {IntroMain} from "./intro/IntroMain";
 import {LoginDlgMain} from "./login/LoginDlgMain";
+import {LogViewerMain} from "./logviewer/LogViewerMain";
 import {RootStore} from "./RootStore";
 import './styles/mainstyles.css'
 import {EditOrCreate, TrackCreateMain} from "./trackspage/TrackCreateMain";
@@ -46,6 +46,8 @@ export class App extends React.Component<any, any> {
                                render={(props) => <LoginDlgMain {...props} rootStore={this.rootStore!}/>}/>
                         <Route exact={true} path="/disclaimerAndImpressum"
                                render={(props) => <DisclaimerAndImpressum {...props} rootStore={this.rootStore!}/>}/>
+                        <Route exact={true} path="/logViewer"
+                               render={(props) => <LogViewerMain {...props} rootStore={this.rootStore!}/>}/>
                     </Switch>
                 </Router>
             </div>

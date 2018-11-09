@@ -19,7 +19,8 @@ export enum MenuItem {
     docs,
     create,
     editTrack,
-    navure
+    navure,
+    logViewer
 }
 
 @observer
@@ -74,6 +75,11 @@ export class MainMenu extends React.Component<IMainMenu, any> {
                             <span className="nav-link" onClick={() => globalRootStore.uiStore.isMapViewMaximized = !globalRootStore.uiStore.isMapViewMaximized}>
                                 {globalRootStore.uiStore.isMapViewMaximized ? "Smaller Map" : "Larger Map"}</span>
                         </li>
+                        {globalRootStore.uiStore.isLoggedInWithRole(Roles.ROLE_ADMIN) ?
+                            <li className={`nav-item ${MainMenu.isActiveMenuItem(MenuItem.logViewer)}`}>
+                                <Link className="nav-link" to="/logViewer">Log Viewer</Link>
+                            </li> : ""
+                        }
                     </ul>
 
                     <form className="form-inline my-3 my-lg-0" hidden={isSearchBoxHidden}>
