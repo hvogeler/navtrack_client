@@ -73,6 +73,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     @observable private selectedTrackPtIdx = -1;
     @observable private errorMsg: string | null = null;
     @observable private insertMode: InsertMode | null = null;
+    @observable private isJwtExpired = false;
 
     constructor(props: ITracksCreateMain) {
         super(props);
@@ -105,6 +106,10 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     }
 
     public render() {
+        if (this.isJwtExpired) {
+            this.props.history.push("/login");
+            return null;
+        }
         return (
             <div>
                 <MainMenu rootStore={this.props.rootStore}/>
@@ -130,6 +135,9 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
                     insertMode={this.insertMode}
                     setInsertMode={this.setInsertMode}
                     readGpxFile={this.readGpxFile}
+                    history={this.props.history}
+                    match={this.props.match}
+                    location={this.props.location}
                 />
                 <div className="row col-12 d-inline-block">
                     <Footer/>
@@ -178,9 +186,31 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
     private getTrack(trackId: number) {
         fetchJson(`/api/tracks/${trackId}`)
             .then((resp) => {
-                this.newTrack = resp;
-                this.trackPts = TrackMain.trackPtsFromGpxUtil(this.newTrack.gpx);
-            })
+                if (!this.isExpiredJwt(resp)) {
+                    this.newTrack = resp;
+                    this.trackPts = TrackMain.trackPtsFromGpxUtil(this.newTrack.gpx);
+                }
+            }).catch(ex => {
+            this.errorMsg = `Error on createTrack api : ${ex}`;
+            console.log(this.errorMsg)
+        });
+    }
+
+    private isExpiredJwt(resp: any) : boolean {
+        try {
+            const respException = JSON.parse(resp);
+            if (respException.exception !== undefined) {
+                this.errorMsg = `Error on createTrack api : ${resp}`;
+                if (this.errorMsg !== null && this.errorMsg.includes("expired")) {
+                    this.isJwtExpired = true;
+                    globalRootStore.uiStore.clearUserStore();
+                    return true;
+                }
+            }
+        } catch (e) {
+            ;
+        }
+        return false;
     }
 
     private saveTrack(): string {
@@ -363,7 +393,7 @@ export class TrackCreateMain extends React.Component<ITracksCreateMain, any> {
             };
         }
 
-        const eleInfo = trackPts.map( (trackPt) => {
+        const eleInfo = trackPts.map((trackPt) => {
             return {
                 cumAscend: trackPt.ele,
                 cumDescend: trackPt.ele,

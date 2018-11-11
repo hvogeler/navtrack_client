@@ -5,6 +5,11 @@ import {Roles} from "./transport/RoleTo";
 import {TrackTypeTo} from "./transport/TrackTypeTo";
 import {UserTo} from "./transport/UserTo";
 
+export enum LocalStorageKeys {
+    navure_jwt = 'navure.jwt',
+    navure_user = 'navure.user'
+}
+
 export class UiStore {
     @observable public user: string | null;
     @observable public password: string | null;
@@ -26,6 +31,25 @@ export class UiStore {
                 }
             }
         return false;
+    }
+
+    public setUserStore(user: string | null, userDo: UserTo, secToken: string) {
+        this.user = user;
+        this.userDo = userDo;
+        this.secToken = secToken;
+        this.isLoggedIn = true;
+        localStorage.setItem(LocalStorageKeys.navure_jwt, this.secToken)
+        localStorage.setItem(LocalStorageKeys.navure_user, JSON.stringify(userDo))
+    }
+
+    public clearUserStore() {
+        this.user = null;
+        this.password = null;
+        this.isLoggedIn = false;
+        this.secToken = null;
+        this.userDo = null;
+        localStorage.removeItem(LocalStorageKeys.navure_jwt);
+        localStorage.removeItem(LocalStorageKeys.navure_user);
     }
 
 }

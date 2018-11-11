@@ -162,6 +162,7 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     @observable private trackListData: TrackTo[] = [];
     @observable private trackListPageSize = +(process.env.REACT_APP_ELASTIC_PAGESIZE || "10");
     @observable private errorMsg: string | null = null;
+    @observable private isJwtExpired = false;
 
     constructor(props: ITracksMain) {
         super(props);
@@ -181,6 +182,11 @@ export class TrackMain extends React.Component<ITracksMain, any> {
     }
 
     public render() {
+        if (this.isJwtExpired) {
+            this.props.history.push("/login");
+            return null;
+        }
+
         if (this.trackListData.length <= 0) {
             return (
                 <div>
@@ -245,6 +251,23 @@ export class TrackMain extends React.Component<ITracksMain, any> {
         return this.trackListData.slice(pageStart, pageEnd);
     }
 
+    private isExpiredJwt(resp: any) : boolean {
+        try {
+            const respException = JSON.parse(resp);
+            if (respException.exception !== undefined) {
+                this.errorMsg = `Error on createTrack api : ${resp}`;
+                if (this.errorMsg !== null && this.errorMsg.includes("expired")) {
+                    this.isJwtExpired = true;
+                    globalRootStore.uiStore.clearUserStore();
+                    return true;
+                }
+            }
+        } catch (e) {
+            ;
+        }
+        return false;
+    }
+
     @action
     private refreshTrackListData() {
         // if logged in prefer users own tracks
@@ -253,6 +276,10 @@ export class TrackMain extends React.Component<ITracksMain, any> {
             this.trackListData = [];
             fetchJson(`/api/trackutil/search?search=${globalRootStore.uiStore.searchText}`)
                 .then((tracks) => {
+                    if (this.isExpiredJwt(tracks)) {
+                        return
+                    }
+
                     if (tracks instanceof Array) {
                         tracks.forEach((hit: TrackTo) => {
                             fetchJson(`/api/tracks/${hit.id}`)

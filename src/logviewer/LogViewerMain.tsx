@@ -22,6 +22,9 @@ export class LogViewerMain extends React.Component<ILogViewerMain, any> {
 
     @observable private logListData: AccessLogTo[] = [];
     @observable private errorMsg: string | null = null;
+    @observable private isJwtExpired = false;
+
+    private timerId: any;
 
     constructor(props: ILogViewerMain) {
         super(props);
@@ -30,11 +33,16 @@ export class LogViewerMain extends React.Component<ILogViewerMain, any> {
 
     public componentDidMount() {
         this.refreshListData();
-        setInterval(this.refreshListData, 10000)
+        this.timerId = setInterval(this.refreshListData, 10000);
         globalRootStore.uiStore.currentMenuItem = MenuItem.logViewer;
     }
 
     public render() {
+        if (this.isJwtExpired) {
+            clearInterval(this.timerId);
+            this.props.history.push("/login");
+            return null;
+        }
         if (this.logListData.length <= 0) {
             return (
                 <div>
@@ -89,6 +97,10 @@ export class LogViewerMain extends React.Component<ILogViewerMain, any> {
     private refreshListData() {
         fetchJson("/api/log/recent?reccnt=30")
             .then((logEntries) => {
+                if (this.isExpiredJwt(logEntries)) {
+                    return
+                }
+
                 this.logListData = [];
                 if (logEntries instanceof Array) {
                     this.logListData = logEntries;
@@ -108,5 +120,23 @@ export class LogViewerMain extends React.Component<ILogViewerMain, any> {
             this.errorMsg = `${error}`
         });
     }
+
+    private isExpiredJwt(resp: any) : boolean {
+        try {
+            const respException = JSON.parse(resp);
+            if (respException.exception !== undefined) {
+                this.errorMsg = `Error on createTrack api : ${resp}`;
+                if (this.errorMsg !== null && (this.errorMsg.includes("expired") || this.errorMsg.includes("period"))) {
+                    this.isJwtExpired = true;
+                    globalRootStore.uiStore.clearUserStore();
+                    return true;
+                }
+            }
+        } catch (e) {
+            ;
+        }
+        return false;
+    }
+
 }
 

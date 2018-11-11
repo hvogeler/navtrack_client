@@ -1,5 +1,6 @@
 import {observer} from "mobx-react";
 import * as React from 'react';
+import {RouteComponentProps} from "react-router";
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import {globalRootStore} from "../App";
 import {CountryTo} from "../transport/CountryTo";
@@ -7,14 +8,14 @@ import {TrackTo} from "../transport/TrackTo";
 import {TrackTypeTo} from "../transport/TrackTypeTo";
 import {AdditionalTrackInfo} from "./AdditionalTrackInfo";
 import {TrackCreateDetail} from "./TrackCreateDetail";
-import {EditOrCreate, IMapCenter} from "./TrackCreateMain";
 import {InsertMode} from "./TrackCreateMain";
+import {EditOrCreate, IMapCenter} from "./TrackCreateMain";
 import {TrackCreateMap} from "./TrackCreateMap";
 import {IElevationInfo} from "./TrackMain";
 import {TrackPointList} from "./TrackPointList";
 import {TrackPtDo} from "./TrackPtDo";
 
-export interface ITrackCreateProps {
+export interface ITrackCreateProps extends RouteComponentProps<any> {
     trackData: TrackTo;
     trackPts: TrackPtDo[];
     additionalTrackInfo: AdditionalTrackInfo;
@@ -70,6 +71,9 @@ export class TrackCreateController extends React.Component<ITrackCreateProps, an
                             insertMode={this.props.insertMode}
                             setInsertMode={this.props.setInsertMode}
                             readGpxFile={this.props.readGpxFile}
+                            history={this.props.history}
+                            match={this.props.match}
+                            location={this.props.location}
                         />
                     </div>
                 </div>

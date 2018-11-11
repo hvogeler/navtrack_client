@@ -32,6 +32,11 @@ export class TrackCreateDetail extends React.Component<ITrackCreateProps, any> {
     }
 
     public render() {
+        if (this.props.trackData === undefined || this.props.trackData.tracktypes === undefined) {
+            this.props.history.push("/tracks");
+            return null;
+        }
+
         const tableRows = [
             {
                 "label": "Length (Km)",

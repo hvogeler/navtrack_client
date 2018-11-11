@@ -101,17 +101,13 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
     }
 
     private setCredentials(user: string | null, password: string | null): Promise<any> {
-        this.clearUserStore();
+        this.props.rootStore.uiStore.clearUserStore();
         return fetchJsonPost("/auth/requestJwt", JSON.stringify({"user": user, "password": password}))
             .then((response: any) => {
                 const {status} = response;
                 if (status === undefined) {
                     const jwtResponse = response as IJwtResponse;
-                    this.props.rootStore.uiStore.user = user;
-                    this.props.rootStore.uiStore.password = password;
-                    this.props.rootStore.uiStore.isLoggedIn = true;
-                    this.props.rootStore.uiStore.secToken = jwtResponse.jwt;
-                    this.props.rootStore.uiStore.userDo = jwtResponse.user;
+                    this.props.rootStore.uiStore.setUserStore(user, jwtResponse.user, jwtResponse.jwt);
                 } else {
                     return response.message;
 
@@ -145,17 +141,8 @@ export class LoginDlgMain extends React.Component<ILoginDlgMain, any> {
             });
     }
 
-    private clearUserStore() {
-        this.props.rootStore.uiStore.user = null;
-        this.props.rootStore.uiStore.password = null;
-        this.props.rootStore.uiStore.isLoggedIn = false;
-        this.props.rootStore.uiStore.secToken = null;
-        this.props.rootStore.uiStore.userDo = null;
-
-    }
-
     private logOut() {
-        this.clearUserStore()
+        this.props.rootStore.uiStore.clearUserStore()
 
     }
 

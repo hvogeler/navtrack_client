@@ -10,6 +10,8 @@ import {RootStore} from "./RootStore";
 import './styles/mainstyles.css'
 import {EditOrCreate, TrackCreateMain} from "./trackspage/TrackCreateMain";
 import {TrackMain} from "./trackspage/TrackMain"
+import {UserTo} from "./transport/UserTo";
+import {LocalStorageKeys} from "./UiStore";
 
 export let globalRootStore: RootStore;
 
@@ -21,6 +23,19 @@ export class App extends React.Component<any, any> {
         super(props);
         this.rootStore = new RootStore();
         globalRootStore = this.rootStore
+    }
+
+    public componentDidMount() {
+        const jwt = localStorage.getItem(LocalStorageKeys.navure_jwt);
+        const userJson = localStorage.getItem(LocalStorageKeys.navure_user);
+        let userTo : UserTo | null = null;
+        if (userJson !== null) {
+            userTo = JSON.parse(userJson);
+        }
+
+        if (jwt !== null && userTo !== null) {
+            this.rootStore.uiStore.setUserStore(userTo.username, userTo, jwt);
+        }
     }
 
     public render() {
