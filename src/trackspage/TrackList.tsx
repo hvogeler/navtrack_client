@@ -70,12 +70,12 @@ export class TrackList extends React.Component<ITrackListProps, any> {
                                 {globalRootStore.uiStore.isLoggedIn && globalRootStore.uiStore.userDo!.id === it.owner!.id ?
                                     <td><Link to={`/edit/${it.id}`}> <i
                                         className="material-icons md-yellow hand-pointer"
-                                        data-md-tooltip="Edit Track">edit </i></Link>
+                                        data-toggle="tooltip" data-placement="left" title="Edit Track">edit</i></Link>
                                         <i className="material-icons md-grey hand-pointer"
                                            onClick={() => this.deleteItem(it.id)}
-                                           data-md-tooltip="Delete Track">delete</i>
+                                           data-toggle="tooltip" data-placement="top" title="Delete Track">delete</i>
                                             <i className="material-icons md-grey hand-pointer"
-                                               data-md-tooltip="Download" onClick={() => FileSaver.saveAs(blob, `${it.trackname}.${"gpx"}`)}>cloud_download</i></td> : <td/>}
+                                               data-toggle="tooltip" data-placement="top" title="Download" onClick={() => FileSaver.saveAs(blob, `${it.trackname}.${"gpx"}`)}>cloud_download</i></td> : <td/>}
                             </tr>)
                         })}
                         </tbody>
