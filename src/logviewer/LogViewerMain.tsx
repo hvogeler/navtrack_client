@@ -39,8 +39,6 @@ export class LogViewerMain extends React.Component<ILogViewerMain, any> {
 
     public render() {
         if (this.isJwtExpired) {
-            clearInterval(this.timerId);
-            this.props.history.push("/login");
             return null;
         }
         if (this.logListData.length <= 0) {
@@ -95,24 +93,26 @@ export class LogViewerMain extends React.Component<ILogViewerMain, any> {
 
     @action
     private refreshListData() {
+        this.errorMsg = null;
         fetchJson("/api/log/recent?reccnt=30")
-            .then((logEntries) => {
-                if (this.isExpiredJwt(logEntries)) {
+            .then((response) => {
+                if (this.isExpiredJwt(response)) {
                     return
                 }
 
                 this.logListData = [];
-                if (logEntries instanceof Array) {
-                    this.logListData = logEntries;
+                if (response instanceof Array) {
+                    this.logListData = response;
                 } else {
-                    if (logEntries !== undefined) {
+                    if (response !== undefined) {
                         let msg = "Unknown Error";
-                        if (typeof logEntries === "string") {
-                            msg = logEntries;
+                        if (typeof response === "string") {
+                            msg = response;
                         }
-                        if (logEntries.hasOwnProperty("message")) {
-                            msg = logEntries.message
+                        if (response.hasOwnProperty("message")) {
+                            msg = response.message
                         }
+                        clearInterval(this.timerId);
                         throw Error(msg)
                     }
                 }
@@ -129,6 +129,8 @@ export class LogViewerMain extends React.Component<ILogViewerMain, any> {
                 if (this.errorMsg !== null && (this.errorMsg.includes("expired") || this.errorMsg.includes("period"))) {
                     this.isJwtExpired = true;
                     globalRootStore.uiStore.clearUserStore();
+                    clearInterval(this.timerId);
+                    this.props.history.push("/login");
                     return true;
                 }
             }

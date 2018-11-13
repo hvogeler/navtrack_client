@@ -41,7 +41,7 @@ export function fetchJson(path: string): Promise<any> {
             return response.json()
         })
         .catch(ex => {
-            console.error(ex);
+            console.error(`fetchJson Error: ${ex}`);
             throw ex;
         });
 }
