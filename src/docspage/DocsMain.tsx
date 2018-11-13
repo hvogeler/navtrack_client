@@ -4,10 +4,10 @@ import {RouteComponentProps} from "react-router";
 import {globalRootStore} from "../App";
 import teaserimg from '../images/IMG_0107.jpg'
 import {MainMenu, MenuItem} from "../MainMenu";
-import {PageContent} from "../PageContent";
 import {RootStore} from "../RootStore";
 // import {PageTitle} from "../PageTitle";
 import {Teaser} from "../Teaser";
+import {PageContent} from "./PageContent";
 
 
 interface IDocsMain extends RouteComponentProps<any> {

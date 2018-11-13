@@ -21,6 +21,15 @@ h1 {
     padding: 0px;
 }
 
+.doc-sidebar {
+    width: 180px;
+    float: left;
+}
+
+.doc-scrollcol {
+    overflow-y: scroll;
+}
+
 #viewMapSmall {
     height: 540px;
     width: 100%;
