@@ -22,7 +22,8 @@ export class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.rootStore = new RootStore();
-        globalRootStore = this.rootStore
+        globalRootStore = this.rootStore;
+        globalRootStore.version = process.env.REACT_APP_VERSION === undefined ? "version unkown" : process.env.REACT_APP_VERSION;
     }
 
     public componentDidMount() {
@@ -68,6 +69,5 @@ export class App extends React.Component<any, any> {
             </div>
         );
     }
-
 }
 

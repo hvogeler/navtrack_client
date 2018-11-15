@@ -1,8 +1,8 @@
 {
-  "name": "navtrack",
-  "version": "0.1.0",
+  "name": "navure",
+  "version": "0.1.4",
   "private": true,
-  "homepage": "http://178.254.3.33/navtrack",
+  "homepage": "http://www.navure.hvo.de",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.1.1",
     "@types/elasticsearch": "^5.0.26",
