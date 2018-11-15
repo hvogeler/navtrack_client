@@ -56,7 +56,7 @@ export class PageContent extends React.Component<any, any> {
     }
 
     public getDocuments(){
-        fetchJson("/api/document?name=navure general1")
+        fetchJson("/api/document?name=navure general")
             .then((response) => {
                 if (!this.isExceptionResponse(response)) {
                     const doc: DocumentTo = response;
