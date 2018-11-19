@@ -30,7 +30,7 @@ export class DocsMain extends React.Component<IDocsMain, any> {
                 <div className="row">
                     <Teaser image={teaserimg} title={"Documentation"}/>
                 </div>
-                <div className="row">
+                <div className="row d-inline-block">
                     <PageContent/>
                 </div>
                 <div className="row col-12 d-inline-block">
