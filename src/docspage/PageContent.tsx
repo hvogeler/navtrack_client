@@ -11,7 +11,7 @@ export class PageContent extends React.Component<any, any> {
 
     public render() {
         return (
-            <div className="row">
+            <div>
                 <div className="ml-3 doc-sidebar">
                     <nav id="doccontents" className="navbar navbar-light bg-light">
                         <a className="navbar-brand text-left" href="#navure">Navure</a>

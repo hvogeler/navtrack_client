@@ -25,12 +25,12 @@ export class DocsMain extends React.Component<IDocsMain, any> {
 
     public render() {
         return (
-            <div className="container-fluid">
+            <div className="container-fluid d-flex flex-column">
                 <MainMenu rootStore={this.props.rootStore!}/>
                 <div className="row">
                     <Teaser image={teaserimg} title={"Documentation"}/>
                 </div>
-                <div className="row d-inline-block">
+                <div className="row">
                     <PageContent/>
                 </div>
                 <div className="row col-12 d-inline-block">
