@@ -108,6 +108,7 @@ export const NavureMobileIntro: React.SFC = () => {
         Please also let me know if you have good ideas to improve Navure. By "Improve" I don't mean adding features but
         making the current features better and better usable.
     </p>
+        <p>Navure Mobile is currently available for the IPhone on the <a href="http://appstore.com/navure">Apple App Store</a>.</p>
     </div>)
 };
 
