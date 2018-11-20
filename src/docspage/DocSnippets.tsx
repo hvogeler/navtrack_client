@@ -1,7 +1,10 @@
 import * as React from 'react';
 import insertdeletetrackpoint from "../images/insertdeletetrackpoint.png"
 import navuremobile from "../images/NavureMobile.jpg"
+import searchweb from "../images/searchweb.jpg"
 import trackicons from "../images/trackicons.png"
+import watch1 from "../images/Watch1.png"
+import watch2 from "../images/Watch2.png"
 
 export const GeneralIntroHtml: React.SFC = () => {
     return (<div>
@@ -163,16 +166,22 @@ export const MobileAppleWatchSupport: React.SFC = () => {
                     </li>
                 </ul>
             </p>
+            <p>
+            <img src={watch1} className="rounded mx-2 px-1"/>
+
+            <img src={watch2} className="rounded"/>
+            </p>
         </div>
     )
 };
 
 export const MobileUsage: React.SFC = () => {
     return (<div>
-            <p>
+            <p><img src={searchweb} className="rounded float-right"/>
                 <ul>
                     <li>load a track from any source supported by the iPhone. From a message, from mail, from Safari</li>
                     <li>load a previously loaded track from the list of previously used tracks in Navure</li>
+                    <li>search for a track on Navure Web</li>
                     <li>navigation starts immediately</li>
                     <li>if you follow the track from start (green dot) to end (yellow dot) the arrow in the bottom right
                         corner
