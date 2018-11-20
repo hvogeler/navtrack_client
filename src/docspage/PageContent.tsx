@@ -1,12 +1,22 @@
 import * as React from 'react';
 import {fetchJson} from "../backend/Backend";
 import edittrackImg from "../images/edittrack1kl.png"
-import {CreateTrackHtml, EditTrackHtml, GeneralIntroHtml} from './DocSnippets';
+import {
+    CreateTrackHtml,
+    EditTrackHtml,
+    GeneralIntroHtml,
+    MobileAppleWatchSupport,
+    MobileUniqueFeatures, MobileUsage,
+    NavureMobileIntro
+} from './DocSnippets';
 
 export class PageContent extends React.Component<any, any> {
 
     public componentDidMount() {
-        {this.documentAccessLog("GeneralIntro")};
+        {
+            this.documentAccessLog("GeneralIntro")
+        }
+        ;
     }
 
     public render() {
@@ -16,19 +26,25 @@ export class PageContent extends React.Component<any, any> {
                     <nav id="doccontents" className="navbar navbar-light bg-light">
                         <a className="navbar-brand text-left" href="#navure">Navure</a>
                         <nav className="nav nav-pills flex-column">
-                            <a className="nav-link text-left text-dark pb-0" href="#navureweb" onClick={() => this.documentAccessLog("navureWeb")}>Navure Web</a>
+                            <a className="nav-link text-left text-dark pb-0" href="#navureweb"
+                               onClick={() => this.documentAccessLog("navureWeb")}>Navure Web</a>
                             <nav className="nav nav-pills flex-column">
                                 <a className="nav-link ml-3 pt-0 pb-0 text-left text-dark small"
-                                   href="#createtrack" onClick={() => this.documentAccessLog("createtrack")}>Create Track</a>
+                                   href="#createtrack" onClick={() => this.documentAccessLog("createtrack")}>Create
+                                    Track</a>
                                 <a className="nav-link ml-3 pt-0 pb-0 text-left text-dark small"
                                    href="#edittrack" onClick={() => this.documentAccessLog("edittrack")}>Edit Track</a>
                             </nav>
-                            <a className="nav-link text-left text-dark pb-0" href="#navuremobile" onClick={() => this.documentAccessLog("navureMobile")}>Navure Mobile</a>
+                            <a className="nav-link text-left text-dark pb-0" href="#navuremobile"
+                               onClick={() => this.documentAccessLog("navureMobile")}>Navure Mobile</a>
                             <nav className="nav nav-pills flex-column">
                                 <a className="nav-link ml-3 pt-0 pb-0 text-left text-dark small"
-                                   href="#intromobile" onClick={() => this.documentAccessLog("navureMobileIntro")}>Introduction</a>
-                                <a className="nav-link ml-3 pt-0 pb-0 text-left text-dark small" href="#item-2">item
-                                    2</a>
+                                   href="#intromobile"
+                                   onClick={() => this.documentAccessLog("navureMobileIntro")}>Introduction</a>
+                                <a className="nav-link ml-3 pt-0 pb-0 text-left text-dark small" href="#uniquefeatures" onClick={() => this.documentAccessLog("uniquefeatures")}>Features</a>
+                                <a className="nav-link ml-3 pt-0 pb-0 text-left text-dark small" href="#watchsupport" onClick={() => this.documentAccessLog("watchsupport")}>Apple Watch</a>
+                                <a className="nav-link ml-3 pt-0 pb-0 text-left text-dark small" href="#usage" onClick={() => this.documentAccessLog("usage")}>Usage</a>
+
                             </nav>
                         </nav>
                     </nav>
@@ -46,10 +62,16 @@ export class PageContent extends React.Component<any, any> {
                         <h3 id="edittrack">Edit a Track</h3>
                         <EditTrackHtml/>
 
-                        <h2 id="navuremobile" data-spy="scroll" data-target="#navuremobile" data-offset="0">Navure Mobile</h2>
-                        <h3 id="intromobile">Introduction</h3>
-                        <p>...</p>
-
+                        <h2 id="navuremobile" data-spy="scroll" data-target="#navuremobile" data-offset="0">Navure
+                            Mobile</h2>
+                        <h3 id="intromobile" data-spy="scroll" data-target="#intromobile" data-offset="0">Introduction</h3>
+                        <NavureMobileIntro/>
+                        <h3 id="uniquefeatures" data-spy="scroll" data-target="#uniquefeatures" data-offset="0">Unique Features</h3>
+                        <MobileUniqueFeatures/>
+                        <h3 id="watchsupport" data-spy="scroll" data-target="#watchsupport" data-offset="0">Apple Watch support</h3>
+                        <MobileAppleWatchSupport/>
+                        <h3 id="usage" data-spy="scroll" data-target="#usage" data-offset="0">Usage</h3>
+                        <MobileUsage/>
                     </div>
                 </div>
             </div>
