@@ -6,11 +6,6 @@ import {globalRootStore} from "./App";
 
 @observer
 export class Footer extends React.Component {
-    // private styles = {
-    //     backgroundColor: 'rgba(255,255,255,0.6)',
-    //     height: '20px',
-    // };
-
 
     constructor(props: any) {
         super(props)
@@ -34,10 +29,17 @@ export class Footer extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="row pb-3 bg-info">
+                <div className="row pt-0 bg-info">
                     <div className="col-sm-12">
                         <div className="text-secondary">
                             <Link className="text-white" to="/disclaimerAndImpressum">Impressum</Link>
+                        </div>
+                    </div>
+                </div>
+                <div className="row pb-3 bg-info">
+                    <div className="col-sm-12">
+                        <div className="text-secondary">
+                            <Link className="text-white" to="/datenschutz">Datenschutz</Link>
                         </div>
                     </div>
                 </div>

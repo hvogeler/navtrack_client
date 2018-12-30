@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import './App.css';
+import {Datenschutz} from "./Datenschutz";
 import {DisclaimerAndImpressum} from "./DisclaimerAndImpressum";
 import {DocsMain} from "./docspage/DocsMain";
 import {IntroMain} from "./intro/IntroMain";
@@ -62,6 +63,8 @@ export class App extends React.Component<any, any> {
                                render={(props) => <LoginDlgMain {...props} rootStore={this.rootStore!}/>}/>
                         <Route exact={true} path="/disclaimerAndImpressum"
                                render={(props) => <DisclaimerAndImpressum {...props} rootStore={this.rootStore!}/>}/>
+                        <Route exact={true} path="/datenschutz"
+                               render={(props) => <Datenschutz {...props} rootStore={this.rootStore!}/>}/>
                         <Route exact={true} path="/logViewer"
                                render={(props) => <LogViewerMain {...props} rootStore={this.rootStore!}/>}/>
                     </Switch>
